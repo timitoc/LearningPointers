@@ -538,9 +538,9 @@
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://localhost:5432/app1</url>
-                    <defaultSchemaName></defaultSchemaName>
+                    <defaultSchemaName>app1</defaultSchemaName>
                     <username>app1</username>
-                    <password></password>
+                    <password>1234</password>
                     <referenceUrl>hibernate:spring:com.mycompany.myapp.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
@@ -548,7 +548,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
+                         <artifactId>javassist</artifactId>
                         <version>${javassist.version}</version>
                     </dependency>
                     <dependency>
