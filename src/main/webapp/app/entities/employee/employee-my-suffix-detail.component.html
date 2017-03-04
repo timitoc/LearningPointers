@@ -1,0 +1,61 @@
+
+<div *ngIf="employee">
+    <h2><span>Employee</span> {{employee.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>First Name</span></dt>
+        <dd>
+            <span>{{employee.firstName}}</span>
+        </dd>
+        <dt><span>Last Name</span></dt>
+        <dd>
+            <span>{{employee.lastName}}</span>
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+            <span>{{employee.email}}</span>
+        </dd>
+        <dt><span>Phone Number</span></dt>
+        <dd>
+            <span>{{employee.phoneNumber}}</span>
+        </dd>
+        <dt><span>Hire Date</span></dt>
+        <dd>
+            <span>{{employee.hireDate | date:'medium'}}</span>
+        </dd>
+        <dt><span>Salary</span></dt>
+        <dd>
+            <span>{{employee.salary}}</span>
+        </dd>
+        <dt><span>Commission Pct</span></dt>
+        <dd>
+            <span>{{employee.commissionPct}}</span>
+        </dd>
+        <dt><span>Department</span></dt>
+        <dd>
+            <div *ngIf="employee.departmentId">
+                <a [routerLink]="['/department-my-suffix', employee.departmentId]">{{employee.departmentId}}</a>
+            </div>
+        </dd>
+        <dt><span>Manager</span></dt>
+        <dd>
+            <div *ngIf="employee.managerId">
+                <a [routerLink]="['/employee-my-suffix', employee.managerId]">{{employee.managerId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'employee-my-suffix/'+ employee.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
