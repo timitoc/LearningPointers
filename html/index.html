@@ -1,0 +1,41 @@
+<script src="/socket.io/socket.io.js"></script>
+<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+
+
+<textarea id="code_panel" rows="20" cols="100"></textarea>
+<br>
+<button id="run_code_btn">Run code</button>
+<br>
+<input type="text" id="gdb_command"/>
+<br>
+<button id="send_command">Send</button>
+<br>
+<pre id="output"></pre>
+<script>
+	var socket = io();
+	$("#run_code_btn").click(function(){
+		var code = $("#code_panel").val();
+		socket.emit("code",code);
+	});
+	$("#send_command").click(function(){
+		var cmd = $("#gdb_command").val();
+		socket.emit("gdb_cmd",cmd);
+	});
+
+	socket.on("compile_error",function(data){
+		alert(data);
+	});
+	socket.on("compile_success",function(data){
+		alert(data);
+	});
+	socket.on("gdb_stdout",function(data){
+		$("#output").append(data);
+	});
+	socket.on("gdb_stderr",function(data){
+		$("#output").append(data);
+	});
+
+</script>
