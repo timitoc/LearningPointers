@@ -21,7 +21,12 @@
 		/** Setting height is also important, otherwise editor wont showup**/
 		height: 300px;
 	}
-	
+	.myMarker {
+		position:absolute;
+		background:rgba(100,200,100,0.5);
+		z-index:20
+	}
+
     </style>
 </head>
 <body>
@@ -66,6 +71,10 @@ int main()
 				<button id="debug_code_button" class="btn btn-primary">
 					Debug
 				</button>
+				<br>
+				<button id="add_breakpoint_button" class="btn btn-primary">
+					Add breakpoint on cursor line
+				</button>
 			</div>
 	  	</div>
 </div>
@@ -75,6 +84,9 @@ int main()
 <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
+	var breakpointList = [];
+	var debuggerLine;
+
 	function initLeftPart() {
 		$("#left_content").text("Memory status");
 		function tableCreate(){
@@ -102,6 +114,32 @@ int main()
 	$("#run_code_button").click(function() {
 		sendCommand("run");
 	});
+	$("#debug_code_button").click(function() {
+		if (breakpointList.length > 0)
+			sendCommand("run");
+		else {
+			addBreakpoint();
+			sendCommand("run");
+		}
+	})
+	$("#add_breakpoint_button").click(function() {
+		addBreakpoint();
+	})
+
+	function addBreakpoint() {
+		var pos = editor.getCursorPosition();
+		var crtRow = parseInt(pos.row)+1;
+		breakpointList.push(crtRow);
+		sendCommand("b " + crtRow);
+		highLine(crtRow-1);
+	}
+
+	var Range = ace.require('ace/range').Range;
+
+	function highLine(row) {
+		marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
+	}
+
 </script>
 
 <script>
