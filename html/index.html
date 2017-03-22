@@ -35,12 +35,12 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-		 <div class="panel panel-default">
-        <div class="panel-heading">
-             <h3 class="panel-title">Editor</h3>
-        </div>
-        <div class="panel-body">
-			<div id="editor">#include&lt;iostream&gt;
+			<div class="panel panel-default">
+        		<div class="panel-heading">
+             		<h3 class="panel-title">Editor</h3>
+        		</div>
+        		<div class="panel-body">
+					<div id="editor">#include&lt;iostream&gt;
 using namespace std;
 
 int main()
@@ -49,14 +49,25 @@ int main()
 		cout &lt;&lt; i &lt;&lt; "\n";
 	}
 	return 0;
-}</div>
-			
-        </div>
-    </div>
-    <div class="text-center">---End of editor---</div>
-		</div>
-		<div class="col-md-3"></div>
-	  </div>
+}</div>	
+					</div>
+    			</div>
+    			<div class="text-center">---End of editor---</div>
+			</div>
+			<div class="col-md-3">
+				<button id="compile_code_button" class="btn btn-primary">
+					Compile
+				</button>
+				<br>
+				<button id="run_code_button" class="btn btn-primary">
+					Run
+				</button>
+				<br>
+				<button id="debug_code_button" class="btn btn-primary">
+					Debug
+				</button>
+			</div>
+	  	</div>
 </div>
 
 
@@ -84,6 +95,13 @@ int main()
 		}
 		tableCreate();
 	}
+	$("#compile_code_button").click(function() {
+		var code = editor.getValue();
+		socket.emit("code",code);
+	});
+	$("#run_code_button").click(function() {
+		sendCommand("run");
+	});
 </script>
 
 <script>
@@ -114,7 +132,6 @@ int main()
 	crossorigin="anonymous"></script>
 
 <br>
-<button id="run_code_btn">Run code</button>
 <br>
 <input type="text" id="gdb_command"/>
 <br>
@@ -123,13 +140,14 @@ int main()
 <pre id="output"></pre>
 <script>
 	var socket = io();
-	$("#run_code_btn").click(function(){
-		var code = editor.getValue();
-		socket.emit("code",code);
-	});
+
+	function sendCommand(comand) {
+		socket.emit("gdb_cmd", comand);
+	}
+
 	$("#send_command").click(function(){
 		var cmd = $("#gdb_command").val();
-		socket.emit("gdb_cmd",cmd);
+		sendCommand(cmd);
 	});
 
 	socket.on("compile_error",function(data){
