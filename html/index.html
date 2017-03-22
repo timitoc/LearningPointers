@@ -22,9 +22,9 @@
 		height: 300px;
 	}
 	.myMarker {
-		position:absolute;
-		background:rgba(100,200,100,0.5);
-		z-index:20
+		/*position:absolute;*/
+		background-image: url('rds.png'); 
+		/*z-index:20*/
 	}
 
     </style>
@@ -85,6 +85,7 @@ int main()
 
 <script>
 	var breakpointList = [];
+	var makers = {};
 	var debuggerLine;
 
 	function initLeftPart() {
@@ -123,18 +124,38 @@ int main()
 		}
 	})
 	$("#add_breakpoint_button").click(function() {
-		addBreakpoint();
+		var pos = editor.getCursorPosition();
+		var crtRow = parseInt(pos.row)+1;
+		if (existsBreakpoint(crtRow))
+			removeBreakpoint(crtRow);
+		else
+			addBreakpoint();
 	})
+
+	function existsBreakpoint(row) {
+		if (breakpointList.indexOf(row) == -1)
+			return false;
+		return true;
+	}
+
+	function removeBreakpoint(row) {
+		breakpointList.splice(breakpointList.indexOf(row), 1);
+		sendCommand("clear " + row);
+	}
 
 	function addBreakpoint() {
 		var pos = editor.getCursorPosition();
 		var crtRow = parseInt(pos.row)+1;
 		breakpointList.push(crtRow);
 		sendCommand("b " + crtRow);
-		highLine(crtRow-1);
+		setDebugAnnotationOnLine(crtRow-1);
 	}
 
 	var Range = ace.require('ace/range').Range;
+
+	function setDebugAnnotationOnLine(row) {
+		editor.getSession().addGutterDecoration(row,"myMarker");
+	}
 
 	function highLine(row) {
 		marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
