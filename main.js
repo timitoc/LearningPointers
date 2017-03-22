@@ -18,7 +18,7 @@ io.on('connection', function(socket){
 	socket.on("code",function(data){
 		var filename = randomstring.generate(7);
 		fs.writeFile(path.join(__dirname,"./programs/"+filename+".cpp"),data.toString(),function(){
-			child_process.exec(util.format("g++ %s -o %s -g","./programs/"+filename+".cpp","./programs/"+filename),function(error,stdout,stderr){
+			child_process.exec(util.format("g++ -g %s -o %s","./programs/"+filename+".cpp","./programs/"+filename),function(error,stdout,stderr){
 				if(stderr){
 					return socket.emit("compile_error",stderr.toString());
 				}
