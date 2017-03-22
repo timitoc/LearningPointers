@@ -10,6 +10,8 @@ var io = require('socket.io')(http);
 
 var procs={};
 
+app.use(require('express').static(path.join(__dirname,"html")));
+
 io.on('connection', function(socket){
 	console.log('a user connected');
 

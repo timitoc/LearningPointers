@@ -1,11 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<title>ACE in Action</title>
+
+ <style type="text/css" media="screen">
+
+	.ace_editor {
+		border: 1px solid lightgray;
+		display: block;
+		width: 80%;
+	}
+	.scrollmargin {
+		height: 80px;
+        text-align: center;
+	}
+	#editor {
+		/** Setting height is also important, otherwise editor wont showup**/
+		height: 300px;
+	}
+	
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<div id="left_content">
+				le
+			</div>
+		</div>
+		<div class="col-md-6">
+		 <div class="panel panel-default">
+        <div class="panel-heading">
+             <h3 class="panel-title">Editor</h3>
+        </div>
+        <div class="panel-body">
+			<div id="editor">
+void smecher() {
+	
+}
+
+int main()
+{
+	for (int i = 1; i <= n; i++) {
+		int x = "121";
+	}
+	return 0;
+}
+			</div>
+			
+        </div>
+    </div>
+    <div class="text-center">---End of editor---</div>
+		</div>
+		<div class="col-md-3"></div>
+	  </div>
+</div>
+
+
+<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	function initLeftPart() {
+		$("#left_content").text("Memory status");
+		function tableCreate(){
+			var body = document.getElementById("left_content"),
+				tbl  = document.createElement('table');
+			tbl.style.width  = '100px';
+			tbl.style.border = '1px solid black';
+
+			for(var i = 0; i < 7; i++){
+				var tr = tbl.insertRow();
+				for(var j = 0; j < 7; j++){
+					var td = tr.insertCell();
+					td.appendChild(document.createTextNode('oda'));
+					td.style.border = '1px solid black';
+				}
+			}
+			body.appendChild(tbl);
+		}
+		tableCreate();
+	}
+</script>
+
+<script>
+	initLeftPart();
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/c_cpp");
+	
+	//editor.setAutoScrollEditorIntoView(true);
+	editor.setOption("maxLines", 30);
+	editor.setOption("minLines", 30);
+	
+	ace.require("ace/ext/language_tools");
+    // enable autocompletion and snippets
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+</script>
+</body>
+
+
 <script src="/socket.io/socket.io.js"></script>
 <script
 	src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	crossorigin="anonymous"></script>
 
-
-<textarea id="code_panel" rows="20" cols="100"></textarea>
 <br>
 <button id="run_code_btn">Run code</button>
 <br>
@@ -17,7 +127,7 @@
 <script>
 	var socket = io();
 	$("#run_code_btn").click(function(){
-		var code = $("#code_panel").val();
+		var code = editor.getValue();
 		socket.emit("code",code);
 	});
 	$("#send_command").click(function(){
@@ -37,5 +147,6 @@
 	socket.on("gdb_stderr",function(data){
 		$("#output").append(data);
 	});
-
 </script>
+</body>
+</html>
