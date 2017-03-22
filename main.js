@@ -20,13 +20,13 @@ io.on('connection', function(socket){
 	socket.on("code",function(data){
 		var filename = randomstring.generate(7);
 		fs.writeFile(path.join(__dirname,"./programs/"+filename+".cpp"),data.toString(),function(){
-			child_process.exec(util.format("g++ %s -o %s","./programs/"+filename+".cpp","./programs/"+filename),function(error,stdout,stderr){
+			child_process.exec(util.format("g++ -g %s -o %s","./programs/"+filename+".cpp","./programs/"+filename),function(error,stdout,stderr){
 				if(stderr){
 					return socket.emit("compile_error",stderr.toString());
 				}
 				socket.emit("compile_success","Successfully compiled!");
 
-				procs[socket.id] = child_process.spawn("gdb",["./programs/"+filename,"-g"]);
+				procs[socket.id] = child_process.spawn("gdb",["./programs/"+filename]);
 
 				procs[socket.id].stdout.on('data',function(data){
 					console.log(data.toString());
