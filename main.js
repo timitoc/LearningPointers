@@ -8,7 +8,9 @@ var randomstring = require('randomstring');
 var fs = require('fs');
 var io = require('socket.io')(http);
 
-var procs={};
+var procs={
+
+};
 
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -22,7 +24,7 @@ io.on('connection', function(socket){
 				}
 				socket.emit("compile_success","Successfully compiled!");
 
-				procs[socket.id] = child_process.spawn("gdb",["./programs/"+filename]);
+				procs[socket.id] = child_process.spawn("gdb",["./programs/"+filename,"-g"]);
 
 				procs[socket.id].stdout.on('data',function(data){
 					console.log(data.toString());
