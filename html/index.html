@@ -26,6 +26,11 @@
 		background-image: url('rds.png'); 
 		/*z-index:20*/
 	}
+	.ace_gutter-cell.ace_breakpoint{ 
+		border-radius: 20px 0px 0px 20px; 
+		box-shadow: 0px 0px 1px 1px red inset;
+		background-image: url('rds.png');  
+	}
 
     </style>
 </head>
@@ -126,10 +131,11 @@ int main()
 	$("#add_breakpoint_button").click(function() {
 		var pos = editor.getCursorPosition();
 		var crtRow = parseInt(pos.row)+1;
-		if (existsBreakpoint(crtRow))
-			removeBreakpoint(crtRow);
-		else
-			addBreakpoint();
+		toggleBreakpoint(editor, crtRow-1);
+		// if (existsBreakpoint(crtRow))
+		// 	removeBreakpoint(crtRow);
+		// else
+		// 	addBreakpoint();
 	})
 
 	function existsBreakpoint(row) {
@@ -140,6 +146,7 @@ int main()
 
 	function removeBreakpoint(row) {
 		breakpointList.splice(breakpointList.indexOf(row), 1);
+		removeDebugAnnotationOnLine(row-1);
 		sendCommand("clear " + row);
 	}
 
@@ -155,6 +162,10 @@ int main()
 
 	function setDebugAnnotationOnLine(row) {
 		editor.getSession().addGutterDecoration(row,"myMarker");
+	}
+
+	function removeDebugAnnotationOnLine(row) {
+	
 	}
 
 	function highLine(row) {
@@ -180,6 +191,36 @@ int main()
         enableSnippets: true,
         enableLiveAutocompletion: true
     });
+	editor.on("guttermousedown", function(e) {
+		//var target = e.domEvent.target; 
+		// if (target.className.indexOf("ace_gutter-cell") == -1)
+		// 	return; 
+		// if (!editor.isFocused()) 
+		// 	return; 
+		// if (e.clientX > 25 + target.getBoundingClientRect().left) 
+		// 	return; 
+
+		// var row = e.getDocumentPosition().row;
+		// e.editor.session.setBreakpoint(row);
+		// e.stop();
+		//var breakpoints = e.editor.session.getBreakpoints(row, 0);
+		
+		var row = e.getDocumentPosition().row;
+		toggleBreakpoint(e.editor, row);	
+	});
+
+	function toggleBreakpoint(edit, row) {
+		var breakpoints = edit.session.getBreakpoints(row, 0);
+		if(typeof breakpoints[row] === typeof undefined) {
+			edit.session.setBreakpoint(row);
+			sendCommand("b " + (row+1));
+		}
+		else {
+			edit.session.clearBreakpoint(row);
+			sendCommand("clear " + (row+1));
+		}
+	}
+
 </script>
 </body>
 
