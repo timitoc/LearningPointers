@@ -22,8 +22,8 @@
 		height: 300px;
 	}
 	.myMarker {
-		/*position:absolute;*/
-		background-image: url('rds.png'); 
+		position:absolute;
+		background-color: #505050;
 		/*z-index:20*/
 	}
 	.ace_gutter-cell.ace_breakpoint{ 
@@ -80,6 +80,9 @@ int main()
 				<button id="add_breakpoint_button" class="btn btn-primary">
 					Add breakpoint on cursor line
 				</button>
+				<button id="step_debugger" class="btn btn-primary">
+					Step
+				</button>
 			</div>
 	  	</div>
 </div>
@@ -92,6 +95,7 @@ int main()
 	var breakpointList = [];
 	var makers = {};
 	var debuggerLine;
+	var crtLineMarker;
 
 	function initLeftPart() {
 		$("#left_content").text("Memory status");
@@ -137,6 +141,9 @@ int main()
 		// else
 		// 	addBreakpoint();
 	})
+	$("#step_debugger").click(function() {
+		stepDebugger();
+	});
 
 	function existsBreakpoint(row) {
 		if (breakpointList.indexOf(row) == -1)
@@ -158,6 +165,14 @@ int main()
 		setDebugAnnotationOnLine(crtRow-1);
 	}
 
+	let temp = 2;
+
+	function stepDebugger() {
+		sendCommand("s");
+		moveHighlight(temp);
+		temp = temp+1;
+	}
+
 	var Range = ace.require('ace/range').Range;
 
 	function setDebugAnnotationOnLine(row) {
@@ -166,6 +181,13 @@ int main()
 
 	function removeDebugAnnotationOnLine(row) {
 	
+	}
+
+	function moveHighlight(row) {
+		if (crtLineMarker != null) {
+			editor.getSession().removeMarker(crtLineMarker);
+		}
+		crtLineMarker = editor.getSession().addMarker(new Range(row, 0, row, 1), "myMarker", "fullLine");
 	}
 
 	function highLine(row) {
