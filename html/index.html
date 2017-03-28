@@ -97,20 +97,23 @@ int main()
 	var debuggerLine;
 	var crtLineMarker;
 
+	var memoryTableN = 7;
+
 	function initLeftPart() {
 		$("#left_content").text("Memory status");
 		function tableCreate(){
 			var body = document.getElementById("left_content"),
 				tbl  = document.createElement('table');
-			tbl.style.width  = '100px';
+			tbl.style.width  = '210px';
 			tbl.style.border = '1px solid black';
 
-			for(var i = 0; i < 7; i++){
+			for(var i = 0; i < memoryTableN; i++){
 				var tr = tbl.insertRow();
-				for(var j = 0; j < 7; j++){
+				for(var j = 0; j < memoryTableN; j++){
 					var td = tr.insertCell();
-					td.appendChild(document.createTextNode('oda'));
+					td.appendChild(document.createTextNode(i*memoryTableN + j));
 					td.style.border = '1px solid black';
+					td.style.width = '30px';
 				}
 			}
 			body.appendChild(tbl);
