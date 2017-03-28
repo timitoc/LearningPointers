@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
+<title>ACE in Action</title>
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<div id="left_content">
+				le
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+        		<div class="panel-heading">
+             		<h3 class="panel-title">Editor</h3>
+        		</div>
+        		<div class="panel-body">
+					<div id="editor">#include&lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+	for (int i = 1; i <= 10; i++) {
+		cout &lt;&lt; i &lt;&lt; "\n";
+	}
+	return 0;
+}</div>	
+					</div>
+    			</div>
+    			<div class="text-center">---End of editor---</div>
+			</div>
+			<div class="col-md-3">
+				<button id="compile_code_button" class="btn btn-primary">
+					Compile
+				</button>
+				<br>
+				<button id="run_code_button" class="btn btn-primary">
+					Run
+				</button>
+				<br>
+				<button id="debug_code_button" class="btn btn-primary">
+					Debug
+				</button>
+				<br>
+				<button id="add_breakpoint_button" class="btn btn-primary">
+					Add breakpoint on cursor line
+				</button>
+				<button id="step_debugger" class="btn btn-primary">
+					Step
+				</button>
+			</div>
+	  	</div>
+</div>
+
+
+<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	var memoryTableN = 7;
+
+	function initLeftPart() {
+		$("#left_content").text("Memory status");
+		function tableCreate(){
+			var body = document.getElementById("left_content"),
+				tbl  = document.createElement('table');
+			tbl.style.width  = '210px';
+			tbl.style.border = '1px solid black';
+
+			for(var i = 0; i < memoryTableN; i++){
+				var tr = tbl.insertRow();
+				for(var j = 0; j < memoryTableN; j++){
+					var td = tr.insertCell();
+					td.appendChild(document.createTextNode(i*memoryTableN + j));
+					td.style.border = '1px solid black';
+					td.style.width = '30px';
+				}
+			}
+			body.appendChild(tbl);
+		}
+		tableCreate();
+	}
+	initLeftPart();
+
+</script>
+
+<br>
+<br>
+<input type="text" id="gdb_command"/>
+<br>
+<button id="send_command">Send</button>
+<br>
+<pre id="output"></pre>
+
+<script src="/scripts/button_mapping.js"></script>
+<script src="/scripts/editor_setup.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/gdb_events.js"></script>
+
+</body>
+
+</html>
