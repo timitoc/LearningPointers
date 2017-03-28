@@ -20,6 +20,7 @@ let REQUESTED = [];
 var buffer_stdout = "";
 var buffer_stderr = "";
 
+
 app.use(require('express').static(path.join(__dirname,"html")));
 
 io.on('connection', function(socket){
@@ -91,7 +92,6 @@ io.on('connection', function(socket){
 			console.log("err");
 		}
 	});
-
 	socket.on("gdb_cmd",function(data){
 		if(procs[socket.id]){
 			procs[socket.id].stdin.write(data+'\n');

@@ -1,0 +1,23 @@
+.ace_editor {
+	border: 1px solid lightgray;
+	display: block;
+	width: 80%;
+}
+.scrollmargin {
+	height: 80px;
+	text-align: center;
+}
+#editor {
+	/** Setting height is also important, otherwise editor wont showup**/
+	height: 300px;
+}
+.myMarker {
+	position:absolute;
+	background-color: #505050;
+	/*z-index:20*/
+}
+.ace_gutter-cell.ace_breakpoint{ 
+	border-radius: 20px 0px 0px 20px; 
+	box-shadow: 0px 0px 1px 1px red inset;
+	background-image: url('../rds.png');  
+}

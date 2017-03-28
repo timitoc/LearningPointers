@@ -1,41 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
+<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+		<!--<script type='text/javascript' src='http://code.jquery.com/jquery-2.1.0.js'></script>-->
+<script type='text/javascript' src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script type="text/javascript" src="/treetable/jstreetable.js"></script>
+
 <title>ACE in Action</title>
-
- <style type="text/css" media="screen">
-
-	.ace_editor {
-		border: 1px solid lightgray;
-		display: block;
-		width: 80%;
-	}
-	.scrollmargin {
-		height: 80px;
-        text-align: center;
-	}
-	#editor {
-		/** Setting height is also important, otherwise editor wont showup**/
-		height: 300px;
-	}
-	.myMarker {
-		position:absolute;
-		background-color: #505050;
-		/*z-index:20*/
-	}
-	.ace_gutter-cell.ace_breakpoint{ 
-		border-radius: 20px 0px 0px 20px; 
-		box-shadow: 0px 0px 1px 1px red inset;
-		background-image: url('rds.png');  
-	}
-
-    </style>
 </head>
 <body>
-
 
 <div class="container">
 	<div class="row">
@@ -73,6 +53,7 @@ int main()
 					Get expressions
 				</button>
 				<br>
+
 				<button id="run_code_button" class="btn btn-primary">
 					Run
 				</button>
@@ -87,6 +68,9 @@ int main()
 				<button id="step_debugger" class="btn btn-primary">
 					Step
 				</button>
+
+			<div class="watch_table_class"></div>
+
 			</div>
 	  	</div>
 </div>
@@ -96,11 +80,6 @@ int main()
 <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
-	var breakpointList = [];
-	var makers = {};
-	var debuggerLine;
-	var crtLineMarker;
-
 	var memoryTableN = 7;
 
 	function initLeftPart() {
@@ -128,141 +107,9 @@ int main()
 		var expr = prompt('Enter some expressions','').split(',');
 		socket.emit('request_expressions',expr);
 	});
-	$("#compile_code_button").click(function() {
-		var code = editor.getValue();
-		socket.emit("code",code);
-	});
-	$("#run_code_button").click(function() {
-		sendCommand("run");
-	});
-	$("#debug_code_button").click(function() {
-		if (breakpointList.length > 0)
-			sendCommand("run");
-		else {
-			addBreakpoint();
-			sendCommand("run");
-		}
-	})
-	$("#add_breakpoint_button").click(function() {
-		var pos = editor.getCursorPosition();
-		var crtRow = parseInt(pos.row)+1;
-		toggleBreakpoint(editor, crtRow-1);
-		// if (existsBreakpoint(crtRow))
-		// 	removeBreakpoint(crtRow);
-		// else
-		// 	addBreakpoint();
-	})
-	$("#step_debugger").click(function() {
-		stepDebugger();
-	});
-
-	function existsBreakpoint(row) {
-		if (breakpointList.indexOf(row) == -1)
-			return false;
-		return true;
-	}
-
-	function removeBreakpoint(row) {
-		breakpointList.splice(breakpointList.indexOf(row), 1);
-		removeDebugAnnotationOnLine(row-1);
-		sendCommand("clear " + row);
-	}
-
-	function addBreakpoint() {
-		var pos = editor.getCursorPosition();
-		var crtRow = parseInt(pos.row)+1;
-		breakpointList.push(crtRow);
-		sendCommand("b " + crtRow);
-		setDebugAnnotationOnLine(crtRow-1);
-	}
-
-	let temp = 2;
-
-	function stepDebugger() {
-		sendCommand("s");
-		moveHighlight(temp);
-		temp = temp+1;
-	}
-
-	var Range = ace.require('ace/range').Range;
-
-	function setDebugAnnotationOnLine(row) {
-		editor.getSession().addGutterDecoration(row,"myMarker");
-	}
-
-	function removeDebugAnnotationOnLine(row) {
 	
-	}
-
-	function moveHighlight(row) {
-		if (crtLineMarker != null) {
-			editor.getSession().removeMarker(crtLineMarker);
-		}
-		crtLineMarker = editor.getSession().addMarker(new Range(row, 0, row, 1), "myMarker", "fullLine");
-	}
-
-	function highLine(row) {
-		marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
-	}
-
-</script>
-
-<script>
 	initLeftPart();
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/c_cpp");
-	
-	//editor.setAutoScrollEditorIntoView(true);
-	editor.setOption("maxLines", 30);
-	editor.setOption("minLines", 30);
-	
-	ace.require("ace/ext/language_tools");
-    // enable autocompletion and snippets
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true
-    });
-	editor.on("guttermousedown", function(e) {
-		//var target = e.domEvent.target; 
-		// if (target.className.indexOf("ace_gutter-cell") == -1)
-		// 	return; 
-		// if (!editor.isFocused()) 
-		// 	return; 
-		// if (e.clientX > 25 + target.getBoundingClientRect().left) 
-		// 	return; 
-
-		// var row = e.getDocumentPosition().row;
-		// e.editor.session.setBreakpoint(row);
-		// e.stop();
-		//var breakpoints = e.editor.session.getBreakpoints(row, 0);
-		
-		var row = e.getDocumentPosition().row;
-		toggleBreakpoint(e.editor, row);	
-	});
-
-	function toggleBreakpoint(edit, row) {
-		var breakpoints = edit.session.getBreakpoints(row, 0);
-		if(typeof breakpoints[row] === typeof undefined) {
-			edit.session.setBreakpoint(row);
-			sendCommand("b " + (row+1));
-		}
-		else {
-			edit.session.clearBreakpoint(row);
-			sendCommand("clear " + (row+1));
-		}
-	}
-
 </script>
-</body>
-
-
-<script src="/socket.io/socket.io.js"></script>
-<script
-	src="https://code.jquery.com/jquery-3.2.1.min.js"
-	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	crossorigin="anonymous"></script>
 
 <br>
 <br>
@@ -271,34 +118,13 @@ int main()
 <button id="send_command">Send</button>
 <br>
 <pre id="output"></pre>
-<script>
-	var socket = io();
 
-	function sendCommand(comand) {
-		socket.emit("gdb_cmd", comand);
-	}
+<script src="/scripts/button_mapping.js"></script>
+<script src="/scripts/editor_setup.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/gdb_events.js"></script>
+<script src="/scripts/watch_table_handler.js"></script>
 
-	$("#send_command").click(function(){
-		var cmd = $("#gdb_command").val();
-		sendCommand(cmd);
-	});
 
-	socket.on('request_expressions_response',function(data){
-		alert(data);
-	});
-
-	socket.on("compile_error",function(data){
-		alert(data);
-	});
-	socket.on("compile_success",function(data){
-		alert(data);
-	});
-	socket.on("gdb_stdout",function(data){
-		$("#output").append(data);
-	});
-	socket.on("gdb_stderr",function(data){
-		$("#output").append(data);
-	});
-</script>
 </body>
 </html>
