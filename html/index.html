@@ -4,38 +4,10 @@
 <script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
 <title>ACE in Action</title>
-
- <style type="text/css" media="screen">
-
-	.ace_editor {
-		border: 1px solid lightgray;
-		display: block;
-		width: 80%;
-	}
-	.scrollmargin {
-		height: 80px;
-        text-align: center;
-	}
-	#editor {
-		/** Setting height is also important, otherwise editor wont showup**/
-		height: 300px;
-	}
-	.myMarker {
-		position:absolute;
-		background-color: #505050;
-		/*z-index:20*/
-	}
-	.ace_gutter-cell.ace_breakpoint{ 
-		border-radius: 20px 0px 0px 20px; 
-		box-shadow: 0px 0px 1px 1px red inset;
-		background-image: url('rds.png');  
-	}
-
-    </style>
 </head>
 <body>
-
 
 <div class="container">
 	<div class="row">
@@ -92,11 +64,6 @@ int main()
 <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
-	var breakpointList = [];
-	var makers = {};
-	var debuggerLine;
-	var crtLineMarker;
-
 	var memoryTableN = 7;
 
 	function initLeftPart() {
@@ -120,88 +87,9 @@ int main()
 		}
 		tableCreate();
 	}
-	$("#compile_code_button").click(function() {
-		var code = editor.getValue();
-		socket.emit("code",code);
-	});
-	$("#run_code_button").click(function() {
-		sendCommand("run");
-	});
-	$("#debug_code_button").click(function() {
-		if (breakpointList.length > 0)
-			sendCommand("run");
-		else {
-			addBreakpoint();
-			sendCommand("run");
-		}
-	})
-	$("#add_breakpoint_button").click(function() {
-		var pos = editor.getCursorPosition();
-		var crtRow = parseInt(pos.row)+1;
-		toggleBreakpoint(crtRow-1);
-		// if (existsBreakpoint(crtRow))
-		// 	removeBreakpoint(crtRow);
-		// else
-		// 	addBreakpoint();
-	})
-	$("#step_debugger").click(function() {
-		stepDebugger();
-	});
-
-	function existsBreakpoint(row) {
-		if (breakpointList.indexOf(row) == -1)
-			return false;
-		return true;
-	}
-
-	function removeBreakpoint(row) {
-		breakpointList.splice(breakpointList.indexOf(row), 1);
-		removeDebugAnnotationOnLine(row-1);
-		sendCommand("clear " + row);
-	}
-
-	function addBreakpoint() {
-		var pos = editor.getCursorPosition();
-		var crtRow = parseInt(pos.row)+1;
-		breakpointList.push(crtRow);
-		sendCommand("b " + crtRow);
-		setDebugAnnotationOnLine(crtRow-1);
-	}
-
-	let temp = 2;
-
-	function stepDebugger() {
-		sendCommand("s");
-		moveHighlight(temp);
-		temp = temp+1;
-	}
-
-	var Range = ace.require('ace/range').Range;
-
-	function setDebugAnnotationOnLine(row) {
-		editor.getSession().addGutterDecoration(row,"myMarker");
-	}
-
-	function removeDebugAnnotationOnLine(row) {
-	
-	}
-
-	function moveHighlight(row) {
-		if (crtLineMarker != null) {
-			editor.getSession().removeMarker(crtLineMarker);
-		}
-		crtLineMarker = editor.getSession().addMarker(new Range(row, 0, row, 1), "myMarker", "fullLine");
-	}
-
-	function highLine(row) {
-		marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
-	}
 	initLeftPart();
 
 </script>
-
-<script src="/scripts/editor_setup.js"></script>
-<script src="/socket.io/socket.io.js"></script>
 
 <br>
 <br>
@@ -210,6 +98,10 @@ int main()
 <button id="send_command">Send</button>
 <br>
 <pre id="output"></pre>
+
+<script src="/scripts/button_mapping.js"></script>
+<script src="/scripts/editor_setup.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/gdb_events.js"></script>
 
 </body>
