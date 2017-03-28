@@ -1,5 +1,6 @@
 var parent = $('.watch_table_class');
 var header = createHeader();
+var jstreeElement;
 var body = createBody();
 header.appendTo(parent);
 body.appendTo(parent);
@@ -16,10 +17,10 @@ function createHeader() {
 }
 
 function createBody() {
-    var jstreeElement = jQuery('<div/>', {
-        id: 'jstree', 
+    jstreeElement = jQuery('<div/>', {
+        class: 'jstree_class'
     });
-    addJstreeData();
+    addJstreeData(jstreeElement);
     var body = jQuery('<div/>', {
         class: 'watches_body'
     });
@@ -27,7 +28,7 @@ function createBody() {
     return body;
 }
 
-function addJstreeData() {
+function addJstreeData(element) {
 
 	$(document).ready(function(){
         // tree data
@@ -57,7 +58,7 @@ function addJstreeData() {
         }];
         
         // load jstree
-        $("div#jstree").jstree({
+        element.jstree({
             plugins: ["table","dnd","contextmenu","sort", "types"],
             core: {
                 data: data
@@ -96,4 +97,33 @@ function addJstreeData() {
 function toggleView() {
     body.toggle();
     isBodyVisible ^= 1;
+}
+
+function updateData(jsonData) {
+    jsonData = [{
+            id: "Locals",
+            text: "Locals",
+            data: {},
+            children: [{
+                id: "Fruit",
+                text: "a",
+                data: {}, 
+                children:[
+                    {id: "x", text: "x", data: {value: 5000000, quantity: 20}},
+                    {id: "y", text: "y", data: {value: 20, quantity: 31}}
+                ],
+                state: {'opened': true}
+            }, {
+                id: "Vegetables",
+                text: "b",
+                data: {}, 
+                children:[
+                    {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
+                    {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
+                ]
+            }],
+            state: {'opened': true}
+        }];
+    jstreeElement.jstree(true).settings.core.data = jsonData;
+    jstreeElement.jstree(true).refresh();
 }
