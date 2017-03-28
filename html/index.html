@@ -6,6 +6,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/style_sheets/editor_style.css"/>
 <link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+		<!--<script type='text/javascript' src='http://code.jquery.com/jquery-2.1.0.js'></script>-->
+<script type='text/javascript' src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script type="text/javascript" src="/treetable/jstreetable.js"></script>
 
 <title>ACE in Action</title>
 </head>
@@ -57,9 +63,8 @@ int main()
 				<button id="step_debugger" class="btn btn-primary">
 					Step
 				</button>
+			<div class="watch_table_class"></div>
 			</div>
-			<div class="watch_table_class"></div>
-			<div class="watch_table_class"></div>
 	  	</div>
 </div>
 
@@ -92,7 +97,6 @@ int main()
 		tableCreate();
 	}
 	initLeftPart();
-
 </script>
 
 <br>
