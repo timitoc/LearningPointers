@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <title>ACE in Action</title>
@@ -138,7 +138,7 @@ int main()
 	$("#add_breakpoint_button").click(function() {
 		var pos = editor.getCursorPosition();
 		var crtRow = parseInt(pos.row)+1;
-		toggleBreakpoint(editor, crtRow-1);
+		toggleBreakpoint(crtRow-1);
 		// if (existsBreakpoint(crtRow))
 		// 	removeBreakpoint(crtRow);
 		// else
@@ -196,65 +196,12 @@ int main()
 	function highLine(row) {
 		marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
 	}
-
-</script>
-
-<script>
 	initLeftPart();
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/c_cpp");
-	
-	//editor.setAutoScrollEditorIntoView(true);
-	editor.setOption("maxLines", 30);
-	editor.setOption("minLines", 30);
-	
-	ace.require("ace/ext/language_tools");
-    // enable autocompletion and snippets
-    editor.setOptions({
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true
-    });
-	editor.on("guttermousedown", function(e) {
-		//var target = e.domEvent.target; 
-		// if (target.className.indexOf("ace_gutter-cell") == -1)
-		// 	return; 
-		// if (!editor.isFocused()) 
-		// 	return; 
-		// if (e.clientX > 25 + target.getBoundingClientRect().left) 
-		// 	return; 
-
-		// var row = e.getDocumentPosition().row;
-		// e.editor.session.setBreakpoint(row);
-		// e.stop();
-		//var breakpoints = e.editor.session.getBreakpoints(row, 0);
-		
-		var row = e.getDocumentPosition().row;
-		toggleBreakpoint(e.editor, row);	
-	});
-
-	function toggleBreakpoint(edit, row) {
-		var breakpoints = edit.session.getBreakpoints(row, 0);
-		if(typeof breakpoints[row] === typeof undefined) {
-			edit.session.setBreakpoint(row);
-			sendCommand("b " + (row+1));
-		}
-		else {
-			edit.session.clearBreakpoint(row);
-			sendCommand("clear " + (row+1));
-		}
-	}
 
 </script>
-</body>
 
-
+<script src="/scripts/editor_setup.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script
-	src="https://code.jquery.com/jquery-3.2.1.min.js"
-	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	crossorigin="anonymous"></script>
 
 <br>
 <br>
@@ -263,30 +210,8 @@ int main()
 <button id="send_command">Send</button>
 <br>
 <pre id="output"></pre>
-<script>
-	var socket = io();
+<script src="/scripts/gdb_events.js"></script>
 
-	function sendCommand(comand) {
-		socket.emit("gdb_cmd", comand);
-	}
-
-	$("#send_command").click(function(){
-		var cmd = $("#gdb_command").val();
-		sendCommand(cmd);
-	});
-
-	socket.on("compile_error",function(data){
-		alert(data);
-	});
-	socket.on("compile_success",function(data){
-		alert(data);
-	});
-	socket.on("gdb_stdout",function(data){
-		$("#output").append(data);
-	});
-	socket.on("gdb_stderr",function(data){
-		$("#output").append(data);
-	});
-</script>
 </body>
+
 </html>
