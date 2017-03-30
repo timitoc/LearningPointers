@@ -35,6 +35,7 @@ using namespace std;
 
 int main()
 {
+	int x = 20, y = 3;
 	for (int i = 1; i <= 10; i++) {
 		cout &lt;&lt; i &lt;&lt; "\n";
 	}
@@ -69,7 +70,7 @@ int main()
 					Step
 				</button>
 				<button id="pls" class="btn btn-primary">
-					pls
+					Add expression
 				</button>
 
 
@@ -107,10 +108,7 @@ int main()
 		}
 		tableCreate();
 	}
-	$("#expressions_button").click(function(){
-		var expr = prompt('Enter some expressions','').split(',');
-		socket.emit('request_expressions',expr);
-	});
+
 	
 	initLeftPart();
 </script>

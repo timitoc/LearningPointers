@@ -22,5 +22,5 @@ socket.on("gdb_stderr",function(data){
     $("#output").append(data);
 });
 socket.on('request_expressions_response',function(data){
-		alert(data);
+	updateWatchesData(data);
 });

@@ -93,31 +93,48 @@ function toggleView() {
     isBodyVisible ^= 1;
 }
 
-function updateData(jsonData) {
-    jsonData = [{
-            id: "Locals",
-            text: "Locals",
-            data: {},
-            children: [{
-                id: "Fruit",
-                text: "a",
-                data: {}, 
-                children:[
-                    {id: "x", text: "x", data: {value: 5000000, quantity: 20}},
-                    {id: "y", text: "y", data: {value: 20, quantity: 31}}
-                ],
-                state: {'opened': true}
-            }, {
-                id: "Vegetables",
-                text: "b",
-                data: {}, 
-                children:[
-                    {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
-                    {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
-                ]
-            }],
-            state: {'opened': true}
-        }];
-    jstreeElement.jstree(true).settings.core.data = jsonData;
-    jstreeElement.jstree(true).refresh();
+function requestUpdateWatches() {
+    var expr = [];
+    var v = jstreeElement.jstree(true).get_json('#', {flat:true});
+    //console.log(JSON.stringify(v));
+    for (var i = 0; i < v.length; i++)
+        expr.push(v[i].text);
+    //alert(expr);
+    socket.emit('request_expressions', expr);
+}
+
+function updateWatchesData(jsonData) {
+    // jsonData = [{
+    //         id: "Locals",
+    //         text: "Locals",
+    //         data: {},
+    //         children: [{
+    //             id: "Fruit",
+    //             text: "a",
+    //             data: {}, 
+    //             children:[
+    //                 {id: "x", text: "x", data: {value: 5000000, quantity: 20}},
+    //                 {id: "y", text: "y", data: {value: 20, quantity: 31}}
+    //             ],
+    //             state: {'opened': true}
+    //         }, {
+    //             id: "Vegetables",
+    //             text: "b",
+    //             data: {}, 
+    //             children:[
+    //                 {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
+    //                 {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
+    //             ]
+    //         }],
+    //         state: {'opened': true}
+    //     }];
+        
+        jsonData = JSON.parse(jsonData);
+        var v = jstreeElement.jstree(true).get_json('#', {flat:true});
+        for (var i = 0; i < v.length; i++) {
+            console.log("v[" + i + "]= " + v[i].text + " and \nJson value= " + jsonData["" + v[i].text]);
+            v[i].data.value = jsonData["" + v[i].text];
+        }
+        jstreeElement.jstree(true).settings.core.data = v;
+        jstreeElement.jstree(true).refresh();
 }
