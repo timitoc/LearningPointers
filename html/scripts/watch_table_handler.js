@@ -85,7 +85,38 @@ function addJstreeData(element) {
                 //selected node text: data.inst.get_json()[0].data
             }
         );
+        $('.jstree_class').bind(
+            "rename_node.jstree", function(evt, data){
+                //console.log(JSON.stringify(data.node));
+                //console.log(JSON.stringify(data.old));
+                //console.log(JSON.stringify(data.text));
+                var inst = $.jstree.reference(data.node);
+                inst.deselect_node(data.node);
+                removeExpressionFromDisplayList(data.old);
+                addExpressionToDiplayList(data.text);
+            }
+        );
     });
+}
+
+var expresionList = {};
+var exprCounter = 0;
+
+function removeExpressionFromDisplayList(exprName) {
+    if (expresionList[exprName] == undefined || expresionList[exprName].length == 0)
+        return;
+    console.log(expresionList[exprName]);
+    sendCommand("delete display " + expresionList[exprName][0]);
+    console.log("deleting " + expresionList[exprName][0]);
+    expresionList[exprName].splice(0, 1);
+}
+
+function addExpressionToDiplayList(exprName) {
+    if (expresionList[exprName] == undefined)
+        expresionList[exprName] = [];
+    sendCommand("display " + exprName);
+    exprCounter++;
+    expresionList[exprName].push(exprCounter);
 }
 
 function toggleView() {
@@ -104,31 +135,6 @@ function requestUpdateWatches() {
 }
 
 function updateWatchesData(jsonData) {
-    // jsonData = [{
-    //         id: "Locals",
-    //         text: "Locals",
-    //         data: {},
-    //         children: [{
-    //             id: "Fruit",
-    //             text: "a",
-    //             data: {}, 
-    //             children:[
-    //                 {id: "x", text: "x", data: {value: 5000000, quantity: 20}},
-    //                 {id: "y", text: "y", data: {value: 20, quantity: 31}}
-    //             ],
-    //             state: {'opened': true}
-    //         }, {
-    //             id: "Vegetables",
-    //             text: "b",
-    //             data: {}, 
-    //             children:[
-    //                 {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
-    //                 {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
-    //             ]
-    //         }],
-    //         state: {'opened': true}
-    //     }];
-        
         jsonData = JSON.parse(jsonData);
         var v = jstreeElement.jstree(true).get_json('#', {flat:true});
         for (var i = 0; i < v.length; i++) {
