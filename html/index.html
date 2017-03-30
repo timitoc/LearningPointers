@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
+<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+		<!--<script type='text/javascript' src='http://code.jquery.com/jquery-2.1.0.js'></script>-->
+<script type='text/javascript' src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script type="text/javascript" src="/treetable/jstreetable.js"></script>
+
+<title>ACE in Action</title>
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<div id="left_content">
+				le
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+        		<div class="panel-heading">
+             		<h3 class="panel-title">Editor</h3>
+        		</div>
+        		<div class="panel-body">
+					<div id="editor">#include&lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+	for (int i = 1; i <= 10; i++) {
+		cout &lt;&lt; i &lt;&lt; "\n";
+	}
+	return 0;
+}</div>	
+					</div>
+    			</div>
+    			<div class="text-center">---End of editor---</div>
+			</div>
+			<div class="col-md-3">
+				<button id="compile_code_button" class="btn btn-primary">
+					Compile
+				</button>
+				<br>
+				<button id="expressions_button" class="btn btn-success">
+					Get expressions
+				</button>
+				<br>
+
+				<button id="run_code_button" class="btn btn-primary">
+					Run
+				</button>
+				<br>
+				<button id="debug_code_button" class="btn btn-primary">
+					Debug
+				</button>
+				<br>
+				<button id="add_breakpoint_button" class="btn btn-primary">
+					Add breakpoint on cursor line
+				</button>
+				<button id="step_debugger" class="btn btn-primary">
+					Step
+				</button>
+
+			<div class="watch_table_class"></div>
+
+			</div>
+	  	</div>
+</div>
+
+
+<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	var memoryTableN = 7;
+
+	function initLeftPart() {
+		$("#left_content").text("Memory status");
+		function tableCreate(){
+			var body = document.getElementById("left_content"),
+				tbl  = document.createElement('table');
+			tbl.style.width  = '210px';
+			tbl.style.border = '1px solid black';
+
+			for(var i = 0; i < memoryTableN; i++){
+				var tr = tbl.insertRow();
+				for(var j = 0; j < memoryTableN; j++){
+					var td = tr.insertCell();
+					td.appendChild(document.createTextNode(i*memoryTableN + j));
+					td.style.border = '1px solid black';
+					td.style.width = '30px';
+				}
+			}
+			body.appendChild(tbl);
+		}
+		tableCreate();
+	}
+	$("#expressions_button").click(function(){
+		var expr = prompt('Enter some expressions','').split(',');
+		socket.emit('request_expressions',expr);
+	});
+	
+	initLeftPart();
+</script>
+
+<br>
+<br>
+<input type="text" id="gdb_command"/>
+<br>
+<button id="send_command">Send</button>
+<br>
+<pre id="output"></pre>
+
+<script src="/scripts/button_mapping.js"></script>
+<script src="/scripts/editor_setup.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/scripts/gdb_events.js"></script>
+<script src="/scripts/watch_table_handler.js"></script>
+
+
+</body>
+</html>

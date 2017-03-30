@@ -1,0 +1,8 @@
+.watches_header {
+	border: 1px solid lightgray;
+	margin-top: 2px; 
+}
+
+.jstree li > a > .jstree-icon {
+	display: none !important;
+}
