@@ -33,34 +33,25 @@ function addJstreeData(element) {
 	$(document).ready(function(){
         // tree data
         var data = [{
-            id: "Locals",
-            text: "Locals",
-            data: {},
-            children: [{
-                id: "Fruit",
-                text: "a",
-                data: {}, 
-                children:[
-                    {id: "x", text: "x", data: {value: 5, quantity: 20}},
-                    {id: "y", text: "y", data: {value: 20, quantity: 31}}
-                ],
-                state: {'opened': true}
-            }, {
-                id: "Vegetables",
-                text: "b",
-                data: {}, 
-                children:[
-                    {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
-                    {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
-                ]
-            }],
-            state: {'opened': true}
+            id: "x",
+            text: "x",
+            data: {value: 5, quantity: 20}
+        },{
+            id: "y",
+            text: "y",
+            data: {value: 5, quantity: 20}
         }];
         
         // load jstree
-        element.jstree({
-            plugins: ["table","dnd","contextmenu","sort", "types"],
+        // element.on('rename.jstree', function (e, data) {
+        //     var newText = "Some new text";
+        //     alert(JSON.stringify(data.node));
+        //     //element.jstree("rename", data.node)
+        // });
+        element = $('.jstree_class').jstree({
+            plugins: ["table", "contextmenu", "types"],
             core: {
+                check_callback: true,
                 data: data
             },
             // configure tree table
@@ -75,22 +66,25 @@ function addJstreeData(element) {
                 width: 500,
                 height: 300
             },
-            types: {
-                types: {
-                    file: {
-                        icon: {
-                            image: ''
-                        }
-                    },
-                    default: {
-                        icon: {
-                            image: ''
-                        },
-                        valid_children: 'default'
-                    }
-                }
-            }
         });
+        $('#pls').click(function () {
+            $('.jstree_class').jstree("create_node", null, null, "last", function (node) {
+                this.edit(node);
+                this.hide_icons();
+            });
+        });
+        $('.jstree_class').bind(
+            "select_node.jstree", function(evt, data){
+                var newText = "Some new text";
+                //alert(JSON.stringify(data.node));
+                var inst = $.jstree.reference(data.node);
+                inst.edit(data.node);
+                //$('.jstree_class').jstree(true).edit(data.node);
+                //element.jstree("rename", data.node)
+                //selected node object: data.inst.get_json()[0];
+                //selected node text: data.inst.get_json()[0].data
+            }
+        );
     });
 }
 
