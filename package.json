@@ -1,14 +1,8 @@
 {
-<<<<<<< HEAD
   "name": "learning-pointers-http-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
     "chance": "^1.0.6",
@@ -16,18 +10,6 @@
     "express": "^4.15.2",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3"
-  }
-=======
-
-  "name": "learningpointers",
-  "version": "1.0.0",
-  "description": "Trebuie creat un folder programs",
-  "main": "main.js",
-  "dependencies": {
-    "colors": "^1.1.2",
-    "express": "^4.15.2",
-    "randomstring": "^1.1.5",
-    "socket.io": "^1.7.3"
 
   },
   "devDependencies": {},
@@ -44,5 +26,4 @@
     "url": "https://github.com/timitoc/LearningPointers/issues"
   },
   "homepage": "https://github.com/timitoc/LearningPointers#readme"
->>>>>>> 4246577605b73da227842d3946c0d658796bb3eb
 }
