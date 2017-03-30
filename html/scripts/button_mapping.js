@@ -25,6 +25,15 @@ $("#add_breakpoint_button").click(function() {
 })
 $("#step_debugger").click(function() {
     stepDebugger();
+<<<<<<< HEAD
+=======
+    requestUpdateWatches();
+});
+
+$("#expressions_button").click(function(){
+    var expr = prompt('Enter some expressions','').split(',');
+    socket.emit('request_expressions',expr);
+>>>>>>> 4246577605b73da227842d3946c0d658796bb3eb
 });
 
 let temp = 2;
