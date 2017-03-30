@@ -33,36 +33,6 @@ function addJstreeData(element) {
 	$(document).ready(function(){
         // tree data
         var data = [{
-<<<<<<< HEAD
-            id: "Locals",
-            text: "Locals",
-            data: {},
-            children: [{
-                id: "Fruit",
-                text: "a",
-                data: {}, 
-                children:[
-                    {id: "x", text: "x", data: {value: 5, quantity: 20}},
-                    {id: "y", text: "y", data: {value: 20, quantity: 31}}
-                ],
-                state: {'opened': true}
-            }, {
-                id: "Vegetables",
-                text: "b",
-                data: {}, 
-                children:[
-                    {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
-                    {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
-                ]
-            }],
-            state: {'opened': true}
-        }];
-        
-        // load jstree
-        element.jstree({
-            plugins: ["table","dnd","contextmenu","sort", "types"],
-            core: {
-=======
             id: "x",
             text: "x",
             data: {value: 5, quantity: 20}
@@ -82,7 +52,6 @@ function addJstreeData(element) {
             plugins: ["table", "contextmenu", "types"],
             core: {
                 check_callback: true,
->>>>>>> 4246577605b73da227842d3946c0d658796bb3eb
                 data: data
             },
             // configure tree table
@@ -97,24 +66,6 @@ function addJstreeData(element) {
                 width: 500,
                 height: 300
             },
-<<<<<<< HEAD
-            types: {
-                types: {
-                    file: {
-                        icon: {
-                            image: ''
-                        }
-                    },
-                    default: {
-                        icon: {
-                            image: ''
-                        },
-                        valid_children: 'default'
-                    }
-                }
-            }
-        });
-=======
         });
         $('#pls').click(function () {
             $('.jstree_class').jstree("create_node", null, null, "last", function (node) {
@@ -134,7 +85,6 @@ function addJstreeData(element) {
                 //selected node text: data.inst.get_json()[0].data
             }
         );
->>>>>>> 4246577605b73da227842d3946c0d658796bb3eb
     });
 }
 
@@ -143,35 +93,6 @@ function toggleView() {
     isBodyVisible ^= 1;
 }
 
-<<<<<<< HEAD
-function updateData(jsonData) {
-    jsonData = [{
-            id: "Locals",
-            text: "Locals",
-            data: {},
-            children: [{
-                id: "Fruit",
-                text: "a",
-                data: {}, 
-                children:[
-                    {id: "x", text: "x", data: {value: 5000000, quantity: 20}},
-                    {id: "y", text: "y", data: {value: 20, quantity: 31}}
-                ],
-                state: {'opened': true}
-            }, {
-                id: "Vegetables",
-                text: "b",
-                data: {}, 
-                children:[
-                    {id: "x2", text: "x", data: {value: 0.5, quantity: 8}},
-                    {id: "y2", text: "y", data: {value: "flori", quantity: 22}}
-                ]
-            }],
-            state: {'opened': true}
-        }];
-    jstreeElement.jstree(true).settings.core.data = jsonData;
-    jstreeElement.jstree(true).refresh();
-=======
 function requestUpdateWatches() {
     var expr = [];
     var v = jstreeElement.jstree(true).get_json('#', {flat:true});
@@ -216,5 +137,4 @@ function updateWatchesData(jsonData) {
         }
         jstreeElement.jstree(true).settings.core.data = v;
         jstreeElement.jstree(true).refresh();
->>>>>>> 4246577605b73da227842d3946c0d658796bb3eb
 }

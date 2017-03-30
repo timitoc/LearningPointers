@@ -108,21 +108,3 @@ app.get('/',(req,res)=>{
 httpServer.listen(3000,()=>{
 	console.log('Server started on port %s',3000);
 });
-process.stdin.on('data',(data)=>{
-
-    if(data.toString() == 'remove\n'){
-
-        docker.listContainers((err, containers) => {
-            containers.forEach((containerInfo) => {
-                console.log('Stopping container');
-                docker.getContainer(containerInfo.Id).stop(function(){
-                    console.log('Stopped');
-                    console.log('Removing container');
-                    docker.getContainer(containerInfo.Id).remove(()=>{
-                        console.log('Removed');
-                    });
-                });
-            });
-        });
-    }
-});
