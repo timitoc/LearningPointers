@@ -67,6 +67,8 @@ io.on('connection', (socket)=>{
                 console.log('Started %s','gdb '+"./programs/"+fileName);
 
                 procs[socket.id].stdout.on('data',function(data){
+                    socket.emit("gdb_stdout",data.toString());
+                    
                     bufferStdout += data.toString();
 
                     if(flags.REQUEST_EXPRESSIONS){

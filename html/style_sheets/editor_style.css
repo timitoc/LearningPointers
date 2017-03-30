@@ -10,6 +10,7 @@
 #editor {
 	/** Setting height is also important, otherwise editor wont showup**/
 	height: 300px;
+	margin: 0 auto;
 }
 .myMarker {
 	position:absolute;
