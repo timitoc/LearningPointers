@@ -33,9 +33,17 @@
 					<div id="editor">#include&lt;iostream&gt;
 using namespace std;
 
+struct element
+{
+    int fi, se;
+};
+
 int main()
 {
 	int x = 20, y = 3;
+	element e;
+	e.fi = 12;
+	e.se = 23;
 	for (int i = 1; i <= 10; i++) {
 		cout &lt;&lt; i &lt;&lt; "\n";
 	}
