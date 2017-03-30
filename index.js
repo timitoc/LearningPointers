@@ -5,6 +5,7 @@ const path = require('path');
 const socketIoClient = require('socket.io-client');
 const childProcess = require('child_process');
 
+let Async = require('async');
 let Docker = require('dockerode');
 let Chance = require('chance');
 
@@ -13,7 +14,6 @@ let httpServer = http.Server(app);
 let io = socketIo(httpServer);
 
 let chance = new Chance();
-
 let docker = new Docker();
 
 app.use(require('express').static(path.join(__dirname,"html")));
@@ -29,14 +29,14 @@ function getAvailablePort(){
     return port;
 }
 
-io.on('connection', (socket)=>{
+io.on('connection', (socket) => {
     console.log('A user connected with id ',socket.id);
 
     let port = getAvailablePort();
 
     docker.createContainer({
         Image: 'learning-pointers', 
-        name: socket.id.toString()+'-container',
+        name: chance.string({pool: 'abcdef0123456789',length: 10}),
         ExposedPorts: {'3001/tcp': {} },
         PortBindings: {'3001/tcp': [{ 'HostPort': port.toString() }] },
         Privileged: true
@@ -89,11 +89,12 @@ io.on('connection', (socket)=>{
 
                 socket.on('disconnect',(data)=>{
                     USED_PORTS[port.toString()] = false;
-                    container.stop().then(function(container) {
+
+                    container.stop().then(()=>{
                         return container.remove();
-                    }).then(function(data) {
+                    }).then((data) => {
                         console.log('Container removed');
-                    }).catch(function(err) {
+                    }).catch((err) => {
                         console.log(err);
                     });
                 });
@@ -107,4 +108,20 @@ app.get('/',(req,res)=>{
 
 httpServer.listen(3000,()=>{
 	console.log('Server started on port %s',3000);
+});
+
+process.on('SIGINT',() => {
+    console.log('Cleaning up...');
+    docker.listContainers((err, containers) => {
+        Async.eachSeries(containers, (container,callback)=>{
+            docker.getContainer(container.Id).stop(callback);
+        },()=>{
+            Async.eachSeries(containers, (container,callback)=>{
+                docker.getContainer(container.Id).remove(callback);
+            },()=>{
+                console.log('Done');
+                process.exit();
+            });
+        });
+    });
 });
