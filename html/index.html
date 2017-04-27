@@ -76,33 +76,7 @@ int main()
 <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
-	var memoryTableN = 7;
-
-	function initLeftPart() {
-		$("#left_content").text("Memory status");
-		function tableCreate(){
-			var body = document.getElementById("left_content"),
-				tbl  = document.createElement('table');
-			tbl.addClass("memory_table_class");
-			tbl.style.width  = '210px';
-			tbl.style.border = '1px solid black';
-
-			for(var i = 0; i < memoryTableN; i++){
-				var tr = tbl.insertRow();
-				for(var j = 0; j < memoryTableN; j++){
-					var td = tr.insertCell();
-					td.appendChild(document.createTextNode(i*memoryTableN + j));
-					td.style.border = '1px solid black';
-					td.style.width = '30px';
-				}
-			}
-			body.appendChild(tbl);
-		}
-		tableCreate();
-	}
-
 	
-	initLeftPart();
 </script>
 
 <br>
@@ -118,6 +92,9 @@ int main()
 <script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/gdb_events.js"></script>
 <script src="/scripts/watch_table_handler.js"></script>
+<script src="/scripts/memory_table_handler.js"></script>
+<script src="/scripts/memory_var_x.js"></script>
+
 
 
 </body>
