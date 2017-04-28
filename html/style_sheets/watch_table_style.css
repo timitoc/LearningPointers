@@ -11,3 +11,16 @@
 	color: grey;
 	font-size: smaller;
 }
+
+.memory_table_class {
+	user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+
+}
+
+.memory_table_class td {
+	text-align: center;
+}

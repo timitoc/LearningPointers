@@ -1,5 +1,6 @@
-var MemoryVarHandler = function() {
+var MemoryVarHandler = function(tip) {
     this.JUIElement = null;
+    this.tip = tip;
 }
 
 
@@ -24,19 +25,7 @@ MemoryVarHandler.prototype.addRow = function() {
                 "items": function($node) {
                     var tree = self.JUIElement.jstree(true);
                     return {
-                        "Create": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "Create",
-                            "action": function (obj) { 
-                                // $node = tree.create_node();
-                                // tree.edit($node);
-                                self.JUIElement.jstree("create_node", null, null, "last", function (node) {
-                                    this.edit(node);
-                                    this.hide_icons();
-                                });
-                            }
-                        },
+                        
                         "Rename": {
                             "separator_before": false,
                             "separator_after": false,
@@ -63,12 +52,12 @@ MemoryVarHandler.prototype.addRow = function() {
             // configure tree table
             table: {
                 columns: [
-                    {width: 100, header: "Simple"}
+                    {width: 100, header: self.tip}
                 ],
                 resizable: true,
                 draggable: false,
                 contextmenu: true,
-                width: 100,
+                width: 110,
                 height: 300
             },
         });
@@ -105,8 +94,8 @@ MemoryVarHandler.prototype.addRow = function() {
     });
 }
 
-var simpleVar = new MemoryVarHandler();
-var pointerVar = new MemoryVarHandler();
+var simpleVar = new MemoryVarHandler("Simple");
+var pointerVar = new MemoryVarHandler("Pointer");
 
 wrapper1 = jQuery('<div/>');
 wrapper2 = jQuery('<div/>');
