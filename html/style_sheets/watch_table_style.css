@@ -24,3 +24,14 @@
 .memory_table_class td {
 	text-align: center;
 }
+
+.colored_cell {
+	/*css('border-style', 'solid');
+            $(cells[index]).css('border-color', 'rgba(180, 0, 0, 0.4)');
+            $(cells[index]).css('border-width', '2px');
+            $(cells[index]).css('background-color', 'rgba(180, 0, 0, 0.1)');*/
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgba(180, 0, 0, 0.4);
+	background-color: rgba(180, 0, 0, 0.1);
+}

@@ -3,6 +3,7 @@ var MemoryHandler = function() {
     this.JUIElement=null;
     this.n = 10;
     this.m = 10;
+    this.selected = {st:0, dr:-1};
 }
 
 MemoryHandler.prototype.init = function(UIElement) {
@@ -21,6 +22,7 @@ MemoryHandler.prototype.invalidate = function() {
     this.JUIElement.empty();
     this.UIElement.style.width  = '210px';
     this.UIElement.style.border = '1px solid black';
+    this.selected = {st:0, dr:-1};
     for(var i = 0; i < this.n; i++){
         var tr = this.UIElement.insertRow();
         for(var j = 0; j < this.m; j++){
@@ -35,7 +37,13 @@ MemoryHandler.prototype.invalidate = function() {
 }
 
 MemoryHandler.prototype.reColor = function() {
-    this.colorRange(3, 7);
+    this.highlight(3, 7);
+}
+
+MemoryHandler.prototype.highlight = function(lo, hi) {
+    this.colorRange(this.selected.st, this.selected.dr);
+    this.selected = {st: lo, dr: hi};
+    this.colorRange(lo, hi);
 }
 
 MemoryHandler.prototype.colorRange = function(lo, hi) {
@@ -47,8 +55,9 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     var cells = $('.memory_cell');
     for (var index = 0; index < cells.length; index++){
         var num = parseInt($(cells[index]).text(), 10);
-        if (num >= lo && num <= hi)
-            $(cells[index]).css('color', 'red');
+        if (num >= lo && num <= hi) {
+            $(cells[index]).toggleClass("colored_cell");
+        }
     };
     //console.log(filteredCells);
     //filteredCells.css('color', 'red');
