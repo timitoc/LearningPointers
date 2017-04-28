@@ -1,6 +1,5 @@
 var MemoryVarHandler = function() {
     this.JUIElement = null;
-    this.createButton = null;
 }
 
 
@@ -8,14 +7,8 @@ MemoryVarHandler.prototype.init = function(wrapper) {
     this.JUIElement = jQuery('<div/>', {
             class: 'MVHtree'
     });
-    this.createButton = jQuery('<button/>', {
-            class: 'MVHButton',
-            width: 50,
-            height: 50
-    });
     wrapper.append(this.JUIElement);
     this.addRow();
-    wrapper.append(this.createButton);
 }
 
 MemoryVarHandler.prototype.addRow = function() {
@@ -83,6 +76,9 @@ MemoryVarHandler.prototype.addRow = function() {
         self.JUIElement.bind(
             "select_node.jstree", function(evt, data){
                 var newText = "Some new text";
+                if (data.node.original.smec === true ||
+                    data.node.smec === true)
+                    data.node.text = "";
                 var inst = $.jstree.reference(data.node);
                 inst.edit(data.node);
             }
@@ -90,9 +86,9 @@ MemoryVarHandler.prototype.addRow = function() {
         self.JUIElement.bind(
             "rename_node.jstree", function(evt, data){
                 console.log(JSON.stringify(data.node));
-                if (data.node.original.smec == true || 
+                if (data.node.original.smec === true || 
                     data.node.smec === true) {
-                    self.JUIElement.jstree("create_node", null, {text: "", smec: true}, "last", function (node) {
+                    self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
                         console.log(JSON.stringify(node));
                         this.hide_icons();
                     });
@@ -101,7 +97,7 @@ MemoryVarHandler.prototype.addRow = function() {
                 data.node.original.smec = false;
             }
         );
-        self.JUIElement.jstree("create_node", null, {text: "", smec: true}, "last", function (node) {
+        self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
             console.log(JSON.stringify(node));
             console.log(JSON.stringify(self.JUIElement.jstree(true).get_node(node.id)));
             this.hide_icons();

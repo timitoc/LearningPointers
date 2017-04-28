@@ -6,3 +6,8 @@
 .jstree li > a > .jstree-icon {
 	display: none !important;
 }
+
+.n_elem {
+	color: grey;
+	font-size: smaller;
+}
