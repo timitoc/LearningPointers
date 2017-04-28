@@ -78,7 +78,7 @@ MemoryVarHandler.prototype.addRow = function() {
                 if (data.node.original.smec === true || 
                     data.node.smec === true) {
                     self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
-                        console.log(JSON.stringify(node));
+                        //console.log(JSON.stringify(node));
                         this.hide_icons();
                     });
                 }
@@ -87,8 +87,8 @@ MemoryVarHandler.prototype.addRow = function() {
             }
         );
         self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
-            console.log(JSON.stringify(node));
-            console.log(JSON.stringify(self.JUIElement.jstree(true).get_node(node.id)));
+            //console.log(JSON.stringify(node));
+            //console.log(JSON.stringify(self.JUIElement.jstree(true).get_node(node.id)));
             this.hide_icons();
         });
     });
