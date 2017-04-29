@@ -1,6 +1,8 @@
 var MemoryVarHandler = function(tip) {
     this.JUIElement = null;
     this.tip = tip;
+    this.treeEquiv;
+    this.hm = {};
 }
 
 
@@ -87,7 +89,7 @@ MemoryVarHandler.prototype.initTable = function() {
                 data.node.smec = false;
                 data.node.original.smec = false;
                 self.removeDisplay(data.old);
-                self.addDiplay(data.text, notifyChange);
+                self.addDiplay(data.text);
             }
         );
         self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
@@ -95,6 +97,12 @@ MemoryVarHandler.prototype.initTable = function() {
             //console.log(JSON.stringify(self.JUIElement.jstree(true).get_node(node.id)));
             this.hide_icons();
         });
+
+        self.JUIElement.bind("hover_node.jstree", function (evt, data) {
+            console.log(data.node.text);
+            // TODO: use that text to acces pointer location from hm, and move selection to that adress
+        });
+
     });
 }
 
@@ -109,12 +117,24 @@ MemoryVarHandler.prototype.removeDisplay = function(exprName) {
     console.log("remove var: " + exprName);
 }
 
-MemoryVarHandler.prototype.addDiplay = function(exprName, callback) {
+MemoryVarHandler.prototype.addDiplay = function(exprName) {
     if (exprName === "") return;
     if (this.tip === "Simple")
         exprName = "&" + exprName;
     console.log("add var: " + exprName);
-    callback();
+}
+
+MemoryVarHandler.prototype.updateVarData = function(jsonData) {
+        jsonData = JSON.parse(jsonData);
+        // var v = this.JUIElement.jstree(true).get_json('#', {flat:true});
+        // for (var i = 0; i < v.length; i++) {
+        //     //console.log("v[" + i + "]= " + v[i].text + " and \nJson value= " + jsonData["" + v[i].text]);
+        //     v[i].data.value = jsonData["" + v[i].text];
+        //     this.hm = jsonData
+        // }
+        // jstreeElement.jstree(true).settings.core.data = v;
+        // jstreeElement.jstree(true).refresh();
+        this.hm = jsonData;
 }
 
 function notifyChange() {
