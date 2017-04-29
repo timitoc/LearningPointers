@@ -44,7 +44,7 @@ MemoryHandler.prototype.gatherVarData = function() {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-    alert(a);
+    console.log(a);
 }
 
 MemoryHandler.prototype.reColor = function() {
@@ -72,11 +72,6 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     };
     //console.log(filteredCells);
     //filteredCells.css('color', 'red');
-}
-
-MemoryHandler.prototype.normalizeData = function() {
-    var vs = simpleVar.getEntries();
-    var vp = pointerVar.getEntries();
 }
 
 var memoryHandler = new MemoryHandler();

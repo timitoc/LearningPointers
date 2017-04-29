@@ -103,10 +103,16 @@ MemoryVarHandler.prototype.getEntries = function() {
 }
 
 MemoryVarHandler.prototype.removeDisplay = function(exprName) {
+    if (exprName === "") return;
+    if (this.tip === "Simple")
+        exprName = "&" + exprName;
     console.log("remove var: " + exprName);
 }
 
 MemoryVarHandler.prototype.addDiplay = function(exprName, callback) {
+    if (exprName === "") return;
+    if (this.tip === "Simple")
+        exprName = "&" + exprName;
     console.log("add var: " + exprName);
     callback();
 }
