@@ -107,6 +107,11 @@ MemoryVarHandler.prototype.initTable = function() {
 }
 
 MemoryVarHandler.prototype.getEntries = function() {
+    for (var key in this.hm) {
+        if (hm.hasOwnProperty(key)) {
+            console.log(key + " -> " + this.hm[key]);
+        }
+    }
     return [this.tip, this.tip];
 }
 
@@ -135,6 +140,7 @@ MemoryVarHandler.prototype.updateVarData = function(jsonData) {
         // jstreeElement.jstree(true).settings.core.data = v;
         // jstreeElement.jstree(true).refresh();
         this.hm = jsonData;
+        notifyChange();
 }
 
 function notifyChange() {
