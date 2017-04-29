@@ -9,10 +9,10 @@ MemoryVarHandler.prototype.init = function(wrapper) {
             class: 'MVHtree'
     });
     wrapper.append(this.JUIElement);
-    this.addRow();
+    this.initTable();
 }
 
-MemoryVarHandler.prototype.addRow = function() {
+MemoryVarHandler.prototype.initTable = function() {
 
     var self = this;
     $(document).ready(function(){
@@ -20,7 +20,7 @@ MemoryVarHandler.prototype.addRow = function() {
         var data = [];
         
         element = self.JUIElement.jstree({
-            plugins: ["table", "contextmenu", "types"],
+            plugins: ["table", "contextmenu", "types", "unique"],
             contextmenu: {         
                 "items": function($node) {
                     var tree = self.JUIElement.jstree(true);
@@ -39,6 +39,8 @@ MemoryVarHandler.prototype.addRow = function() {
                             "separator_after": false,
                             "label": "Remove",
                             "action": function (obj) { 
+                                if ($node.text === "")
+                                    return;
                                 tree.delete_node($node);
                             }
                         }
@@ -84,6 +86,8 @@ MemoryVarHandler.prototype.addRow = function() {
                 }
                 data.node.smec = false;
                 data.node.original.smec = false;
+                self.removeDisplay(data.old);
+                self.addDiplay(data.text, notifyChange);
             }
         );
         self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
@@ -94,17 +98,20 @@ MemoryVarHandler.prototype.addRow = function() {
     });
 }
 
-var simpleVar = new MemoryVarHandler("Simple");
-var pointerVar = new MemoryVarHandler("Pointer");
+MemoryVarHandler.prototype.getEntries = function() {
+    return [this.tip, this.tip];
+}
 
-wrapper1 = jQuery('<div/>');
-wrapper2 = jQuery('<div/>');
+MemoryVarHandler.prototype.removeDisplay = function(exprName) {
+    console.log("remove var: " + exprName);
+}
 
-wrapper1.css('display', 'inline-block');
-wrapper2.css('display', 'inline-block');
+MemoryVarHandler.prototype.addDiplay = function(exprName, callback) {
+    console.log("add var: " + exprName);
+    callback();
+}
 
-simpleVar.init(wrapper1);
-pointerVar.init(wrapper2);
+function notifyChange() {
+    refresh();
+}
 
-$("#left_content").append(wrapper1);
-$("#left_content").append(wrapper2);

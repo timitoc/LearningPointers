@@ -33,7 +33,18 @@ MemoryHandler.prototype.invalidate = function() {
             td.style.width = '30px';
         }
     }
-    this.reColor();
+    this.gatherVarData();
+}
+
+MemoryHandler.prototype.gatherVarData = function() {
+    if (!simpleVar || !pointerVar)
+        return;
+    var a = simpleVar.getEntries();
+    var b = pointerVar.getEntries();
+    for (var i = 0; i < b.length; i++) {
+        a.push(b[i]);
+    }
+    alert(a);
 }
 
 MemoryHandler.prototype.reColor = function() {
@@ -63,14 +74,17 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     //filteredCells.css('color', 'red');
 }
 
+MemoryHandler.prototype.normalizeData = function() {
+    var vs = simpleVar.getEntries();
+    var vp = pointerVar.getEntries();
+}
+
 var memoryHandler = new MemoryHandler();
 
 function refresh() {
     var height = parseInt($('#htext').val(), 10);
     var width = parseInt($('#wtext').val(), 10);    
-    alert(height + " : " + width);
     memoryHandler.resize(height, width);
-    memoryHandler.invalidate();
 }
 
 function initLeftPart() {
@@ -88,4 +102,3 @@ function initLeftPart() {
     $(body).append(x);
     tableCreate();
 }
-initLeftPart();
