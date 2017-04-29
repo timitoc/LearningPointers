@@ -1,3 +1,7 @@
+var Global  = {
+    diplayIndexCounter: 0
+}
+
 var simpleVar = new MemoryVarHandler("Simple");
 var pointerVar = new MemoryVarHandler("Pointer");
 
@@ -13,3 +17,5 @@ pointerVar.init(wrapper2);
 initLeftPart();
 $("#left_content").append(wrapper1);
 $("#left_content").append(wrapper2);
+
+watchTable();

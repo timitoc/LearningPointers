@@ -1,12 +1,16 @@
-var parent = $('.watch_table_class');
-var header = createHeader();
-var jstreeElement;
-var body = createBody();
-header.appendTo(parent);
-body.appendTo(parent);
-header.click(function() {toggleView();});
+var watchTable = function() {
+    var parent = $('.watch_table_class');
+    var header = createHeader();
+    var jstreeElement;
+    var body = createBody();
+    header.appendTo(parent);
+    body.appendTo(parent);
+    header.click(function() {toggleView();});
 
-var isBodyVisible = 1;
+    var isBodyVisible = 1;
+}
+
+var expresionList = {};
 
 function createHeader() {
     var header = jQuery('<div/>', {
@@ -30,7 +34,7 @@ function createBody() {
 
 function addJstreeData(element) {
 
-	$(document).ready(function(){
+    $(document).ready(function(){
         // tree data
         var data = [{
             id: "x",
@@ -99,9 +103,6 @@ function addJstreeData(element) {
     });
 }
 
-var expresionList = {};
-var exprCounter = 0;
-
 function removeExpressionFromDisplayList(exprName) {
     if (expresionList[exprName] == undefined || expresionList[exprName].length == 0)
         return;
@@ -115,8 +116,8 @@ function addExpressionToDiplayList(exprName) {
     if (expresionList[exprName] == undefined)
         expresionList[exprName] = [];
     sendCommand("display " + exprName);
-    exprCounter++;
-    expresionList[exprName].push(exprCounter);
+    Global.diplayIndexCounter++;
+    expresionList[exprName].push(Global.diplayIndexCounter);
 }
 
 function toggleView() {
