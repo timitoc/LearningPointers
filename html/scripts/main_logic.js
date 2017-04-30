@@ -19,3 +19,6 @@ $("#left_content").append(wrapper1);
 $("#left_content").append(wrapper2);
 
 watchTable();
+
+var result = convertGDBToJSON(20);
+console.log(result);
