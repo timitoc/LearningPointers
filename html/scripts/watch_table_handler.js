@@ -36,11 +36,8 @@ function addJstreeData(element) {
 
     $(document).ready(function(){
         // tree data
-        var data = [{
-            id: "x",
-            text: "x",
-            data: {value: 5, quantity: 20}
-        },{
+        var data = [convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
+        {
             id: "y",
             text: "y",
             data: {value: 5, quantity: 20}
@@ -128,7 +125,7 @@ function toggleView() {
 function requestUpdateWatches() {
     var expr = [];
     var v = jstreeElement.jstree(true).get_json('#', {flat:true});
-    //console.log(JSON.stringify(v));
+    console.log(JSON.stringify(v));
     for (var i = 0; i < v.length; i++)
         expr.push(v[i].text);
     //alert(expr);

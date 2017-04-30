@@ -20,5 +20,5 @@ $("#left_content").append(wrapper2);
 
 watchTable();
 
-var result = convertGDBToJSON(20);
-console.log(result);
+var result = convertGDBToJSON("e = {fi = 12, se = 23}");
+console.log(JSON.stringify(result));
