@@ -67,8 +67,9 @@ io.on('connection', (socket) => {
                     socket.emit('compile_error',data);
                 });
 
-                CONTAINERS[socket.id].on('debug', (data)=>{
-                    console.log(data);
+                CONTAINERS[socket.id].on('post_watch_added', (data)=>{
+                    socket.emit('post_watch_added', data);
+                    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
                 });
 
                 CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
@@ -85,7 +86,7 @@ io.on('connection', (socket) => {
                 });
 
                 CONTAINERS[socket.id].on('debug', (data)=>{
-                    console.log("YEEEEEEEEEEY " + JSON.stringify(data));
+                    console.log("Debug data: " + JSON.stringify(data));
                     //console.log(data);
                 });
 
@@ -117,6 +118,14 @@ io.on('connection', (socket) => {
                     CONTAINERS[socket.id].emit('continue');
                 });
 
+                socket.on('add_watch', (data)=>{
+                    console.log("sending watch request " + data);
+                    CONTAINERS[socket.id].emit('add_watch', data);
+                });
+
+                socket.on('remove_watch', (data)=>{
+                    CONTAINERS[socket.id].emit('remove_watch', data);
+                });
 
                 socket.on('disconnect',(data)=>{
                     USED_PORTS[port.toString()] = false;

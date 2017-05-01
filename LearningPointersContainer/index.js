@@ -75,6 +75,16 @@ io.on('connection', (socket)=>{
 		procs[socket.id].cont();
 	});
 
+	socket.on('add_watch', function(data){
+		socket.emit('debug', 'Adding watch ' + data);
+		procs[socket.id].add_watch(data);
+	});
+
+	socket.on('remove_watch', function(data){
+		socket.emit('debug', 'Removing watch ' + data);
+		procs[socket.id].remove_watch(data);
+	});
+
     socket.on('disconnect',() => {
 		if(procs[socket.id]){
 			procs[socket.id].destroy();

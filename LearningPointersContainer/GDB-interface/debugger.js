@@ -30,17 +30,20 @@ Debugger.prototype.init = function() {
 
 	this.process.stdout.on('data', function(data){
 		data = data.toString();
-		self.socket.emit('debug', data);
-
+		self.buffer_stdout += data;
+		self.socket.emit('debug', "Data is " + data + " and buffer_stdout is " + self.buffer_stdout + " and buffer_stderr is " + self.buffer_stderr);
 		self.socket.emit('gdb_stdout', data);
 
 		if(self.flags.add_watch){
+			self.socket.emit('debug', 'Add watch flag detected buffer = ' + self.buffer_stdout);
 			if(self.buffer_stdout.endsWith('(gdb) ')){
+				self.socket.emit('debug', 'Add watch ends with gdb');
 				self.flags.add_watch = false;
 				let result= {
 					'expr' : self.add_watch_expr,
 					'value' : self.buffer_stdout.split(' ')[3].split('\n')[0]
 				};
+				self.socket.emit('debug', 'Want to send back ' + result);
 				self.socket.emit('post_watch_added', result);
 				self.buffer_stdout = '';
 			}
@@ -95,6 +98,7 @@ Debugger.prototype.remove_breakpoint = function(line){
 Debugger.prototype.add_watch = function(expr){
 	this.flags.add_watch = true;
 	this.add_watch_expr = expr;
+	this.socket.emit('debug', 'Add watch set flag to ' + expr);
 	this.process.stdin.write(util.format("display %s\n", expr));
 };
 Debugger.prototype.remove_watch = function(id){

@@ -105,7 +105,8 @@ function removeExpressionFromDisplayList(exprName) {
     if (expresionList[exprName] == undefined || expresionList[exprName].length == 0)
         return;
     console.log(expresionList[exprName]);
-    sendCommand("delete display " + expresionList[exprName][0]);
+    //sendCommand("delete display " + expresionList[exprName][0]);
+    socket.emit('remove_watch', expresionList[exprName][0]);
     console.log("deleting " + expresionList[exprName][0]);
     expresionList[exprName].splice(0, 1);
 }
@@ -113,7 +114,7 @@ function removeExpressionFromDisplayList(exprName) {
 function addExpressionToDiplayList(exprName) {
     if (expresionList[exprName] == undefined)
         expresionList[exprName] = [];
-    sendCommand("display " + exprName);
+    socket.emit('add_watch', exprName);
     Global.diplayIndexCounter++;
     expresionList[exprName].push(Global.diplayIndexCounter);
 }
