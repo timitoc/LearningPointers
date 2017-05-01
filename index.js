@@ -67,6 +67,10 @@ io.on('connection', (socket) => {
                     socket.emit('compile_error',data);
                 });
 
+                CONTAINERS[socket.id].on('debug', (data)=>{
+                    console.log(data);
+                });
+
                 CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
                     socket.emit('gdb_stdout',data);
                 });
@@ -75,17 +79,34 @@ io.on('connection', (socket) => {
                     socket.emit('gdb_stderr',data);
                 });
 
-                socket.on('request_expressions',(data)=>{
-                    CONTAINERS[socket.id].emit('request_expressions',data);
+                CONTAINERS[socket.id].on('step', (data)=>{
+                    socket.emit('step', data);
                 });
 
-                CONTAINERS[socket.id].on('request_expressions_response',(data)=>{
-                    socket.emit('request_expressions_response',data);
+                CONTAINERS[socket.id].on('next', (data)=>{
+                    socket.emit('next', data);
+                });
+                
+                CONTAINERS[socket.id].on('continue', (data)=>{
+                    socket.emit('continue', data);
                 });
 
                 socket.on('gdb_cmd',(data)=>{
                     CONTAINERS[socket.id].emit('gdb_cmd',data);
                 });
+
+                socket.on('step', (data)=>{
+                    CONTAINERS[socket.id].emit('step');
+                });
+
+                socket.on('next', (data)=>{
+                    CONTAINERS[socket.id].emit('next');
+                });
+
+                socket.on('continue', (data)=>{
+                    CONTAINERS[socket.id].emit('continue');
+                });
+
 
                 socket.on('disconnect',(data)=>{
                     USED_PORTS[port.toString()] = false;

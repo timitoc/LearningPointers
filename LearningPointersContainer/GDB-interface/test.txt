@@ -1,0 +1,6 @@
+ceva afisat in stdout
+altceva in stdout
+4	    for(int i = 23; i <= 27;i++){
+1: i = 23
+2: i*i = 529
+3: e = {fi = 2, se = 23}

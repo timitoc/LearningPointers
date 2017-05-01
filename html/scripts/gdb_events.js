@@ -15,6 +15,15 @@ socket.on("compile_error",function(data){
 socket.on("compile_success",function(data){
     alert(data);
 });
+socket.on("step", function(data){
+    alert(data);
+});
+socket.on("next", function(data){
+    alert(data);
+});
+socket.on("continue", function(data){
+    alert(data);
+});
 socket.on("gdb_stdout",function(data){
     $("#output").append(data);
 });
