@@ -8,7 +8,7 @@ $("#compile_code_button").click(function() {
     socket.emit("code",code);
 });
 $("#run_code_button").click(function() {
-    sendCommand("run");
+    socket.emit("run");
 });
 $("#debug_code_button").click(function() {
     if (breakpointList.length > 0)
@@ -36,7 +36,7 @@ $("#expressions_button").click(function(){
 let temp = 2;
 
 function stepDebugger() {
-    sendCommand("s");
+    socket.emit("step");
     moveHighlight(temp);
     temp = temp+1;
 }
