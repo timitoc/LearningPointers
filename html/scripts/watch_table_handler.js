@@ -36,7 +36,8 @@ function addJstreeData(element) {
 
     $(document).ready(function(){
         // tree data
-        var data = [convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
+        var data = //[convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
+        [convertGDBToJSON("es = {{fi = 0, se = 23}, {fi = 1, se = 23}, {fi = 2, se = 23}, {fi = 0, se = 0}}"),
         {
             id: "y",
             text: "y",
