@@ -41,19 +41,21 @@ io.on('connection', (socket)=>{
                 procs[socket.id] = new Debugger();
 				procs[socket.id].socket = socket;
 				procs[socket.id].file_path = "./programs/"+fileName;
-
-                console.log('Started %s','gdb '+"./programs/"+fileName);
-                socket.emit('debug', 'Started '+fileName);
-
-                procs[socket.id].start(); 
-
+				procs[socket.id].init();
+				socket.emit('debug', 'Compiled '+fileName);
             });
         });
     });
 
+	socket.on('run', function(data){
+		procs[socket.id].start();
+		socket.emit('debug', 'Ran ');
+	});
+
     socket.on('gdb_cmd',function(data){
         data = data.toString();
         console.log('COMMAND: %s',data);
+		socket.emit('debug', 'Sending ' + data);
 		if(procs[socket.id]){
 			procs[socket.id].send_command(data);
 		} else {

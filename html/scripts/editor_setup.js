@@ -23,10 +23,12 @@ function toggleBreakpoint(row) {
     var breakpoints = editor.session.getBreakpoints(row, 0);
     if(typeof breakpoints[row] === typeof undefined) {
         editor.session.setBreakpoint(row);
+        //socket.emit("add_breakpoint", row+1);
         sendCommand("b " + (row+1));
     }
     else {
         editor.session.clearBreakpoint(row);
+        //socket.emit("remove_breakpoint", row+1);
         sendCommand("clear " + (row+1));
     }
 }

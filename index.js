@@ -80,7 +80,13 @@ io.on('connection', (socket) => {
                 });
 
                 CONTAINERS[socket.id].on('step', (data)=>{
+                    console.log("AM primiiiiit");
                     socket.emit('step', data);
+                });
+
+                CONTAINERS[socket.id].on('debug', (data)=>{
+                    console.log("YEEEEEEEEEEY " + JSON.stringify(data));
+                    //console.log(data);
                 });
 
                 CONTAINERS[socket.id].on('next', (data)=>{
@@ -89,6 +95,10 @@ io.on('connection', (socket) => {
                 
                 CONTAINERS[socket.id].on('continue', (data)=>{
                     socket.emit('continue', data);
+                });
+
+                socket.on('run',(data)=>{
+                    CONTAINERS[socket.id].emit('run',data);
                 });
 
                 socket.on('gdb_cmd',(data)=>{

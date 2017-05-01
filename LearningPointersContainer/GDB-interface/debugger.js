@@ -18,8 +18,7 @@ function Debugger(socket){
 	this.socket = socket;
 }
 
-Debugger.prototype.start = function(){
-
+Debugger.prototype.init = function() {
 	let self = this;
 
 	this.process = child_process.spawn("gdb",[this.file_path]);
@@ -78,6 +77,9 @@ Debugger.prototype.start = function(){
 			return;
 		}
 	});
+}
+
+Debugger.prototype.start = function(){
 
 	this.process.stdin.write('r\n');
 };
