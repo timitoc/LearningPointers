@@ -30,7 +30,7 @@ function parse(raw){
     for(; lines[index].length == 0; --index);
 
     let lastord = null;
-
+	for(; lines[index].startsWith('(gdb)'); --index);
     for(; index >= 0  && /^\d+:\s.+/.test(lines[index]); index--){
         let tokens = lines[index].split('=');
         let ord = parseInt(tokens[0].split(' ')[0]);
@@ -50,7 +50,6 @@ function parse(raw){
         }
     }
     result.line = parseInt(lines[index].split('\t')[0]);
-    result.instr = remove_spaces_from_beginning(lines[index].split('\t')[1]);
     index--;
 
     result.stdout = '';
@@ -63,8 +62,5 @@ function parse(raw){
     console.log(result);
 };
 
-/*const fs = require('fs');
 
-console.log(parse(fs.readFileSync('./test.txt').toString()));
-*/
 module.exports = parse;

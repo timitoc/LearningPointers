@@ -40,13 +40,12 @@ io.on('connection', (socket) => {
         ExposedPorts: {'3001/tcp': {} },
         PortBindings: {'3001/tcp': [{ 'HostPort': port.toString() }] },
         Privileged: true
-    }, 
+    },
         (err, container) => {
 
             if(err) throw err;
 
             container.start((err, data) =>{
-                
                 USED_PORTS[port.toString()] = true;
 
                 CONTAINERS[socket.id] = socketIoClient('http://localhost:'+port.toString());

@@ -73,7 +73,7 @@ io.on('connection', (socket)=>{
 		procs[socket.id].cont();
 	});
 
-    socket.on('disconnect',() => {
+	socket.on('disconnect',() => {
 		if(procs[socket.id]){
 			procs[socket.id].destroy();
 			delete procs[socket.id];
