@@ -16,7 +16,7 @@ socket.on("compile_success",function(data){
     alert(data);
 });
 socket.on("step", function(data){
-    alert(data);
+    alert(JSON.stringify(data));
 });
 socket.on("next", function(data){
     alert(data);

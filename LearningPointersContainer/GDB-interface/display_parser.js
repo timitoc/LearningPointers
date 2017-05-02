@@ -31,6 +31,7 @@ function parse(raw){
 
     let lastord = null;
 	for(; lines[index].startsWith('(gdb)'); --index);
+
     for(; index >= 0  && /^\d+:\s.+/.test(lines[index]); index--){
         let tokens = lines[index].split('=');
         let ord = parseInt(tokens[0].split(' ')[0]);
@@ -59,7 +60,7 @@ function parse(raw){
     }
     result.stdout = result.stdout.substr(0,result.stdout.length-1);
 
-    console.log(result);
+    return result;
 };
 
 
