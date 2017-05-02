@@ -19,3 +19,7 @@ $("#left_content").append(wrapper1);
 $("#left_content").append(wrapper2);
 
 watchTable();
+
+//var result = convertGDBToJSON("e = {fi = 12, se = 23}");
+var result = convertGDBToJSON("es = {{fi = 0, se = 23}, {fi = 1, se = 23}, {fi = 2, se = 23}, {fi = 0, se = 0}}");
+console.log(JSON.stringify(result));

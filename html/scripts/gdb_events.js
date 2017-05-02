@@ -33,3 +33,6 @@ socket.on("gdb_stderr",function(data){
 socket.on('request_expressions_response',function(data){
 	updateWatchesData(data);
 });
+socket.on('post_watch_added', function(data){
+    console.log(data);
+});

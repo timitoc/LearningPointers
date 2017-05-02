@@ -36,11 +36,9 @@ function addJstreeData(element) {
 
     $(document).ready(function(){
         // tree data
-        var data = [{
-            id: "x",
-            text: "x",
-            data: {value: 5, quantity: 20}
-        },{
+        var data = //[convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
+        [convertGDBToJSON("es = {{fi = 0, se = 23}, {fi = 1, se = 23}, {fi = 2, se = 23}, {fi = 0, se = 0}}"),
+        {
             id: "y",
             text: "y",
             data: {value: 5, quantity: 20}
@@ -107,7 +105,8 @@ function removeExpressionFromDisplayList(exprName) {
     if (expresionList[exprName] == undefined || expresionList[exprName].length == 0)
         return;
     console.log(expresionList[exprName]);
-    sendCommand("delete display " + expresionList[exprName][0]);
+    //sendCommand("delete display " + expresionList[exprName][0]);
+    socket.emit('remove_watch', expresionList[exprName][0]);
     console.log("deleting " + expresionList[exprName][0]);
     expresionList[exprName].splice(0, 1);
 }
@@ -115,7 +114,7 @@ function removeExpressionFromDisplayList(exprName) {
 function addExpressionToDiplayList(exprName) {
     if (expresionList[exprName] == undefined)
         expresionList[exprName] = [];
-    sendCommand("display " + exprName);
+    socket.emit('add_watch', exprName);
     Global.diplayIndexCounter++;
     expresionList[exprName].push(Global.diplayIndexCounter);
 }
@@ -128,7 +127,7 @@ function toggleView() {
 function requestUpdateWatches() {
     var expr = [];
     var v = jstreeElement.jstree(true).get_json('#', {flat:true});
-    //console.log(JSON.stringify(v));
+    console.log(JSON.stringify(v));
     for (var i = 0; i < v.length; i++)
         expr.push(v[i].text);
     //alert(expr);
