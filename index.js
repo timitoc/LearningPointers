@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     let port = getAvailablePort();
 
     docker.createContainer({
-        Image: 'learning-pointers', 
+        Image: 'learning-pointers',
         name: chance.string({pool: 'abcdef0123456789',length: 10}),
         ExposedPorts: {'3001/tcp': {} },
         PortBindings: {'3001/tcp': [{ 'HostPort': port.toString() }] },
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
                 USED_PORTS[port.toString()] = true;
 
                 CONTAINERS[socket.id] = socketIoClient('http://localhost:'+port.toString());
-                
+
                 CONTAINERS[socket.id].on('connect',()=>{
                     console.log('Connected to container!');
                 });

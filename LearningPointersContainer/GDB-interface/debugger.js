@@ -12,16 +12,21 @@ function Debugger(socket){
 		remove_watch: false,
 		step: false,
 		next: false,
-		cont: false
+		cont: false,
+		start: false
 	};
 	this.add_watch_expr = '';
 	this.socket = socket;
 }
 
+Debugger.prototype.check_if_any_flag = function(){
+	return this.flags.add_watch || this.flags.remove_watch || this.flags.step || this.flags.next || this.flags.cont || this.flags.start;
+};
+
 Debugger.prototype.init = function(){
 	let self = this;
 
-	this.process = child_process.spawn("gdb",[this.file_path]);
+	this.process = child_process.spawn("gdb",["-silent", this.file_path]);
 
 	this.process.stderr.on('data', function(data){
 		data = data.toString();
@@ -30,9 +35,19 @@ Debugger.prototype.init = function(){
 
 	this.process.stdout.on('data', function(data){
 		data = data.toString();
-		self.buffer_stdout += data;
+		if(self.check_if_any_flag())
+			self.buffer_stdout += data;
 		self.socket.emit('debug', "Data is " + data + " and buffer_stdout is " + self.buffer_stdout + " and buffer_stderr is " + self.buffer_stderr);
 		self.socket.emit('gdb_stdout', data);
+
+		if(self.flags.start){
+			if(data.endsWith('(gdb) ')){
+				self.buffer_stdout = '';
+				self.flags.start = false;
+				
+				return;
+			}
+		}
 
 		if(self.flags.add_watch){
 			self.socket.emit('debug', 'Add watch flag detected buffer = ' + self.buffer_stdout);
