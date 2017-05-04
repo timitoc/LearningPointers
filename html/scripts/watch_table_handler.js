@@ -36,13 +36,13 @@ function addJstreeData(element) {
 
     $(document).ready(function(){
         // tree data
-        var data = //[convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
-        [convertGDBToJSON("es = {{fi = 0, se = 23}, {fi = 1, se = 23}, {fi = 2, se = 23}, {fi = 0, se = 0}}"),
-        {
-            id: "y",
-            text: "y",
-            data: {value: 5, quantity: 20}
-        }];
+        var data = [];//[convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}"),
+        // [convertGDBToJSON("es = {{fi = 0, se = 23}, {fi = 1, se = 23}, {fi = 2, se = 23}, {fi = 0, se = 0}}"),
+        // {
+        //     id: "y",
+        //     text: "y",
+        //     data: {value: 5, quantity: 20}
+        // }];
         
         // load jstree
         // element.on('rename.jstree', function (e, data) {
@@ -124,25 +124,40 @@ function toggleView() {
     isBodyVisible ^= 1;
 }
 
+/// redundant,to be removed
 function requestUpdateWatches() {
-    var expr = [];
-    var v = jstreeElement.jstree(true).get_json('#', {flat:true});
-    console.log(JSON.stringify(v));
-    for (var i = 0; i < v.length; i++)
-        expr.push(v[i].text);
-    //alert(expr);
-    socket.emit('request_expressions', expr);
+
+    // var expr = [];
+    // var v = jstreeElement.jstree(true).get_json('#', {flat:true});
+    // //console.log(JSON.stringify(v));
+    // for (var i = 0; i < v.length; i++)
+    //     expr.push(v[i].text);
+    // //alert(expr);
+    // socket.emit('request_expressions', expr);
 }
+
+var pure = [];
 
 function updateWatchesData(jsonObject) {
         var v = jstreeElement.jstree(true).get_json('#', {flat:true});
+        var newData = [];
         for (var i = 0; i < v.length; i++) {
+            if (!(v[i].parent === "#"))
+                continue;
             var txt = "" + v[i].text;
+            console.log("before " + JSON.stringify(v[i]));
             if (jsonObject.hasOwnProperty(txt)) {
-                console.log("v[" + i + "]= " + txt+ " and \nJson value= " + jsonObject[txt]);
-                v[i].data.value = jsonObject[txt];
+                var nou = convertGDBToJSON(txt + " = " + jsonObject[txt]);
+                console.log("nou = " + JSON.stringify(nou));
+                //var nou = convertGDBToJSON("es = {fi = 0, se = 23}");
+                pure[i] = nou;
+                newData.push(nou);
+            }
+            else {
+                newData.push(pure[i]);
             }
         }
-        jstreeElement.jstree(true).settings.core.data = v;
+        console.log(JSON.stringify(pure));
+        jstreeElement.jstree(true).settings.core.data = newData;
         jstreeElement.jstree(true).refresh();
 }
