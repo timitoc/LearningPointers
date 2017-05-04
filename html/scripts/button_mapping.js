@@ -37,8 +37,6 @@ let temp = 2;
 
 function stepDebugger() {
     socket.emit("step");
-    moveHighlight(temp);
-    temp = temp+1;
 }
 
 var Range = ace.require('ace/range').Range;

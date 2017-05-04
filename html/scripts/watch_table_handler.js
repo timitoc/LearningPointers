@@ -134,12 +134,14 @@ function requestUpdateWatches() {
     socket.emit('request_expressions', expr);
 }
 
-function updateWatchesData(jsonData) {
-        jsonData = JSON.parse(jsonData);
+function updateWatchesData(jsonObject) {
         var v = jstreeElement.jstree(true).get_json('#', {flat:true});
         for (var i = 0; i < v.length; i++) {
-            console.log("v[" + i + "]= " + v[i].text + " and \nJson value= " + jsonData["" + v[i].text]);
-            v[i].data.value = jsonData["" + v[i].text];
+            var txt = "" + v[i].text;
+            if (jsonObject.hasOwnProperty(txt)) {
+                console.log("v[" + i + "]= " + txt+ " and \nJson value= " + jsonObject[txt]);
+                v[i].data.value = jsonObject[txt];
+            }
         }
         jstreeElement.jstree(true).settings.core.data = v;
         jstreeElement.jstree(true).refresh();

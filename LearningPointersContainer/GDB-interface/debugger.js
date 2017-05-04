@@ -21,7 +21,7 @@ function Debugger(socket){
 Debugger.prototype.init = function(){
 	let self = this;
 
-	this.process = child_process.spawn("gdb",[this.file_path]);
+	this.process = child_process.spawn("gdb",["-q", this.file_path]);
 
 	this.process.stderr.on('data', function(data){
 		data = data.toString();
@@ -74,6 +74,7 @@ Debugger.prototype.init = function(){
 			if(self.buffer_stdout.endsWith('(gdb) ')){
 				self.flags.step = false;
 				let result = parse_display(self.buffer_stdout);
+				self.socket.emit('debug', result)
 				self.socket.emit('step', result);
 				self.buffer_stdout = '';
 			}
