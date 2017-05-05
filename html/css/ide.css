@@ -1,0 +1,13 @@
+.gash-button{
+    outline: none;
+    border-radius: 2px;
+    border-style: none;
+    background-color: seagreen;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-decoration: none;
+    color: #FFFFFF;
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+}
