@@ -6,6 +6,17 @@ editor.getSession().setMode("ace/mode/c_cpp");
 editor.setOption("maxLines", 30);
 editor.setOption("minLines", 30);
 
+var vim_enabled = false;
+
+$("#enable_vim").change(function(){
+	if(!vim_enabled)
+		editor.setKeyboardHandler("ace/keyboard/vim");
+	else editor.setKeyboardHandler("ace/keyboard/textinput");
+
+	vim_enabled = !vim_enabled;
+});
+
+
 ace.require("ace/ext/language_tools");
 // enable autocompletion and snippets
 editor.setOptions({
