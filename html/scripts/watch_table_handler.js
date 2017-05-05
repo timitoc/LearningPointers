@@ -1,8 +1,9 @@
+var body;
 var watchTable = function() {
     var parent = $('.watch_table_class');
     var header = createHeader();
     var jstreeElement;
-    var body = createBody();
+    body = createBody();
     header.appendTo(parent);
     body.appendTo(parent);
     header.click(function() {toggleView();});
