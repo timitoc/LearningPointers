@@ -23,6 +23,11 @@ var convertGDBToJSON = function(GDBString, arrayPos) {
     }
     jObj.data = {};
     jObj.children = [];
+    jObj.state = {
+        opened    : true,  // is the node open
+        disabled  : false,  // is the node disabled
+        selected  : false  // is the node selected
+    };
     if (GDBString[i+2] != '{') {
         jObj.data.value = GDBString.substring(i+2);
     }

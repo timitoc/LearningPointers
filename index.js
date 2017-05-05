@@ -68,7 +68,6 @@ io.on('connection', (socket) => {
 
                 CONTAINERS[socket.id].on('post_watch_added', (data)=>{
                     socket.emit('post_watch_added', data);
-                    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
                 });
 
                 CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
@@ -80,13 +79,11 @@ io.on('connection', (socket) => {
                 });
 
                 CONTAINERS[socket.id].on('step', (data)=>{
-                    console.log("AM primiiiiit");
                     socket.emit('step', data);
                 });
 
                 CONTAINERS[socket.id].on('debug', (data)=>{
                     console.log("Debug data: " + JSON.stringify(data));
-                    //console.log(data);
                 });
 
                 CONTAINERS[socket.id].on('next', (data)=>{

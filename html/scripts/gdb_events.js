@@ -16,7 +16,9 @@ socket.on("compile_success",function(data){
     alert(data);
 });
 socket.on("step", function(data){
-    alert(JSON.stringify(data));
+    console.log("step data: " + JSON.stringify(data));
+    updateWatchesData(data.display_variables);
+    moveHighlight(data.line-1);
 });
 socket.on("next", function(data){
     alert(data);
@@ -35,4 +37,7 @@ socket.on('request_expressions_response',function(data){
 });
 socket.on('post_watch_added', function(data){
     console.log(data);
+    var x = {};
+    x[data.expr] = data.value;
+    updateWatchesData(x);
 });
