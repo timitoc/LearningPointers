@@ -18,6 +18,9 @@ socket.on("compile_success",function(data){
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
     updateWatchesData(data.display_variables);
+    simpleVar.updateVarData(data.display_variables);
+    pointerVar.updateVarData(data.display_variables);
+    memoryHandler.gatherVarData();
     moveHighlight(data.line-1);
 });
 socket.on("next", function(data){
@@ -40,4 +43,7 @@ socket.on('post_watch_added', function(data){
     var x = {};
     x[data.expr] = data.value;
     updateWatchesData(x);
+    simpleVar.updateVarData(x);
+    pointerVar.updateVarData(x);
+    memoryHandler.gatherVarData();
 });

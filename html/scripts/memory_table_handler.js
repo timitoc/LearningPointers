@@ -4,6 +4,7 @@ var MemoryHandler = function() {
     this.n = 10;
     this.m = 10;
     this.selected = {st:0, dr:-1};
+    this.adresses = [];
 }
 
 MemoryHandler.prototype.init = function(UIElement) {
@@ -44,7 +45,9 @@ MemoryHandler.prototype.gatherVarData = function() {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-    console.log(a);
+    this.adresses = a;
+    this.adresses.sort();
+    console.log(this.adresses);
 }
 
 MemoryHandler.prototype.reColor = function() {
@@ -72,6 +75,21 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     };
     //console.log(filteredCells);
     //filteredCells.css('color', 'red');
+}
+
+MemoryHandler.prototype.select = function(str) {
+    var ind = findIndex(this.adresses, str);
+    if (ind === -1) return;
+    console.log("Selected index is " + ind);
+    ++ind;
+    this.highlight(ind, ind);
+}
+
+function findIndex(array, elem) {
+    for (var i = 0; i < array.length; i++)
+        if (array[i] === elem)
+            return i;
+    return -1;
 }
 
 var memoryHandler = new MemoryHandler();

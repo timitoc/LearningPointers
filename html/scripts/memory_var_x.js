@@ -99,20 +99,23 @@ MemoryVarHandler.prototype.initTable = function() {
         });
 
         self.JUIElement.bind("hover_node.jstree", function (evt, data) {
-            console.log(data.node.text);
+            //console.log(data.node.text);
             // TODO: use that text to acces pointer location from hm, and move selection to that adress
+            memoryHandler.select(self.hm[data.node.text]);
         });
 
     });
 }
 
 MemoryVarHandler.prototype.getEntries = function() {
+    var entries = [];
     for (var key in this.hm) {
-        if (hm.hasOwnProperty(key)) {
+        if (this.hm.hasOwnProperty(key)) {
             console.log(key + " -> " + this.hm[key]);
+            entries.push(this.hm[key]);
         }
     }
-    return [this.tip, this.tip];
+    return entries;
 }
 
 MemoryVarHandler.prototype.removeDisplay = function(exprName) {
@@ -126,24 +129,33 @@ MemoryVarHandler.prototype.addDiplay = function(exprName) {
     if (exprName === "") return;
     if (this.tip === "Simple")
         exprName = "&" + exprName;
+    socket.emit('add_watch', exprName);
     console.log("add var: " + exprName);
 }
 
-MemoryVarHandler.prototype.updateVarData = function(jsonData) {
-        jsonData = JSON.parse(jsonData);
-        // var v = this.JUIElement.jstree(true).get_json('#', {flat:true});
-        // for (var i = 0; i < v.length; i++) {
-        //     //console.log("v[" + i + "]= " + v[i].text + " and \nJson value= " + jsonData["" + v[i].text]);
-        //     v[i].data.value = jsonData["" + v[i].text];
-        //     this.hm = jsonData
-        // }
-        // jstreeElement.jstree(true).settings.core.data = v;
-        // jstreeElement.jstree(true).refresh();
-        this.hm = jsonData;
+MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
+        var v = this.JUIElement.jstree(true).get_json('#', {flat:true});
+        console.log("baa json " + JSON.stringify(jsonObject));
+        for (var i = 0; i < v.length; i++) {
+            if (!(v[i].parent === "#"))
+                continue;
+            var txt = "" + v[i].text;
+            if (this.tip === "Simple")
+                txt = "&" + v[i].text;
+            console.log("vreau " + txt);
+            if (jsonObject.hasOwnProperty(txt)) { 
+                this.hm["" + v[i].text] = extract(jsonObject[txt]);    
+            }
+        }
         notifyChange();
 }
 
+var extract = function(str) {
+     var st = str.split(" ");
+     return st[st.length-1];
+}
+
 function notifyChange() {
-    refresh();
+    //refresh();
 }
 
