@@ -9,10 +9,6 @@ var watchTable = function() {
     header.click(function() {toggleView();});
 
     var isBodyVisible = 1;
-
-    $("#tbr").click(function() {
-        doMagic();
-    });
 }
 
 var expresionList = {};
@@ -165,6 +161,7 @@ function updateWatchesData(jsonObject) {
         console.log(JSON.stringify(pure));
         jstreeElement.jstree(true).settings.core.data = newData;
         jstreeElement.jstree(true).refresh();
+        doMagic();
 }
 
 /// Spent like 3 hours to understand the jstree-table source code to come up with this. fufufu
