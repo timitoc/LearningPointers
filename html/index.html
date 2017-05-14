@@ -59,13 +59,19 @@ int main()
 					<button id="compile_code_button" class="btn btn-primary">
 						Compile
 					</button>
-					<button id="run_code_button" class="btn btn-primary">
+					<button id="run_code_button" class="btn btn-primary" disabled>
 						Run
 					</button>
-					<button id="step_debugger" class="btn btn-primary">
+					<button id="step_debugger" class="btn btn-primary" disabled>
 						Step
 					</button>
-					<button id="pls" class="btn btn-primary">
+					<button id="next_debugger" class="btn btn-primary" disabled>
+						Next
+					</button>
+					<button id="continue_debugger" class="btn btn-primary" disabled>
+						Continue
+					</button>
+					<button id="pls" class="btn btn-primary" disabled>
 						Add expression
 					</button>
 				</div>
@@ -78,9 +84,23 @@ int main()
 <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
-<script>
-	
-</script>
+<div id="compilation_error_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Compilation message</h4>
+      </div>
+      <div class="modal-body">
+        <p id="errors"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <br>
 <br>
@@ -105,3 +125,4 @@ int main()
 
 </body>
 </html>
+

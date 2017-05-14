@@ -1,8 +1,9 @@
-FROM ubuntu
+FROM base/archlinux
 
-RUN apt-get update && apt-get -y install build-essential gdb && apt-get install -y curl
-RUN apt-get update && apt-get -y install nodejs npm
-RUN npm cache clean -f &&  npm install -g n && n stable
+RUN pacman -Syyu --noconfirm
+RUN pacman -S gcc gdb --noconfirm
+RUN pacman -S nodejs npm --noconfirm
+
 RUN mkdir -p /usr/src/app
 
 COPY package.json /usr/src/app

@@ -27,6 +27,14 @@ $("#step_debugger").click(function() {
     stepDebugger();
     requestUpdateWatches();
 });
+$("#next_debugger").click(function(){
+	socket.emit("next");	
+    requestUpdateWatches();
+});
+$("#continue_debugger").click(function(){
+	socket.emit("continue");		
+	requestUpdateWatches();
+});
 
 $("#expressions_button").click(function(){
     var expr = prompt('Enter some expressions','').split(',');
