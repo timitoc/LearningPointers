@@ -60,6 +60,10 @@ io.on('connection', (socket) => {
                     CONTAINERS[socket.id].emit('code',data);
                 });
 
+				socket.on('stop', (data) => {
+					CONTAINERS[socket.id].emit('stop');
+				})
+
                 CONTAINERS[socket.id].on('compile_error',(data)=>{
                     socket.emit('compile_error',data);
                 });

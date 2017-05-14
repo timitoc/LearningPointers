@@ -147,6 +147,10 @@ Debugger.prototype.next = function(){
 Debugger.prototype.send_command = function(cmd){
     this.process.stdin.write(cmd+"\n");
 };
+Debugger.prototype.kill = function(){
+	this.socket.emit('debug', 'Kill');
+	this.process.stdin.write("kill\n");
+};
 Debugger.prototype.destroy = function(){
     this.process.stdin.pause();
     this.process.kill();

@@ -19,8 +19,8 @@ socket.on("compile_error",function(data){
 		$("#step_debugger").prop('disabled', false);
 		$("#next_debugger").prop('disabled', false);
 		$("#continue_debugger").prop('disabled', false);
+		$("#stop_button").prop('disabled', false);
 		$("#pls").prop('disabled', false);
-
 	}
 
 	else console.log("Compilation error!");

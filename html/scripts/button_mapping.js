@@ -35,6 +35,9 @@ $("#continue_debugger").click(function(){
 	socket.emit("continue");		
 	requestUpdateWatches();
 });
+$("#stop_button").click(function(){
+	socket.emit("stop");
+});
 
 $("#expressions_button").click(function(){
     var expr = prompt('Enter some expressions','').split(',');
