@@ -1,7 +1,17 @@
+body{
+	/*background-color: #2F4F4F;*/
+}
+#editor{
+	/*margin: 20px !important;*/
+}
+
+#toolbar{
+	padding: 10px;
+}
+
 .ace_editor {
 	border: 1px solid lightgray;
 	display: block;
-	width: 80%;
 }
 .scrollmargin {
 	height: 80px;

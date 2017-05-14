@@ -26,12 +26,27 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="panel panel-default">
-        		<div class="panel-heading">
-             		<h3 class="panel-title">Editor</h3>
-        		</div>
-        		<div class="panel-body">
-					<div id="editor">#include&lt;iostream&gt;
+			<div class="btn-group" id="toolbar">
+				<button id="compile_code_button" class="btn btn-primary">
+					Compile
+				</button>
+				<button id="run_code_button" class="btn btn-primary" disabled>
+					Start debugger	
+				</button>
+				<button id="stop_button" class="btn btn-primary" disabled>
+					Stop program
+				</button>
+				<button id="step_debugger" class="btn btn-primary" disabled>
+					Step
+				</button>
+				<button id="next_debugger" class="btn btn-primary" disabled>
+					Next
+				</button>
+				<button id="continue_debugger" class="btn btn-primary" disabled>
+					Continue
+				</button>
+			</div>
+			<div id="editor">#include&lt;iostream&gt;
 using namespace std;
 
 struct element
@@ -45,39 +60,20 @@ int main()
 	element e;
 	e.fi = 12;
 	e.se = 23;
-	for (int i = 1; i <= 10; i++) {
+	for (int i = 1; i &lt;= 10; i++) {
 		cout &lt;&lt; i &lt;&lt; "\n";
 	}
 	return 0;
 }</div>	
-					</div>
-    			</div>
-				<div>Enable VIM <input type="checkbox" id="enable_vim"/></div>
+		<div>Enable VIM <input type="checkbox" id="enable_vim"/></div>
+		
+
 			</div>
 			<div class="col-md-3">
-				<div class="btn-group-vertical">
-					<button id="compile_code_button" class="btn btn-primary">
-						Compile
-					</button>
-					<button id="run_code_button" class="btn btn-primary" disabled>
-						Run
-					</button>
-					<button id="stop_button" class="btn btn-primary" disabled>
-						Stop
-					</button>
-					<button id="step_debugger" class="btn btn-primary" disabled>
-						Step
-					</button>
-					<button id="next_debugger" class="btn btn-primary" disabled>
-						Next
-					</button>
-					<button id="continue_debugger" class="btn btn-primary" disabled>
-						Continue
-					</button>
-					<button id="pls" class="btn btn-primary" disabled>
-						Add expression
-					</button>
-				</div>
+				<button id="pls" class="btn btn-primary" disabled>
+					Add expression
+				</button>
+
 				<div class="watch_table_class"></div>
 			</div>
 	  	</div>
@@ -97,9 +93,9 @@ int main()
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
-
   </div>
 </div>
+
 
 <div class="container">
 	<input type="text" id="gdb_command" class="form-control" placeholder="Send GDB command"/>
