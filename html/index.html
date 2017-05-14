@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<script	src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
 	<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
@@ -83,10 +83,6 @@ int main()
 	  	</div>
 </div>
 
-
-<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-
 <div id="compilation_error_modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -105,13 +101,17 @@ int main()
   </div>
 </div>
 
-<br>
-<br>
-<input type="text" id="gdb_command"/>
-<br>
-<button id="send_command">Send</button>
-<br>
-<pre id="output"></pre>
+<div class="container">
+	<input type="text" id="gdb_command" class="form-control" placeholder="Send GDB command"/>
+	<button id="send_command" class="btn btn-default">Send</button>
+</div>
+<br><br>
+<div class="container">
+	<pre id="output"></pre>
+</div>
+
+<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script src="/scripts/converter.js"></script>
 <script src="/scripts/button_mapping.js"></script>
@@ -123,9 +123,5 @@ int main()
 <script src="/scripts/memory_var_x.js"></script>
 <script src="/scripts/main_logic.js"></script>
 
-
-
-
 </body>
 </html>
-
