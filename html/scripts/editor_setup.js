@@ -8,6 +8,8 @@ editor.setOption("minLines", 30);
 
 var vim_enabled = false;
 
+var persistentBreakpoints = [];
+
 $("#enable_vim").change(function(){
 	if(!vim_enabled)
 		editor.setKeyboardHandler("ace/keyboard/vim");
@@ -36,10 +38,14 @@ function toggleBreakpoint(row) {
         editor.session.setBreakpoint(row);
         //socket.emit("add_breakpoint", row+1);
         sendCommand("b " + (row+1));
+        persistentBreakpoints.push(row+1);
     }
     else {
         editor.session.clearBreakpoint(row);
         //socket.emit("remove_breakpoint", row+1);
         sendCommand("clear " + (row+1));
+        var index = persistentBreakpoints.indexOf(row+1);
+        if (index >= 0)
+            persistentBreakpoints.splice(index, 1);
     }
 }
