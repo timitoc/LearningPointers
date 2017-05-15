@@ -155,6 +155,11 @@ function updateWatchesData(jsonObject) {
                 newData.push(nou);
             }
             else {
+                if (pure.length <= i) {
+                    var nou = convertGDBToJSON(txt + " = undefined");
+                    console.log("nou = " + JSON.stringify(nou));
+                    pure[i] = nou;
+                }
                 newData.push(pure[i]);
             }
         }
