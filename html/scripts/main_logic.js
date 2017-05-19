@@ -5,21 +5,27 @@ var Global  = {
 var simpleVar = new MemoryVarHandler("Simple");
 var pointerVar = new MemoryVarHandler("Pointer");
 
-wrapper1 = jQuery('<div/>');
-wrapper2 = jQuery('<div/>');
+$( document ).ready(function() {
+    wrapper1 = jQuery('<div/>');
+    wrapper2 = jQuery('<div/>');
 
-wrapper1.css('display', 'inline-block');
-wrapper2.css('display', 'inline-block');
+    wrapper1.css('display', 'inline-block');
+    wrapper2.css('display', 'inline-block');
 
-simpleVar.init(wrapper1);
-pointerVar.init(wrapper2);
+    simpleVar.init(wrapper1);
+    pointerVar.init(wrapper2);
 
-initLeftPart();
-$("#left_content").append(wrapper1);
-$("#left_content").append(wrapper2);
+    initLeftPart();
+    $("#left_content").append(wrapper1);
+    $("#left_content").append(wrapper2);
 
-watchTable();
+    watchTable();
 
-//var result = convertGDBToJSON("e = {fi = 12, se = 23}");
-var result = convertGDBToJSON("es = {fi = 0, se = 23}");
-console.log(JSON.stringify(result));
+    /// TODO: Set editor value given by URL
+    //editor.setValue("gigea", 1);
+
+    //var result = convertGDBToJSON("e = {fi = 12, se = 23}");
+    var result = convertGDBToJSON("es = {fi = 0, se = 23}");
+    console.log(JSON.stringify(result));
+});
+
