@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+if(process.getuid || process.getuid() !== 0){
+	console.log('Run this script as root!');
+	process.exit(0);
+}
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -23,7 +28,7 @@ app.use(require('express').static(path.join(__dirname,"html")));
 let CONTAINERS = {};
 let USED_PORTS = {};
 
-function getAvailablePort(){
+function get_available_port(){
     let port = chance.integer({min: 2000, max: 2500});
     while(USED_PORTS[port.toString()]){
         port = chance.integer({min: 2000, max: 2500});
@@ -34,7 +39,7 @@ function getAvailablePort(){
 io.on('connection', (socket) => {
     console.log('A user connected with id ',socket.id);
 
-    let port = getAvailablePort();
+    let port = get_available_port();
 
     docker.createContainer({
         Image: 'learning-pointers',
