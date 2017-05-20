@@ -15,11 +15,11 @@ function handler() {
             
         });
     }
-
+    // TODO: Add prepared statement
     this.getCodeFromId = function(id, callback) {
        con.query("SELECT * FROM code_share WHERE id=" + id, function(err, result){
             if (err) 
-                console.log(err);
+                console.log("DB err: " + JSON.stringify(err));
             else
                 console.log("DB log: " + JSON.stringify(result));
             if (err || result.length == 0)
