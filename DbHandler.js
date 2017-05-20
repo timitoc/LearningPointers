@@ -15,6 +15,18 @@ function handler() {
             
         });
     }
+
+    this.getCodeFromId = function(id, callback) {
+       con.query("SELECT * FROM code_share WHERE id=" + id, function(err, result){
+            if (err) 
+                console.log(err);
+            else
+                console.log("DB log: " + JSON.stringify(result));
+            if (err || result.length == 0)
+                callback(" ", false);
+            callback(result[0].source_code, true);
+       }); 
+    }
 }
 
 module.exports = handler;
