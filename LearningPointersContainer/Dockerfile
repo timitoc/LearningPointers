@@ -1,6 +1,6 @@
 FROM base/archlinux
 
-RUN pacman -Syyu --noconfirm
+RUN pacman -Syu --noconfirm
 RUN pacman -S gcc gdb --noconfirm
 RUN pacman -S nodejs npm --noconfirm
 

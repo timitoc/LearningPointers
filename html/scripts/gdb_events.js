@@ -1,7 +1,13 @@
 var socket = io();
 
+$("#run_code_button").prop('disabled', true);
+$("#step_debugger").prop('disabled', true);
+$("#next_debugger").prop('disabled', true);
+$("#continue_debugger").prop('disabled', true);
+$("#pls").prop('disabled', true);
+
 function sendCommand(comand) {
-    socket.emit("gdb_cmd", comand);
+    socket.emit("gdb_command", comand);
 }
 
 $("#send_command").click(function(){
@@ -40,25 +46,25 @@ socket.on("compile_success",function(data){
 
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
-    updateWatchesData(data.display_variables);
-    simpleVar.updateVarData(data.display_variables);
-    pointerVar.updateVarData(data.display_variables);
+    updateWatchesData(data.result);
+    simpleVar.updateVarData(data.result);
+    pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
     moveHighlight(data.line-1);
 });
 socket.on("next", function(data){
 	console.log("next data: " + JSON.stringify(data));
-    updateWatchesData(data.display_variables);
-    simpleVar.updateVarData(data.display_variables);
-    pointerVar.updateVarData(data.display_variables);
+    updateWatchesData(data.result);
+    simpleVar.updateVarData(data.result);
+    pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
     moveHighlight(data.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
-    updateWatchesData(data.display_variables);
-    simpleVar.updateVarData(data.display_variables);
-    pointerVar.updateVarData(data.display_variables);
+    updateWatchesData(data.result);
+    simpleVar.updateVarData(data.result);
+    pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
     moveHighlight(data.line-1);
 });
@@ -68,10 +74,10 @@ socket.on("gdb_stdout",function(data){
 socket.on("gdb_stderr",function(data){
     $("#output").append(data);
 });
-socket.on('request_expressions_response',function(data){
+socket.on('add_watch',function(data){
 	updateWatchesData(data);
 });
-socket.on('post_watch_added', function(data){
+socket.on('add_watch', function(data){
     console.log(data);
     var x = {};
     x[data.expr] = data.value;

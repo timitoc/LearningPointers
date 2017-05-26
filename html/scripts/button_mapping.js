@@ -41,7 +41,7 @@ $("#stop_button").click(function(){
 
 $("#expressions_button").click(function(){
     var expr = prompt('Enter some expressions','').split(',');
-    socket.emit('request_expressions',expr);
+    socket.emit('add_watch',expr);
 });
 
 let temp = 2;
