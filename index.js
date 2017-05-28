@@ -150,6 +150,10 @@ io.on('connection', (socket) => {
     });
 });
 
+app.get('/react', (req, res) =>{
+	res.sendFile(path.join(__dirname, "react", "public", "index.html"));
+});
+
 app.get('/',(req,res)=>{
 	res.sendFile(path.join(__dirname,"html","index.html"));
 });
