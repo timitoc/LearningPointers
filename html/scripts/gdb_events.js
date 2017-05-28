@@ -50,7 +50,7 @@ socket.on("step", function(data){
     simpleVar.updateVarData(data.result);
     pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
-    moveHighlight(data.line-1);
+    moveHighlight(data.result.line-1);
 });
 socket.on("next", function(data){
 	console.log("next data: " + JSON.stringify(data));
@@ -58,7 +58,7 @@ socket.on("next", function(data){
     simpleVar.updateVarData(data.result);
     pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
-    moveHighlight(data.line-1);
+    moveHighlight(data.result.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
@@ -66,7 +66,7 @@ socket.on("continue", function(data){
     simpleVar.updateVarData(data.result);
     pointerVar.updateVarData(data.result);
     memoryHandler.gatherVarData();
-    moveHighlight(data.line-1);
+    moveHighlight(data.result.line-1);
 });
 socket.on("gdb_stdout",function(data){
     $("#output").append(data);

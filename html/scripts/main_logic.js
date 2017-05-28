@@ -1,5 +1,10 @@
 var Global  = {
-    diplayIndexCounter: 0
+    diplayIndexCounter: 0,
+    htmlDecode: function(input)
+    {
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
 }
 
 var simpleVar = new MemoryVarHandler("Simple");

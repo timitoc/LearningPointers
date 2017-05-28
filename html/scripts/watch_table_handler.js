@@ -95,8 +95,8 @@ function addJstreeData(element) {
                 //console.log(JSON.stringify(data.text));
                 var inst = $.jstree.reference(data.node);
                 inst.deselect_node(data.node);
-                removeExpressionFromDisplayList(data.old);
-                addExpressionToDiplayList(data.text);
+                removeExpressionFromDisplayList(Global.htmlDecode(data.old));
+                addExpressionToDiplayList(Global.htmlDecode(data.text));
             }
         );
     });

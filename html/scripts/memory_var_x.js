@@ -88,8 +88,8 @@ MemoryVarHandler.prototype.initTable = function() {
                 }
                 data.node.smec = false;
                 data.node.original.smec = false;
-                self.removeDisplay(data.old);
-                self.addDiplay(data.text);
+                self.removeDisplay(Global.htmlDecode(data.old));
+                self.addDiplay(Global.htmlDecode(data.text));
             }
         );
         self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
