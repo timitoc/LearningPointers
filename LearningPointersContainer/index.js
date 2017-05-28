@@ -7,7 +7,7 @@ const child_process = require('child_process');
 const path = require('path');
 const util = require('util');
 
-var GDB = require('./node-gdb-interface/gdb');
+var GDB = require('./gdb');
 
 if (!fs.existsSync(path.join(__dirname,'programs'))) {
     fs.mkdirSync(path.join(__dirname,'programs'));
