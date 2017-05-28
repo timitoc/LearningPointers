@@ -192,3 +192,5 @@ class GDB{
 		});
 	}
 }
+
+module.exports = GDB;
