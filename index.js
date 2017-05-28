@@ -144,8 +144,12 @@ io.on('connection', (socket) => {
     });
 });
 
-app.get('/',(req,res)=>{
+app.get('/code',(req,res)=>{
 	res.sendFile(path.join(__dirname,"html","index.html"));
+});
+
+app.get('/code/:id', (req, res)=>{
+    res.send(req.params.id);
 });
 
 httpServer.listen(3000,()=>{
