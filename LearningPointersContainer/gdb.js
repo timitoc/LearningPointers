@@ -48,7 +48,7 @@ class GDB{
 				resolve({
 					stdout: this.buffer_stdout,
 					stderr: this.buffer_stderr
-				})
+				});
 			});
 		});
 	}

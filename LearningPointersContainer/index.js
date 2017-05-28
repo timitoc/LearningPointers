@@ -8,6 +8,7 @@ const path = require('path');
 const util = require('util');
 
 var GDB = require('./gdb');
+console.log(GDB);
 
 if (!fs.existsSync(path.join(__dirname,'programs'))) {
     fs.mkdirSync(path.join(__dirname,'programs'));
