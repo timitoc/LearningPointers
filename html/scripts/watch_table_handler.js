@@ -148,7 +148,7 @@ function updateWatchesData(jsonObject) {
             var txt = "" + v[i].text;
             console.log("before " + JSON.stringify(v[i]));
             if (jsonObject.hasOwnProperty(txt)) {
-                var nou = convertGDBToJSON(txt + " = " + jsonObject[txt]);
+                var nou = convertGDBToJSON(txt + " = " + Global.htmlDecode(jsonObject[txt]));
                 console.log("nou = " + JSON.stringify(nou));
                 //var nou = convertGDBToJSON("es = {fi = 0, se = 23}");
                 pure[i] = nou;
