@@ -46,25 +46,25 @@ socket.on("compile_success",function(data){
 
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
-    updateWatchesData(data.result);
-    simpleVar.updateVarData(data.result);
-    pointerVar.updateVarData(data.result);
+    updateWatchesData(data.result.display_variables);
+    simpleVar.updateVarData(data.result.display_variables);
+    pointerVar.updateVarData(data.result.display_variables);
     memoryHandler.gatherVarData();
     moveHighlight(data.result.line-1);
 });
 socket.on("next", function(data){
 	console.log("next data: " + JSON.stringify(data));
-    updateWatchesData(data.result);
-    simpleVar.updateVarData(data.result);
-    pointerVar.updateVarData(data.result);
+    updateWatchesData(data.result.display_variables);
+    simpleVar.updateVarData(data.result.display_variables);
+    pointerVar.updateVarData(data.result.display_variables);
     memoryHandler.gatherVarData();
     moveHighlight(data.result.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
-    updateWatchesData(data.result);
-    simpleVar.updateVarData(data.result);
-    pointerVar.updateVarData(data.result);
+    updateWatchesData(data.result.display_variables);
+    simpleVar.updateVarData(data.result.display_variables);
+    pointerVar.updateVarData(data.result.display_variables);
     memoryHandler.gatherVarData();
     moveHighlight(data.result.line-1);
 });
@@ -74,13 +74,13 @@ socket.on("gdb_stdout",function(data){
 socket.on("gdb_stderr",function(data){
     $("#output").append(data);
 });
-socket.on('add_watch',function(data){
-	updateWatchesData(data);
-});
+// socket.on('add_watch',function(data){
+// 	updateWatchesData(data);
+// });
 socket.on('add_watch', function(data){
-    console.log(data);
+    console.log(JSON.stringify(data));
     var x = {};
-    x[data.expr] = data.value;
+    x[data.result.expr] = data.result.value;
     updateWatchesData(x);
     simpleVar.updateVarData(x);
     pointerVar.updateVarData(x);

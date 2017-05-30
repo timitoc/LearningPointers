@@ -139,7 +139,7 @@ MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
         for (var i = 0; i < v.length; i++) {
             if (!(v[i].parent === "#"))
                 continue;
-            var txt = "" + v[i].text;
+            var txt = "" + Global.htmlDecode(v[i].text);
             if (this.tip === "Simple")
                 txt = "&" + v[i].text;
             console.log("vreau " + txt);
