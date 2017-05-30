@@ -151,8 +151,19 @@ MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
 }
 
 var extract = function(str) {
-     var st = str.split(" ");
-     return st[st.length-1];
+     var st = "";
+     var gas = 0;
+     for (var i = 0; i < str.length; i++) {
+        if (gas === 0 && i + 1 < str.length) {
+            if (str[i] === '0' && str[i+1] === 'x')
+                gas = 1;
+        }
+        if (gas === 1 && str[i] === ' ')
+            break;
+        if (gas === 1)
+        st += str[i];
+     }
+     return st;
 }
 
 function notifyChange() {
