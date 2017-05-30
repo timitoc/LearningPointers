@@ -1,19 +1,24 @@
 #!/usr/bin/env node
 
+//if(process.getuid || process.getuid() !== 0){
+//	console.log('Run this script as root!');
+//	process.exit(0);
+//}
+
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
+const socketio = require('socket.io');
 const path = require('path');
-const socketIoClient = require('socket.io-client');
-const childProcess = require('child_process');
+const socketio_client = require('socket.io-client');
+const child_process = require('child_process');
 
-let Async = require('async');
+let async = require('async');
 let Docker = require('dockerode');
 let Chance = require('chance');
 
 let app = express();
-let httpServer = http.Server(app);
-let io = socketIo(httpServer);
+let http_server = http.Server(app);
+let io = socketio(http_server);
 
 let chance = new Chance();
 let docker = new Docker();
@@ -23,7 +28,7 @@ app.use(require('express').static(path.join(__dirname,"html")));
 let CONTAINERS = {};
 let USED_PORTS = {};
 
-function getAvailablePort(){
+function get_available_port(){
     let port = chance.integer({min: 2000, max: 2500});
     while(USED_PORTS[port.toString()]){
         port = chance.integer({min: 2000, max: 2500});
@@ -34,7 +39,7 @@ function getAvailablePort(){
 io.on('connection', (socket) => {
     console.log('A user connected with id ',socket.id);
 
-    let port = getAvailablePort();
+    let port = get_available_port();
 
     docker.createContainer({
         Image: 'learning-pointers',
@@ -50,7 +55,7 @@ io.on('connection', (socket) => {
             container.start((err, data) =>{
                 USED_PORTS[port.toString()] = true;
 
-                CONTAINERS[socket.id] = socketIoClient('http://localhost:'+port.toString());
+                CONTAINERS[socket.id] = socketio_client('http://localhost:'+port.toString());
 
                 CONTAINERS[socket.id].on('connect',()=>{
                     console.log('Connected to container!');
@@ -72,8 +77,9 @@ io.on('connection', (socket) => {
                     socket.emit('compile_error',data);
                 });
 
-                CONTAINERS[socket.id].on('post_watch_added', (data)=>{
-                    socket.emit('post_watch_added', data);
+                CONTAINERS[socket.id].on('add_watch', (data)=>{
+                    socket.emit('add_watch', data);
+					console.log(data);
                 });
 
                 CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
@@ -88,9 +94,9 @@ io.on('connection', (socket) => {
                     socket.emit('step', data);
                 });
 
-                CONTAINERS[socket.id].on('debug', (data)=>{
-                    console.log("Debug data: " + JSON.stringify(data));
-                });
+                //CONTAINERS[socket.id].on('debug', (data)=>{
+                //    console.log("Debug data: " + JSON.stringify(data));
+                //});
 
                 CONTAINERS[socket.id].on('next', (data)=>{
                     socket.emit('next', data);
@@ -104,8 +110,8 @@ io.on('connection', (socket) => {
                     CONTAINERS[socket.id].emit('run',data);
                 });
 
-                socket.on('gdb_cmd',(data)=>{
-                    CONTAINERS[socket.id].emit('gdb_cmd',data);
+                socket.on('gdb_command',(data)=>{
+                    CONTAINERS[socket.id].emit('gdb_command',data);
                 });
 
                 socket.on('step', (data)=>{
@@ -152,20 +158,29 @@ app.get('/code/:id', (req, res)=>{
     res.send(req.params.id);
 });
 
-httpServer.listen(3000,()=>{
+
+app.get('/react', (req, res) =>{
+	res.sendFile(path.join(__dirname, "react", "public", "index.html"));
+});
+
+app.get('/',(req,res)=>{
+	res.sendFile(path.join(__dirname,"html","index.html"));
+});
+
+http_server.listen(3000,()=>{
 	console.log('Server started on port %s',3000);
 });
 
 process.on('SIGINT',() => {
     console.log('Cleaning up...');
     docker.listContainers((err, containers) => {
-        Async.eachSeries(containers, (container,callback)=>{
+        async.eachSeries(containers, (container,callback)=>{
             docker.getContainer(container.Id).stop(callback);
         },()=>{
-            Async.eachSeries(containers, (container,callback)=>{
+            async.eachSeries(containers, (container,callback)=>{
                 docker.getContainer(container.Id).remove(callback);
             },()=>{
-                console.log('Done');
+                console.log('Finished.');
                 process.exit();
             });
         });

@@ -37,6 +37,12 @@ MemoryHandler.prototype.invalidate = function() {
     this.gatherVarData();
 }
 
+function uniq(a) {
+    return a.sort().filter(function(item, pos, ary) {
+        return !pos || item != ary[pos - 1];
+    })
+}
+
 MemoryHandler.prototype.gatherVarData = function() {
     if (!simpleVar || !pointerVar)
         return;
@@ -45,8 +51,7 @@ MemoryHandler.prototype.gatherVarData = function() {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-    this.adresses = a;
-    this.adresses.sort();
+    this.adresses = uniq(a);
     console.log(this.adresses);
 }
 
@@ -78,9 +83,10 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
 }
 
 MemoryHandler.prototype.select = function(str) {
+    console.log("looking for " + str);
     var ind = findIndex(this.adresses, str);
-    if (ind === -1) return;
     console.log("Selected index is " + ind);
+    if (ind === -1) return;
     ++ind;
     this.highlight(ind, ind);
 }

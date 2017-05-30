@@ -6,3 +6,5 @@
 -> UI for landing page and courses content
 -> Save code instances (/asd24f1a)
 -> Get input from stdin
+-> Padd adress value with 0 for lexicografic comparison
+-> Auto and Locals *

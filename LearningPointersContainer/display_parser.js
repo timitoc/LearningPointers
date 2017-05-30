@@ -33,6 +33,7 @@ function parse(raw){
 	for(; lines[index].startsWith('(gdb)'); --index);
 
     for(; index >= 0  && /^\d+:\s.+/.test(lines[index]); index--){
+		console.log(lines[index]);
         let tokens = lines[index].split('=');
         let ord = parseInt(tokens[0].split(' ')[0]);
         if(lastord == null){
@@ -50,8 +51,9 @@ function parse(raw){
             }
         }
     }
-    result.line = parseInt(lines[index].split('\t')[0]);
-    index--;
+	console.log(lines[index]);
+//    result.line = parseInt(lines[index].split('\t')[0]);
+//    index--;
 
     result.stdout = '';
     
@@ -62,6 +64,5 @@ function parse(raw){
 
     return result;
 };
-
 
 module.exports = parse;

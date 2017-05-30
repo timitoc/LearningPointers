@@ -88,8 +88,8 @@ MemoryVarHandler.prototype.initTable = function() {
                 }
                 data.node.smec = false;
                 data.node.original.smec = false;
-                self.removeDisplay(data.old);
-                self.addDiplay(data.text);
+                self.removeDisplay(Global.htmlDecode(data.old));
+                self.addDiplay(Global.htmlDecode(data.text));
             }
         );
         self.JUIElement.jstree("create_node", null, {text: "<p class='n_elem'> new </p>", smec: true}, "last", function (node) {
@@ -139,7 +139,7 @@ MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
         for (var i = 0; i < v.length; i++) {
             if (!(v[i].parent === "#"))
                 continue;
-            var txt = "" + v[i].text;
+            var txt = "" + Global.htmlDecode(v[i].text);
             if (this.tip === "Simple")
                 txt = "&" + v[i].text;
             console.log("vreau " + txt);
@@ -151,8 +151,19 @@ MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
 }
 
 var extract = function(str) {
-     var st = str.split(" ");
-     return st[st.length-1];
+     var st = "";
+     var gas = 0;
+     for (var i = 0; i < str.length; i++) {
+        if (gas === 0 && i + 1 < str.length) {
+            if (str[i] === '0' && str[i+1] === 'x')
+                gas = 1;
+        }
+        if (gas === 1 && str[i] === ' ')
+            break;
+        if (gas === 1)
+        st += str[i];
+     }
+     return st;
 }
 
 function notifyChange() {

@@ -95,8 +95,8 @@ function addJstreeData(element) {
                 //console.log(JSON.stringify(data.text));
                 var inst = $.jstree.reference(data.node);
                 inst.deselect_node(data.node);
-                removeExpressionFromDisplayList(data.old);
-                addExpressionToDiplayList(data.text);
+                removeExpressionFromDisplayList(Global.htmlDecode(data.old));
+                addExpressionToDiplayList(Global.htmlDecode(data.text));
             }
         );
     });
@@ -148,7 +148,7 @@ function updateWatchesData(jsonObject) {
             var txt = "" + v[i].text;
             console.log("before " + JSON.stringify(v[i]));
             if (jsonObject.hasOwnProperty(txt)) {
-                var nou = convertGDBToJSON(txt + " = " + jsonObject[txt]);
+                var nou = convertGDBToJSON(txt + " = " + Global.htmlDecode(jsonObject[txt]));
                 console.log("nou = " + JSON.stringify(nou));
                 //var nou = convertGDBToJSON("es = {fi = 0, se = 23}");
                 pure[i] = nou;
