@@ -15,6 +15,7 @@ const child_process = require('child_process');
 let async = require('async');
 let Docker = require('dockerode');
 let Chance = require('chance');
+let DBHandlerClass = require('./DbHandler.js');
 
 let app = express();
 let http_server = http.Server(app);
@@ -22,6 +23,8 @@ let io = socketio(http_server);
 
 let chance = new Chance();
 let docker = new Docker();
+let handler = new DBHandlerClass();
+handler.init();
 
 app.use(require('express').static(path.join(__dirname,"html")));
 
@@ -133,6 +136,10 @@ io.on('connection', (socket) => {
 
                 socket.on('remove_watch', (data)=>{
                     CONTAINERS[socket.id].emit('remove_watch', data);
+                });
+
+                socket.on('save_code', (data) => {
+                    console.log("saving " + JSON.stringify(data));
                 });
 
                 socket.on('disconnect',(data)=>{

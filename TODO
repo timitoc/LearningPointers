@@ -8,3 +8,4 @@
 -> Get input from stdin
 -> Padd adress value with 0 for lexicografic comparison
 -> Auto and Locals *
+-> Kill GDB after some time

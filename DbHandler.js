@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+//const randomstring = require('randomstring');
 function handler() {
     var con = null;
     this.init = function() {
@@ -26,6 +27,11 @@ function handler() {
                 callback(" ", false);
             callback(result[0].source_code, true);
        }); 
+    }
+
+    this.addCode = function(cod) {
+        
+        
     }
 }
 

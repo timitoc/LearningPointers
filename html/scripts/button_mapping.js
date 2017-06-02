@@ -44,6 +44,11 @@ $("#expressions_button").click(function(){
     socket.emit('add_watch',expr);
 });
 
+$("#save_code").click(function() {
+    var cod = editor.getValue();
+    socket.emit('save_code', cod);
+});
+
 let temp = 2;
 
 function stepDebugger() {
