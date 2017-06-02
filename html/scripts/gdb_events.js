@@ -16,6 +16,8 @@ $("#send_command").click(function(){
 });
 
 socket.on("compile_error",function(data){
+	waitingDialog.hide();
+
 	$("#errors").text(data);
 	$("#compilation_error_modal").modal();
 

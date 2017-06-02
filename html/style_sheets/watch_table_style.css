@@ -1,6 +1,14 @@
+.watch_table_class{
+	margin: 10px auto !important;
+}
+
 .watches_header {
 	border: 1px solid lightgray;
 	margin-top: 2px; 
+	cursor: pointer;
+}
+.jstree-table-header{
+	background-color: #778899 !important;
 }
 
 .jstree li > a > .jstree-icon {

@@ -5,6 +5,7 @@ var crtLineMarker;
 
 $("#compile_code_button").click(function() {
     var code = editor.getValue();
+	waitingDialog.show('Compiling...');
     socket.emit("code",code);
 });
 $("#run_code_button").click(function() {

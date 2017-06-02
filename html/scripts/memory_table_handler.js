@@ -107,7 +107,7 @@ function refresh() {
 }
 
 function initLeftPart() {
-    $("#left_content").text("Memory status");
+	$("#left_content").html("<h3>Memory status</h3>");
     var body = document.getElementById("left_content"); 
     function tableCreate(){
         var tbl  = document.createElement('table');
@@ -115,9 +115,9 @@ function initLeftPart() {
         memoryHandler.init(tbl);
         body.appendChild(tbl);
     }
-    var x = $("<div>Height: <input type='text' id='htext'><br>Width:   <input type='text' id='wtext'><br></div>");
+    var x = $("<div>Height: <input type='text' id='htext' class='form-control'><br>Width:   <input type='text' id='wtext' class='form-control'><br></div>");
     $(body).append(x);
-    x = $("<button  onclick='refresh()'> Refresh </button>");
+	x = $("<button  onclick='refresh()' class='btn btn-default'> Refresh </button><br><br>");
     $(body).append(x);
     tableCreate();
 }

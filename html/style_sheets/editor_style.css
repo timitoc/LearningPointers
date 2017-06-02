@@ -2,11 +2,15 @@ body{
 	/*background-color: #2F4F4F;*/
 }
 #editor{
-	/*margin: 20px !important;*/
+	margin: 10px !important;
 }
 
 #toolbar{
 	padding: 10px;
+}
+
+#pls{
+	margin: 10px !important;
 }
 
 .ace_editor {

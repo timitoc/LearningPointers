@@ -3,17 +3,26 @@ editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
 
 //editor.setAutoScrollEditorIntoView(true);
-editor.setOption("maxLines", 30);
+editor.setOption("maxLines", 23);
 editor.setOption("minLines", 30);
+
+editor.setOptions({
+	fontSize: "13pt"
+});
 
 var vim_enabled = false;
 
-$("#enable_vim").change(function(){
+function toggle_vim(){
 	if(!vim_enabled)
 		editor.setKeyboardHandler("ace/keyboard/vim");
 	else editor.setKeyboardHandler("ace/keyboard/textinput");
 
 	vim_enabled = !vim_enabled;
+}
+
+
+$("#enable_vim").change(function(){
+	toggle_vim();
 });
 
 

@@ -1,4 +1,4 @@
--> Fix crash at undefined variables in watches
+DONE Fix crash at undefined variables in watches 
 -> Get line from gdb on debugger start
 -> Persistent breakpoints and watches + memory
 -> Run program (without debug) option
@@ -7,3 +7,5 @@
 -> Save code instances (/asd24f1a)
 -> Padd adress value with 0 for lexicografic comparison
 -> Auto and Locals *
+-> IDE interface (design)
+-> Remove multiple script loading (+ script minify) => BUILD SYSTEM

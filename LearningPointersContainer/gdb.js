@@ -2,6 +2,7 @@ const async = require('async');
 const child_process = require('child_process');
 const util = require('util');
 const Promise = require('bluebird');
+const fs = require('fs');
 
 const after_parser = require('./after_watch_added_parser.js');
 const parser = require('./display_parser.js');

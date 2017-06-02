@@ -15,8 +15,8 @@ var expresionList = {};
 
 function createHeader() {
     var header = jQuery('<div/>', {
-        class: 'watches_header',
-        text: 'Watches!'
+        class: 'watches_header btn btn-default btn-block',
+        text: 'Toggle watches'
     });
     return header;
 }
@@ -61,12 +61,12 @@ function addJstreeData(element) {
             table: {
                 columns: [
                     {width: 200, header: "Expression"},
-                    {width: 150, value: "value", header: "Value"}
+                    {width: 100, value: "value", header: "Value"}
                 ],
                 resizable: true,
                 draggable: false,
                 contextmenu: true,
-                width: 500,
+                width: 300,
                 height: 300
             },
         });
