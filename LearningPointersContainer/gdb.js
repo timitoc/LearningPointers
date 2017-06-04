@@ -245,24 +245,57 @@ class GDB{
 	}
 
 	/**
-	 * Sends the next command to the debugger
+	 * Sends the next command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
 	 */
-	next(){
-		return this.send_command('n');
+	next(watches){
+		return new Promise((resolve, reject) => {
+			this.send_command('n').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
+			});
+		});
 	}
 
     /**
-	 * Sends the step command to the debugger
+	 * Sends the step command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
 	 */
-	step(){
-		return this.send_command('s');
+	step(watches){
+		return new Promise((resolve, reject) => {
+			this.send_command('s').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
+			});
+		});
 	}
 
     /**
-	 * Sends the continue command to the debugger
+	 * Sends the continue command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
 	 */
-	cont(){
-		return this.send_command('c');
+	cont(watches){
+		return new Promise((resolve, reject) => {
+			this.send_command('c').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
+			});
+		});
 	}
 }
 

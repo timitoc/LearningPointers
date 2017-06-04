@@ -19,6 +19,51 @@ let io = socketio(http_server);
 
 let procs = {};
 
+/**
+	Events:
+		code
+			@param string
+			Sends code to the debugger
+		run
+			Starts the program
+
+		next
+			@array watches (optional)
+			Sends the next command and prints the watches
+			@returns Map watch => value
+
+		continue
+			@array watches (optional)
+			Send the continue command and prints the watches
+			@returns Map watch => value
+
+		step
+			@array watches (optional)
+			Send the step command and prints the watches
+			@returns Map watch => value
+
+		stop
+			Stops the execution of the program
+
+		add_breakpoints
+			@array breakpoints
+			Adds breakpoints
+			Breakpoint format:
+				{
+					line: ..., (number)
+					condition: ...., (boolean expression)
+					temporary: true/false
+				}
+			@returns An array of lines where breakpoints where correctly added
+
+		print_expressions
+			@array expressions
+			Prints the values of the expressions
+
+			@return Map expression => value
+			If an expression is invalid from various reasons, its value whill be 'Invalid'
+*/
+
 io.on('connection', (socket)=>{
 	console.log('A user connected');
 
@@ -39,6 +84,14 @@ io.on('connection', (socket)=>{
 				socket.emit("compile_success","Successfully compiled!");
 
 				procs[socket.id] = new GDB('./programs/'+file_name);
+
+				procs[socket.id].stdout.on('data', data=>{
+					socket.emit('gdb_stdout', data);
+				});
+				procs[socket.id].stderr.on('data', data=>{
+					socket.emit('gdb_stderr', data);
+				});
+
 			});
 		});
 	});
@@ -47,6 +100,18 @@ io.on('connection', (socket)=>{
 		procs[socket.id].run().then((data) => {
 			socket.emit('run', data);
 			socket.emit('debug', 'Started debugger');
+		});
+	});
+
+	socket.on('add_breakpoints', data => {
+		procs[socket.id].add_breakpoints(data).then(result => {
+			socket.emit('add_breakpoints', result);
+		});
+	});
+
+	socket.on('print_expressions', data => {
+		procs[socket.id].print_expressions(data).then(result => {
+			socket.emit('print_expressions', result);
 		});
 	});
 
@@ -63,23 +128,26 @@ io.on('connection', (socket)=>{
 	});
 
 	socket.on('step', (data) => {
-		procs[socket.id].step().then((data) => {
-			socket.emit('step', data);
-			socket.emit('debug', data);
+		procs[socket.id].step().then(() => {
+			procs[socket.id].print_expressions(data).then(result => {
+				socket.emit('step', result);
+			});
 		});
 	});
 
 	socket.on('next', (data) => {
-		procs[socket.id].next().then((data) => {
-			socket.emit('next', data);
-			socket.emit('debug', data);
+		procs[socket.id].next().then(() => {
+			procs[socket.id].print_expressions(data).then(result => {
+				socket.emit('next', result);
+			});
 		});
 	});
 
 	socket.on('continue', (data) => {
-		procs[socket.id].cont().then((data) => {
-			socket.emit('continue', data);
-			socket.emit('debug', data);
+		procs[socket.id].cont().then(() => {
+			procs[socket.id].print_expressions(data).then(result => {
+				socket.emit('continue', result);
+			});
 		});
 	});
 
@@ -89,9 +157,9 @@ io.on('connection', (socket)=>{
 		});
 	});
 
-	socket.on('add_watch', (data) => {
-		procs[socket.id].add_watch(data).then((data) => {
-			socket.emit('add_watch', data);
+	socket.on('add_watches', (data) => {
+		procs[socket.id].print_expressions(data).then((data) => {
+			socket.emit('add_watches', data);
 		});
 	});
 
