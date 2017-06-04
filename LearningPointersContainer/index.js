@@ -8,10 +8,9 @@ const path = require('path');
 const util = require('util');
 
 var GDB = require('./gdb');
-console.log(GDB);
 
 if (!fs.existsSync(path.join(__dirname,'programs'))) {
-    fs.mkdirSync(path.join(__dirname,'programs'));
+	fs.mkdirSync(path.join(__dirname,'programs'));
 }
 
 let app = express();
@@ -21,28 +20,28 @@ let io = socketio(http_server);
 let procs = {};
 
 io.on('connection', (socket)=>{
-    console.log('A user connected');
+	console.log('A user connected');
 
-    socket.on('code',(data)=>{
-        data = data.toString();
+	socket.on('code',(data)=>{
+		data = data.toString();
 
-        let file_name = randomstring.generate(7);
-        let file_path = path.join(__dirname,"programs",file_name+".cpp");
+		let file_name = randomstring.generate(7);
+		let file_path = path.join(__dirname,"programs",file_name+".cpp");
 
-        fs.writeFile(file_path,data,() => {
+		fs.writeFile(file_path,data,() => {
 
-            let compile_command = util.format("g++ -g %s -o %s",file_path,"./programs/"+file_name);
+			let compile_command = util.format("g++ -g %s -o %s",file_path,"./programs/"+file_name);
 
-            child_process.exec(compile_command,(error,stdout,stderr) => {	
+			child_process.exec(compile_command,(error,stdout,stderr) => {
 				if(stderr){
 					return socket.emit("compile_error",stderr.toString());
 				}
-                socket.emit("compile_success","Successfully compiled!");
+				socket.emit("compile_success","Successfully compiled!");
 
 				procs[socket.id] = new GDB('./programs/'+file_name);
-            });
-        });
-    });
+			});
+		});
+	});
 
 	socket.on('run', (data) => {
 		procs[socket.id].run().then((data) => {
@@ -51,8 +50,8 @@ io.on('connection', (socket)=>{
 		});
 	});
 
-    socket.on('gdb_command',(data) => {
-        data = data.toString();
+	socket.on('gdb_command',(data) => {
+		data = data.toString();
 		if(procs[socket.id]){
 			procs[socket.id].send_command(data).then((data) => {
 				socket.emit('gdb_command', data);
@@ -102,7 +101,7 @@ io.on('connection', (socket)=>{
 		});
 	});
 
-    socket.on('disconnect',() => {
+	socket.on('disconnect',() => {
 		if(procs[socket.id]){
 			procs[socket.id].quit().then(()=>{
 				delete procs[socket.id];
