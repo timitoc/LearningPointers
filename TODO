@@ -9,3 +9,4 @@ DONE Fix crash at undefined variables in watches
 -> Auto and Locals *
 -> IDE interface (design)
 -> Remove multiple script loading (+ script minify) => BUILD SYSTEM
+-> Add print parsing for STL

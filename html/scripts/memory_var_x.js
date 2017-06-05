@@ -20,27 +20,26 @@ MemoryVarHandler.prototype.initTable = function() {
     $(document).ready(function(){
         // tree data
         var data = [];
-        
+
         element = self.JUIElement.jstree({
             plugins: ["table", "contextmenu", "types", "unique"],
-            contextmenu: {         
+            contextmenu: {
                 "items": function($node) {
                     var tree = self.JUIElement.jstree(true);
                     return {
-                        
                         "Rename": {
                             "separator_before": false,
                             "separator_after": false,
                             "label": "Rename",
-                            "action": function (obj) { 
+                            "action": function (obj) {
                                 tree.edit($node);
                             }
-                        },                         
+                        },
                         "Remove": {
                             "separator_before": false,
                             "separator_after": false,
                             "label": "Remove",
-                            "action": function (obj) { 
+                            "action": function (obj) {
                                 if ($node.text === "")
                                     return;
                                 tree.delete_node($node);
@@ -65,7 +64,7 @@ MemoryVarHandler.prototype.initTable = function() {
                 height: 300
             },
         });
-        
+
         self.JUIElement.bind(
             "select_node.jstree", function(evt, data){
                 var newText = "Some new text";

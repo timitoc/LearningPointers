@@ -15,7 +15,7 @@ var expresionList = {};
 
 function createHeader() {
     var header = jQuery('<div/>', {
-        class: 'watches_header btn btn-default btn-block',
+        class: 'watches_header btn btn-default',
         text: 'Toggle watches'
     });
     return header;
@@ -44,7 +44,6 @@ function addJstreeData(element) {
         //     text: "y",
         //     data: {value: 5, quantity: 20}
         // }];
-        
         // load jstree
         // element.on('rename.jstree', function (e, data) {
         //     var newText = "Some new text";

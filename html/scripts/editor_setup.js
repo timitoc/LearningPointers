@@ -2,12 +2,12 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
 
-//editor.setAutoScrollEditorIntoView(true);
-editor.setOption("maxLines", 23);
-editor.setOption("minLines", 30);
+editor.setAutoScrollEditorIntoView(true);
+editor.setOption("maxLines", 30);
+editor.setOption("minLines", 36);
 
 editor.setOptions({
-	fontSize: "13pt"
+	fontSize: "10pt"
 });
 
 var vim_enabled = false;
@@ -34,9 +34,9 @@ editor.setOptions({
     enableLiveAutocompletion: true
 });
 
-editor.on("guttermousedown", function(e) {	
+editor.on("guttermousedown", function(e) {
     var row = e.getDocumentPosition().row;
-    toggleBreakpoint(row);	
+    toggleBreakpoint(row);
 });
 
 function toggleBreakpoint(row) {

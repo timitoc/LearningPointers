@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"> 
 		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -30,75 +34,59 @@
 		<title>LearningPointers</title>
 	</head>
 	<body>
-			<div class="container">
-				<div class="col-md-3">
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<center>
 					<div id="left_content">
 						left
 					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="btn-group" id="toolbar">
-						<button id="compile_code_button" class="btn btn-default">
+				</center>
+			</div>
+			<div class="pure-u-1-2">
+				<center>
+					<div class="pure-button-group" role="group" id="toolbar">
+						<button id="compile_code_button" class="pure-button">
 							Compile
 						</button>
-						<button id="run_code_button" class="btn btn-default">
-							Start debugger	
+						<button id="run_code_button" class="pure-button">
+							Start debugger
 						</button>
-						<button id="stop_button" class="btn btn-default" disabled>
-							Stop 
+						<button id="stop_button" class="pure-button" disabled>
+							Stop
 						</button>
-						<button id="step_debugger" class="btn btn-default" disabled>
+						<button id="step_debugger" class="pure-button" disabled>
 							Step
 						</button>
-						<button id="next_debugger" class="btn btn-default" disabled>
+						<button id="next_debugger" class="pure-button" disabled>
 							Next
 						</button>
-						<button id="continue_debugger" class="btn btn-default" disabled>
+						<button id="continue_debugger" class="pure-button" disabled>
 							Continue
 						</button>
 					</div>
-					<div id="editor">#include&lt;iostream&gt;
-using namespace std;
-
-struct element
-{
-	int fi, se;
-};
-
-int main()
-{
-	int x = 20, y = 3;
-	element e;
-	e.fi = 12;
-	e.se = 23;
-	for (int i = 1; i &lt;= 10; i++) {
-		cout &lt;&lt; i &lt;&lt; "\n";
-	}
-	return 0;
-}</div>	
-					<div class="container">
-						<label class="checkbox-inline">
-							<input data-toggle="toggle" type="checkbox" id="enable_vim"/> Enable VIM
-						</label>
-					</div>
-					<script>
-						$(function() {
-							$("#enable_vim").bootstrapToggle("off");
-							toggle_vim();
-						});
-					</script>
-
-
-				</div>
-				<div class="col-md-3">
-					<button id="pls" class="btn btn-default" disabled>
+					<div id="editor"></div>
+					<br/>
+					<label class="checkbox-inline">
+						<input data-toggle="toggle" type="checkbox" id="enable_vim"/> Enable VIM
+					</label>
+				</center>
+				<script>
+					$(function() {
+						$("#enable_vim").bootstrapToggle("off");
+						toggle_vim();
+					});
+				</script>
+			</div>
+			<div class="pure-u-1-4">
+				<center>
+					<button id="pls" class="pure-button" disabled>
 						Add expression
 					</button>
 
 					<div class="watch_table_class"></div>
-				</div>
+				</center>
+			</div>
 		</div>
-
 		<div id="compilation_error_modal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -116,8 +104,8 @@ int main()
 			</div>
 		</div>
 
-		<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 		<script src="/scripts/converter.js"></script>
 		<script src="/scripts/button_mapping.js"></script>
@@ -128,6 +116,5 @@ int main()
 		<script src="/scripts/memory_table_handler.js"></script>
 		<script src="/scripts/memory_var_x.js"></script>
 		<script src="/scripts/main_logic.js"></script>
-
 	</body>
 </html>
