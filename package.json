@@ -1,30 +1,31 @@
 {
-	"name": "learning-pointers-http-server",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"dependencies": {
-		"async": "^2.2.0",
-		"body-parser": "^1.17.1",
-		"chance": "^1.0.6",
-		"dockerode": "^2.4.2",
-		"express": "^4.15.2",
-		"socket.io": "^1.7.3",
-		"socket.io-client": "^1.7.3"
-	},
-	"devDependencies": {},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "sudo node index.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/timitoc/LearningPointers.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/timitoc/LearningPointers/issues"
-	},
-	"homepage": "https://github.com/timitoc/LearningPointers#readme"
+  "name": "learning-pointers-http-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.2.0",
+    "body-parser": "^1.17.1",
+    "chance": "^1.0.6",
+    "dockerode": "^2.4.2",
+    "express": "^4.15.2",
+    "mysql": "^2.13.0",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timitoc/LearningPointers.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timitoc/LearningPointers/issues"
+  },
+  "homepage": "https://github.com/timitoc/LearningPointers#readme"
 }

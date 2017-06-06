@@ -11,9 +11,8 @@ function handler() {
         });
 
         con.connect(function(err) {
-            if (err) throw err;
+            //if (err) throw err;
             console.log("Connected!");
-            
         });
     }
     // TODO: Add prepared statement

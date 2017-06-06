@@ -107,7 +107,7 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id].on('step', (data)=>{
 				socket.emit('step', data);
 			});
-			
+
 			CONTAINERS[socket.id].on('next', (data)=>{
 				socket.emit('next', data);
 			});
@@ -119,7 +119,7 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id].on('add_breakpoints', (data)=>{
 				socket.emit('add_breakpoints_result', data);
 			});
-			
+
 			socket.on('print_expressions', data => {
 				CONTAINERS[socket.id].emit('print_expressions', data);
 			});

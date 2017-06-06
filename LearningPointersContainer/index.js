@@ -114,8 +114,10 @@ io.on('connection', (socket)=>{
 
 	socket.on('print_expressions', (data) => {
 		socket.emit('debug', "epa " + JSON.stringify(data));
+		console.log('Got print_expr');
 		procs[socket.id].print_expressions(data).then(result => {
 			socket.emit('print_expressions', result);
+			console.log('Send print_expr');
 		});
 	});
 

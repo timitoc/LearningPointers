@@ -8,7 +8,7 @@ class PrintParser{
 			}
 	}
 	get_value(){
-		if(this.raw.contains('No Symbol'))
+		if(this.raw.includes('No Symbol'))
 			return 'Invalid';
 		return this.raw.substr(this.raw.indexOf('=') + 2);
 	}
