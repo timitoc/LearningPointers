@@ -25,13 +25,20 @@ function handler() {
                 console.log("DB log: " + JSON.stringify(result));
             if (err || result.length == 0)
                 callback(" ", false);
-            callback(result[0].source_code, true);
+            else
+                callback(result[0].source_code, true);
        }); 
     }
 
-    this.addCode = function(cod) {
-        
-        
+    this.addCode = function(cod, callback) {
+        con.query('INSERT INTO code_share SET ?', {source_code: cod}, function (error, results, fields) {
+            if (error) throw error;
+            if (error || results.length == 0)
+                callback(" ", false);
+            else {
+                callback(results.insertId, true);    
+            }
+        });
     }
 }
 

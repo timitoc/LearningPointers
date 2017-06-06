@@ -86,3 +86,16 @@ socket.on('add_watch', function(data){
     pointerVar.updateVarData(x);
     memoryHandler.gatherVarData();
 });
+
+socket.on('code_saved', function(data) {
+    if (data.status == false) {
+        alert("saving failed");
+    }
+    else {
+        alert("Code successfully saved as http://localhost:3000/code/" + data.id);
+    }
+});
+
+socket.on('editor_source', function(data){
+    console.log("editor: " + data);
+});
