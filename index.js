@@ -119,6 +119,10 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id].on('add_breakpoints', (data)=>{
 				socket.emit('add_breakpoints_result', data);
 			});
+			
+			socket.on('print_expressions', data => {
+				CONTAINERS[socket.id].emit('print_expressions', data);
+			});
 
 			CONTAINERS[socket.id].on('print_expressions', (data)=>{
 				console.log("aici");
