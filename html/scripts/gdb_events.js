@@ -98,4 +98,5 @@ socket.on('code_saved', function(data) {
 
 socket.on('editor_source', function(data){
     console.log("editor: " + data);
+    editor.setValue(data, 1);
 });

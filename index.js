@@ -31,6 +31,8 @@ app.use(require('express').static(path.join(__dirname,"html")));
 let CONTAINERS = {};
 let USED_PORTS = {};
 
+let pathId = -1;
+
 function get_available_port(){
 	let port = chance.integer({min: 2000, max: 2500});
 	while(USED_PORTS[port.toString()]){
@@ -43,6 +45,12 @@ io.on('connection', (socket) => {
 	console.log('A user connected with id ',socket.id);
 
 	let port = get_available_port();
+	handler.getCodeFromId(pathId,  function (code, status){
+		if (status === true)
+			socket.emit('editor_source', code);
+		else
+			socket.emit('editor_source', "There is no source code saved with this id");
+	});
 
 	docker.createContainer({
 		Image: 'learning-pointers',
@@ -63,8 +71,6 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id].on('connect',()=>{
 				console.log('Connected to container!');
 			});
-
-			//socket.emit('editor_source', "epaa");
 
 			socket.on('code',(data)=>{
 				CONTAINERS[socket.id].emit('code',data);
@@ -167,7 +173,7 @@ app.get('/code',(req,res)=>{
 });
 
 app.get('/code/:id', (req, res)=>{
-	//res.send(req.params.id);
+	pathId = req.params.id;
 	res.sendFile(path.join(__dirname,"html","index.html"));
 });
 
