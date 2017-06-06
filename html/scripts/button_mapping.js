@@ -9,7 +9,7 @@ $("#compile_code_button").click(function() {
     socket.emit("code",code);
 });
 $("#run_code_button").click(function() {
-    socket.emit("run",[]);
+    socket.emit("run",[]); // A se inlocui [] cu array de breakpointuri
 });
 $("#debug_code_button").click(function() {
     if (breakpointList.length > 0)
@@ -25,15 +25,15 @@ $("#add_breakpoint_button").click(function() {
     toggleBreakpoint(crtRow-1);
 })
 $("#step_debugger").click(function() {
-    stepDebugger();
+    stepDebugger();// [] => array of watches
     requestUpdateWatches();
 });
 $("#next_debugger").click(function(){
-	socket.emit("next");
+	socket.emit("next",[]); // [] => array of watches
     requestUpdateWatches();
 });
 $("#continue_debugger").click(function(){
-	socket.emit("continue");
+	socket.emit("continue");// [] => array of watches
 	requestUpdateWatches();
 });
 $("#stop_button").click(function(){

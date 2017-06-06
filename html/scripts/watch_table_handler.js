@@ -1,25 +1,31 @@
+/**********
+ *
+ * BUTONUL DE TOGGLE E FIX DEGEABA !! :))
+ *
+ *
+ **********/
 var body;
 var watchTable = function() {
     var parent = $('.watch_table_class');
-    var header = createHeader();
+    //var header = createHeader();
     var jstreeElement;
     body = createBody();
-    header.appendTo(parent);
+    //header.appendTo(parent);
     body.appendTo(parent);
-    header.click(function() {toggleView();});
+    //header.click(function() {toggleView();});
 
     var isBodyVisible = 1;
 }
 
 var expresionList = {};
 
-function createHeader() {
-    var header = jQuery('<div/>', {
-        class: 'watches_header btn btn-default',
-        text: 'Toggle watches'
-    });
-    return header;
-}
+//function createHeader() {
+//    var header = jQuery('<div/>', {
+//        class: 'watches_header btn btn-default',
+//        text: 'Toggle watches'
+//    });
+//    return header;
+//}
 
 function createBody() {
     jstreeElement = jQuery('<div/>', {
