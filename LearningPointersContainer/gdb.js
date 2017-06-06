@@ -176,7 +176,13 @@ class GDB{
 	 * Starts the program
 	 */
 	run(){
-		return this.send_command('r');
+		return new Promise((resolve, reject) => {
+			this.send_command('r').then(output => {
+				resolve({
+					line: this.get_line(output)
+				});
+			});
+		});
 	}
 
 	/**
@@ -244,19 +250,33 @@ class GDB{
 		});
 	}
 
+	get_line(output){
+		let stdout = output.stdout;
+		let lines = stdout.split('\n');
+		if(lines.length == 1){
+			return lines[0].split('\t')[0];
+		}
+		return lines[lines.length - 1].split('\t')[0];
+	}
+
 	/**
 	 * Sends the next command to the debugger and prints watches
 	 * @param {array} watches The array of expression to be printed
 	 */
 	next(watches){
 		return new Promise((resolve, reject) => {
-			this.send_command('n').then(()=>{
+			this.send_command('n').then(output => {
 				if(watches){
 					this.print_expressions(watches).then(data=>{
-						resolve(data);
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
 					});
 				} else {
-					resolve();
+					resolve({
+						line: this.get_line(output)
+					});
 				}
 			});
 		});
@@ -268,13 +288,18 @@ class GDB{
 	 */
 	step(watches){
 		return new Promise((resolve, reject) => {
-			this.send_command('s').then(()=>{
+			this.send_command('s').then(output => {
 				if(watches){
 					this.print_expressions(watches).then(data=>{
-						resolve(data);
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
 					});
 				} else {
-					resolve();
+					resolve({
+						line: this.get_line(output)
+					});
 				}
 			});
 		});
@@ -286,13 +311,18 @@ class GDB{
 	 */
 	cont(watches){
 		return new Promise((resolve, reject) => {
-			this.send_command('c').then(()=>{
+			this.send_command('c').then(output =>{
 				if(watches){
 					this.print_expressions(watches).then(data=>{
-						resolve(data);
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
 					});
 				} else {
-					resolve();
+					resolve({
+						line: this.get_line(output)
+					});
 				}
 			});
 		});
