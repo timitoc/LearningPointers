@@ -129,8 +129,13 @@ socket.on('code_saved', function(data) {
 });
 
 socket.on('editor_source', function(data){
-    console.log("editor: " + data);
-    editor.setValue(data, 1);
+	if(data.indexOf('no source code') != -1){
+		if(Cookies.get('code'))
+			editor.setValue(Cookies.get('code'), 1);
+	} else {
+		console.log("editor: " + data);
+		editor.setValue(data, 1);
+	}
 });
 
 socket.on('add_breakpoints_result', function(data){

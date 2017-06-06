@@ -38,6 +38,15 @@ editor.on("guttermousedown", function(e) {
     toggleBreakpoint(row);
 });
 
+editor.getSession().on('change', function() {
+	Cookies.set('code', editor.getValue(),{
+		expires: 7
+	});
+});
+
+$(function(){
+	});
+
 function toggleBreakpoint(row) {
     var breakpoints = editor.session.getBreakpoints(row, 0);
     if(typeof breakpoints[row] === typeof undefined) {
