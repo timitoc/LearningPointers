@@ -46,6 +46,13 @@ socket.on("compile_success",function(data){
 	$("#pls").prop('disabled', false);
 });
 
+socket.on('debug', function(data){
+	console.log(data);
+	if(data.line){
+		moveHighlight(data.line-1);
+	}
+});
+
 socket.on('gdb_stdout', function(data){
 	console.log(data);
 });
@@ -93,12 +100,6 @@ socket.on("print_expressions", function(data){
     recievedData(data);
 });
 
-socket.on("gdb_stdout",function(data){
-    $("#output").append(data);
-});
-socket.on("gdb_stderr",function(data){
-    $("#output").append(data);
-});
 // socket.on('add_watch',function(data){
 // 	updateWatchesData(data);
 // });
@@ -110,6 +111,12 @@ socket.on('add_watch', function(data){
     simpleVar.updateVarData(x);
     pointerVar.updateVarData(x);
     memoryHandler.gatherVarData();
+});
+
+socket.on('run', function(data){
+	alert('RUN'+data);
+	if(data.line)
+		moveHighlight(data.line-1);
 });
 
 socket.on('code_saved', function(data) {

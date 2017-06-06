@@ -97,11 +97,14 @@ io.on('connection', (socket)=>{
 	});
 
 	socket.on('run', (data) => {
+		console.log('RUN');
+		console.log(data);
 		procs[socket.id].add_breakpoints(data.br).then(result => {
 			socket.emit('add_breakpoints', result);
-			procs[socket.id].run().then((data) => {
-				socket.emit('run', data);
+			procs[socket.id].run().then(result => {
+				socket.emit('run', result);
 				socket.emit('debug', 'Started debugger');
+				socket.emit('debug', result);
 			});
 		});
 	});

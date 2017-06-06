@@ -101,6 +101,7 @@ io.on('connection', (socket) => {
 			});
 
 			CONTAINERS[socket.id].on('debug', (data)=>{
+				socket.emit('debug', data);
 			   console.log("Debug data: " + JSON.stringify(data));
 			});
 
