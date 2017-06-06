@@ -1,8 +1,15 @@
 var editor = ace.edit("editor");
 
-if(Cookies.get('theme'))
-	editor.setTheme(Cookies.get('theme'))
-else editor.setTheme("ace/theme/monokai");
+if(Cookies.get('theme')){
+	editor.setTheme(Cookies.get('theme'));
+	if(Cookies.get('theme') == 'ace/theme/eclipse')
+		$(".selectpicker option[value='light']").prop('selected', true);
+	else $(".selectpicker option[value='dark']").prop('selected', true);
+}
+else{
+	editor.setTheme("ace/theme/monokai");
+	$(".selectpicker option[value='dark']").prop('selected', true);
+}
 
 editor.getSession().setMode("ace/mode/c_cpp");
 
