@@ -9,7 +9,7 @@ $("#compile_code_button").click(function() {
     socket.emit("code",code);
 });
 $("#run_code_button").click(function() {
-    socket.emit("run");
+    socket.emit("run",[]);
 });
 $("#debug_code_button").click(function() {
     if (breakpointList.length > 0)
@@ -29,11 +29,11 @@ $("#step_debugger").click(function() {
     requestUpdateWatches();
 });
 $("#next_debugger").click(function(){
-	socket.emit("next");	
+	socket.emit("next");
     requestUpdateWatches();
 });
 $("#continue_debugger").click(function(){
-	socket.emit("continue");		
+	socket.emit("continue");
 	requestUpdateWatches();
 });
 $("#stop_button").click(function(){

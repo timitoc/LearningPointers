@@ -157,18 +157,6 @@ io.on('connection', (socket)=>{
 		});
 	});
 
-	socket.on('add_watches', (data) => {
-		procs[socket.id].print_expressions(data).then((data) => {
-			socket.emit('add_watches', data);
-		});
-	});
-
-	socket.on('remove_watch', (data) => {
-		procs[socket.id].remove_watch(data).then((data) => {
-			socket.emit('remove_watch', data);
-		});
-	});
-
 	socket.on('disconnect',() => {
 		if(procs[socket.id]){
 			procs[socket.id].quit().then(()=>{

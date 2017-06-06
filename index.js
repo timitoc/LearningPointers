@@ -12,7 +12,7 @@ const path = require('path');
 const socketio_client = require('socket.io-client');
 const child_process = require('child_process');
 
-let async = require('async');
+let Async = require('async');
 let Docker = require('dockerode');
 let Chance = require('chance');
 
@@ -37,7 +37,7 @@ function get_available_port(){
 }
 
 io.on('connection', (socket) => {
-	console.log('A user connected with id ',socket.id);
+	//console.log('A user connected with id ',socket.id);
 
 	let port = get_available_port();
 
@@ -47,9 +47,7 @@ io.on('connection', (socket) => {
 		ExposedPorts: {'3001/tcp': {} },
 		PortBindings: {'3001/tcp': [{ 'HostPort': port.toString() }] },
 		Privileged: true
-	},
-		(err, container) => {
-
+	},(err, container) => {
 			if(err) throw err;
 
 			container.start((err, data) =>{
@@ -77,9 +75,20 @@ io.on('connection', (socket) => {
 					socket.emit('compile_error',data);
 				});
 
-				CONTAINERS[socket.id].on('add_watch', (data)=>{
-					socket.emit('add_watch', data);
-					console.log(data);
+				socket.on('add_breakpoints', data => {
+					CONTAINERS[socket.id].emit('add_breakpoints', data);
+				});
+
+				CONTAINERS[socket.id].on('add_breakpoints', data => {
+					socket.emit('add_breakpoints', data);
+				});
+
+				socket.on('print_expressions', data => {
+					CONTAINERS[socket.id].emit('print_expressions', data);
+				});
+
+				CONTAINERS[socket.id].on('print_expressions', data=>{
+					socket.emit('print_expressions', data);
 				});
 
 				CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
@@ -94,11 +103,8 @@ io.on('connection', (socket) => {
 					socket.emit('step', data);
 				});
 
-				//CONTAINERS[socket.id].on('debug', (data)=>{
-				//    console.log("Debug data: " + JSON.stringify(data));
-				//});
-
 				CONTAINERS[socket.id].on('next', (data)=>{
+					console.log('Recieved next');
 					socket.emit('next', data);
 				});
 
@@ -108,6 +114,11 @@ io.on('connection', (socket) => {
 
 				socket.on('run',(data)=>{
 					CONTAINERS[socket.id].emit('run',data);
+					console.log('Got run'+JSON.stringify(data));
+				});
+
+				CONTAINERS[socket.id].on('run', (data) => {
+					console.log('Recieved '+JSON.stringify(data));
 				});
 
 				socket.on('gdb_command',(data)=>{
@@ -124,15 +135,6 @@ io.on('connection', (socket) => {
 
 				socket.on('continue', (data)=>{
 					CONTAINERS[socket.id].emit('continue');
-				});
-
-				socket.on('add_watch', (data)=>{
-					console.log("sending watch request " + data);
-					CONTAINERS[socket.id].emit('add_watch', data);
-				});
-
-				socket.on('remove_watch', (data)=>{
-					CONTAINERS[socket.id].emit('remove_watch', data);
 				});
 
 				socket.on('disconnect',(data)=>{
@@ -165,10 +167,10 @@ http_server.listen(3000,()=>{
 process.on('SIGINT',() => {
 	console.log('Cleaning up...');
 	docker.listContainers((err, containers) => {
-		async.eachSeries(containers, (container,callback)=>{
+		Async.eachSeries(containers, (container,callback)=>{
 			docker.getContainer(container.Id).stop(callback);
 		},()=>{
-			async.eachSeries(containers, (container,callback)=>{
+			Async.eachSeries(containers, (container,callback)=>{
 				docker.getContainer(container.Id).remove(callback);
 			},()=>{
 				console.log('Finished.');

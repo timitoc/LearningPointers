@@ -71,10 +71,10 @@ socket.on("continue", function(data){
     moveHighlight(data.result.line-1);
 });
 socket.on("gdb_stdout",function(data){
-    $("#output").append(data);
+    console.log(data);
 });
 socket.on("gdb_stderr",function(data){
-    $("#output").append(data);
+    console.log(data);
 });
 // socket.on('add_watch',function(data){
 // 	updateWatchesData(data);
