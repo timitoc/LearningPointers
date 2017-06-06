@@ -134,26 +134,20 @@ io.on('connection', (socket)=>{
 	});
 
 	socket.on('step', (data) => {
-		procs[socket.id].step().then(() => {
-			procs[socket.id].print_expressions(data).then(result => {
-				socket.emit('step', result);
-			});
+		procs[socket.id].step(data).then(result => {
+			socket.emit('step', result);
 		});
 	});
 
 	socket.on('next', (data) => {
-		procs[socket.id].next().then(() => {
-			procs[socket.id].print_expressions(data).then(result => {
+		procs[socket.id].next(data).then(result => {
 				socket.emit('next', result);
-			});
 		});
 	});
 
 	socket.on('continue', (data) => {
-		procs[socket.id].cont().then(() => {
-			procs[socket.id].print_expressions(data).then(result => {
-				socket.emit('continue', result);
-			});
+		procs[socket.id].cont(data).then(result => {
+			socket.emit('continue', result);
 		});
 	});
 

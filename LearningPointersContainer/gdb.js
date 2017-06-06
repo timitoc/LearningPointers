@@ -19,6 +19,8 @@ class GDB{
 		this.stdout = new EventEmitter();
 		this.stderr = new EventEmitter();
 
+		this.breakpoints = [];
+
 		this.process.stdout.on('data', (data) => {
 
 			data = data.toString();
@@ -129,6 +131,7 @@ class GDB{
 	add_breakpoints(breaks){
 		return new Promise((resolve, reject) => {
 			let added = [];
+			this.breakpoints = breaks;
 			Async.eachOfSeries(breaks, (key, value, callback) => {
 				this.clear();
 				let breakpoint = key;
@@ -161,7 +164,6 @@ class GDB{
 				resolve(added);
 			});
 		});
-
 	}
 
 	/**
@@ -178,9 +180,13 @@ class GDB{
 	run(){
 		return new Promise((resolve, reject) => {
 			this.send_command('r').then(output => {
-				resolve({
-					line: this.get_line(output)
-				});
+				if(this.breakpoints.length != 0){
+					resolve({
+						line: this.get_line(output)
+					});
+				} else {
+					resolve(output);
+				}
 			});
 		});
 	}
@@ -250,13 +256,29 @@ class GDB{
 		});
 	}
 
+	is_int(str){
+		return /^\d+$/.test(str);
+	}
+
 	get_line(output){
+		console.log(output);
 		let stdout = output.stdout;
 		let lines = stdout.split('\n');
+		console.log(lines);
+		let result;
 		if(lines.length == 1){
-			return lines[0].split('\t')[0];
+			result = lines[0].split('\t')[0];
 		}
-		return lines[lines.length - 1].split('\t')[0];
+		else{
+			for(let i = lines.length - 1; i >= 0; i--){
+				let first_token = lines[i].split('\t')[0];
+				if(this.is_int(first_token)){
+					result = first_token;
+					break;
+				}
+			}
+		}
+		return parseInt(result);
 	}
 
 	/**

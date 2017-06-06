@@ -25,7 +25,7 @@ $("#next_debugger").click(function(){
 	nextDebugger();
 });
 $("#continue_debugger").click(function(){
-	socket.emit("continue");		
+	socket.emit("continue");
 	requestUpdateWatches();
 });
 $("#stop_button").click(function(){

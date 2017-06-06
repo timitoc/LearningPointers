@@ -46,29 +46,39 @@ socket.on("compile_success",function(data){
 	$("#pls").prop('disabled', false);
 });
 
+socket.on('gdb_stdout', function(data){
+	console.log(data);
+});
+
+socket.on('gdb_stderr', function(data){
+	console.log(data);
+});
+
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
-    updateWatchesData(data.result.display_variables);
-    simpleVar.updateVarData(data.result.display_variables);
-    pointerVar.updateVarData(data.result.display_variables);
+    updateWatchesData(data.watches);
+    simpleVar.updateVarData(data.watches);
+    pointerVar.updateVarData(data.watches);
     memoryHandler.gatherVarData();
-    moveHighlight(data.result.line-1);
+    moveHighlight(data.line-1);
 });
+
 socket.on("next", function(data){
+	console.log(JSON.stringify(data));
 	console.log("next data: " + JSON.stringify(data));
-    updateWatchesData(data.result.display_variables);
-    simpleVar.updateVarData(data.result.display_variables);
-    pointerVar.updateVarData(data.result.display_variables);
+    updateWatchesData(data.watches);
+    simpleVar.updateVarData(data.watches);
+    pointerVar.updateVarData(data.watches);
     memoryHandler.gatherVarData();
-    moveHighlight(data.result.line-1);
+    moveHighlight(data.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
-    updateWatchesData(data.result.display_variables);
-    simpleVar.updateVarData(data.result.display_variables);
-    pointerVar.updateVarData(data.result.display_variables);
+    updateWatchesData(data.watches);
+    simpleVar.updateVarData(data.watches);
+    pointerVar.updateVarData(data.watches);
     memoryHandler.gatherVarData();
-    moveHighlight(data.result.line-1);
+    moveHighlight(data.line-1);
 });
 
 function recievedData(data) {
