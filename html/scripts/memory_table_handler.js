@@ -16,7 +16,7 @@ MemoryHandler.prototype.init = function(UIElement) {
 MemoryHandler.prototype.resize = function(height, width) {
     this.n = height;
     this.m = width;
-    this.invalidate();    
+    this.invalidate();
 }
 
 MemoryHandler.prototype.invalidate = function() {
@@ -102,22 +102,22 @@ var memoryHandler = new MemoryHandler();
 
 function refresh() {
     var height = parseInt($('#htext').val(), 10);
-    var width = parseInt($('#wtext').val(), 10);    
+    var width = parseInt($('#wtext').val(), 10);
     memoryHandler.resize(height, width);
 }
 
 function initLeftPart() {
-    $("#left_content").text("Memory status");
-    var body = document.getElementById("left_content"); 
+	$("#left_content").html("<h3>Memory status</h3>");
+    var body = document.getElementById("left_content");
     function tableCreate(){
         var tbl  = document.createElement('table');
         $(tbl).addClass("memory_table_class");
         memoryHandler.init(tbl);
         body.appendChild(tbl);
     }
-    var x = $("<div>Height: <input type='text' id='htext'><br>Width:   <input type='text' id='wtext'><br></div>");
+    var x = $("<div class='pure-form pure-form-stacked'><table cellpadding='10'><tr><td>Height:&nbsp;</td><td><input type='text' id='htext'></td></tr><tr><td>Width:</td><td><input type='text' id='wtext'></td></tr></div>");
     $(body).append(x);
-    x = $("<button  onclick='refresh()'> Refresh </button>");
+	x = $("<button  onclick='refresh()' class='pure-button'> Refresh </button><br><br>");
     $(body).append(x);
     tableCreate();
 }

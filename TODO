@@ -1,11 +1,16 @@
--> Fix crash at undefined variables in watches
+DONE Fix crash at undefined variables in watches 
 -> Get line from gdb on debugger start
+-> Allow fullscreen editor
 -> Persistent breakpoints and watches + memory
 -> Run program (without debug) option
 -> Get rid of compile button entirely
 -> UI for landing page and courses content
 -> Save code instances (/asd24f1a)
 -> Get input from stdin
+-> Get ouput from stdout
 -> Padd adress value with 0 for lexicografic comparison
 -> Auto and Locals *
 -> Kill GDB after some time
+-> IDE interface (design)
+-> Remove multiple script loading (+ script minify) => BUILD SYSTEM
+-> Add print parsing for STL

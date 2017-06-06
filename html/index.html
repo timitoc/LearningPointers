@@ -1,129 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
-	<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-	<script type='text/javascript' src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-	<script type="text/javascript" src="/treetable/jstreetable.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"> 
+		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-	<link href="//cdn.muicss.com/mui-0.9.16/css/mui.min.css" rel="stylesheet" type="text/css" />
-	<script src="//cdn.muicss.com/mui-0.9.16/js/mui.min.js"></script>
-	
-	<title>ACE in Action</title>
-</head>
-<body>
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-3">
-			<div id="left_content">
-				le
+		<style>
+			body{
+				font-family: 'Roboto', sans-serif !important;
+			}
+		</style>
+
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script async src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+		<script async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
+		<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
+
+		<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+		<script type="text/javascript" src="/treetable/jstreetable.js"></script>
+
+		<script async src="/scripts/bootstrap-waitingfor.min.js"></script>
+
+		<title>LearningPointers</title>
+	</head>
+	<body>
+		<div class="pure-g">
+			<div class="pure-u-1-4">
+				<center>
+					<div id="left_content">
+						left
+					</div>
+				</center>
+			</div>
+			<div class="pure-u-1-2">
+				<center>
+					<div class="pure-button-group" role="group" id="toolbar">
+						<button id="compile_code_button" class="pure-button">
+							Compile
+						</button>
+						<button id="run_code_button" class="pure-button">
+							Start debugger
+						</button>
+						<button id="stop_button" class="pure-button" disabled>
+							Stop
+						</button>
+						<button id="step_debugger" class="pure-button" disabled>
+							Step
+						</button>
+						<button id="next_debugger" class="pure-button" disabled>
+							Next
+						</button>
+						<button id="continue_debugger" class="pure-button" disabled>
+							Continue
+						</button>
+						<button id="save_code" class="pure-button">
+							Save
+						</button>
+					</div>
+					<div id="editor"></div>
+					<br/>
+					<label class="checkbox-inline">
+						<input data-toggle="toggle" type="checkbox" id="enable_vim"/> Enable VIM
+					</label>
+				</center>
+				<script>
+					$(function() {
+						$("#enable_vim").bootstrapToggle("off");
+						toggle_vim();
+					});
+				</script>
+			</div>
+			<div class="pure-u-1-4">
+				<center>
+					<button id="pls" class="pure-button" disabled>
+						Add expression
+					</button>
+
+
+					<div class="watch_table_class"></div>
+				</center>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="btn-group" id="toolbar">
-				<button id="compile_code_button" class="mui-btn mui-btn--primary mui-btn--raised">
-					Compile
-				</button>
-				<button id="run_code_button" class="mui-btn mui-btn--primary mui-btn--raised">
-					Start debugger	
-				</button>
-				<button id="stop_button" class="btn btn-primary" disabled>
-					Stop program
-				</button>
-				<button id="step_debugger" class="btn btn-primary" disabled>
-					Step
-				</button>
-				<button id="next_debugger" class="btn btn-primary" disabled>
-					Next
-				</button>
-				<button id="continue_debugger" class="btn btn-primary" disabled>
-					Continue
-				</button>
-				<button id="save_code" class="btn btn-primary"	>
-					SAVE
-				</button>
+		<div id="compilation_error_modal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Compilation message</h4>
+					</div>
+					<div class="modal-body">
+						<p id="errors"></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
 			</div>
-			<div id="editor">#include&lt;iostream&gt;
-using namespace std;
+		</div>
 
-struct element
-{
-    int fi, se;
-};
+		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
-int main()
-{
-	int x = 20, y = 3;
-	element e;
-	e.fi = 12;
-	e.se = 23;
-	for (int i = 1; i &lt;= 10; i++) {
-		cout &lt;&lt; i &lt;&lt; "\n";
-	}
-	return 0;
-}</div>	
-		<div>Enable VIM <input type="checkbox" id="enable_vim"/></div>
-		
-
-			</div>
-			<div class="col-md-3">
-				<button id="pls" class="btn btn-primary" disabled>
-					Add expression
-				</button>
-
-				<div class="watch_table_class"></div>
-			</div>
-	  	</div>
-</div>
-
-<div id="compilation_error_modal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Compilation message</h4>
-      </div>
-      <div class="modal-body">
-        <p id="errors"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container">
-	<input type="text" id="gdb_command" class="form-control" placeholder="Send GDB command"/>
-	<button id="send_command" class="btn btn-default">Send</button>
-</div>
-<br><br>
-<div class="container">
-	<pre id="output"></pre>
-</div>
-
-
-<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-
-<script src="/scripts/converter.js"></script>
-<script src="/scripts/button_mapping.js"></script>
-<script src="/scripts/editor_setup.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/gdb_events.js"></script>
-<script src="/scripts/watch_table_handler.js"></script>
-<script src="/scripts/memory_table_handler.js"></script>
-<script src="/scripts/memory_var_x.js"></script>
-<script src="/scripts/main_logic.js"></script>
-
-</body>
+		<script src="/scripts/converter.js"></script>
+		<script src="/scripts/button_mapping.js"></script>
+		<script src="/scripts/editor_setup.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/scripts/gdb_events.js"></script>
+		<script src="/scripts/watch_table_handler.js"></script>
+		<script src="/scripts/memory_table_handler.js"></script>
+		<script src="/scripts/memory_var_x.js"></script>
+		<script src="/scripts/main_logic.js"></script>
+	</body>
 </html>

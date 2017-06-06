@@ -11,12 +11,12 @@ var watchTable = function() {
     var isBodyVisible = 1;
 }
 
-var expresionList = {};
+var expresionList = [];
 
 function createHeader() {
     var header = jQuery('<div/>', {
-        class: 'watches_header',
-        text: 'Watches!'
+        class: 'watches_header btn btn-default',
+        text: 'Toggle watches'
     });
     return header;
 }
@@ -44,7 +44,6 @@ function addJstreeData(element) {
         //     text: "y",
         //     data: {value: 5, quantity: 20}
         // }];
-        
         // load jstree
         // element.on('rename.jstree', function (e, data) {
         //     var newText = "Some new text";
@@ -61,12 +60,12 @@ function addJstreeData(element) {
             table: {
                 columns: [
                     {width: 200, header: "Expression"},
-                    {width: 150, value: "value", header: "Value"}
+                    {width: 100, value: "value", header: "Value"}
                 ],
                 resizable: true,
                 draggable: false,
                 contextmenu: true,
-                width: 500,
+                width: 300,
                 height: 300
             },
         });
@@ -103,21 +102,18 @@ function addJstreeData(element) {
 }
 
 function removeExpressionFromDisplayList(exprName) {
-    if (expresionList[exprName] == undefined || expresionList[exprName].length == 0)
-        return;
-    console.log(expresionList[exprName]);
-    //sendCommand("delete display " + expresionList[exprName][0]);
-    socket.emit('remove_watch', expresionList[exprName][0]);
-    console.log("deleting " + expresionList[exprName][0]);
-    expresionList[exprName].splice(0, 1);
+    console.log("deleting " + exprName);
+    var index = expresionList.indexOf(exprName);
+    if (index >= 0)
+        expresionList.splice(index, 1);
 }
 
 function addExpressionToDiplayList(exprName) {
-    if (expresionList[exprName] == undefined)
-        expresionList[exprName] = [];
-    socket.emit('add_watch', exprName);
-    Global.diplayIndexCounter++;
-    expresionList[exprName].push(Global.diplayIndexCounter);
+    //socket.emit('add_watch', exprName);
+    expresionList.push(exprName);
+    if (Global.status === 'debugging') {
+        requestUpdateWatches();
+    }
 }
 
 function toggleView() {
@@ -125,7 +121,7 @@ function toggleView() {
     isBodyVisible ^= 1;
 }
 
-/// redundant,to be removed
+/// changed scope
 function requestUpdateWatches() {
 
     // var expr = [];
@@ -135,6 +131,8 @@ function requestUpdateWatches() {
     //     expr.push(v[i].text);
     // //alert(expr);
     // socket.emit('request_expressions', expr);
+    console.log("reqqqqq " + JSON.stringify(expresionList));
+    socket.emit('request_expressions', expresionList);
 }
 
 var pure = [];

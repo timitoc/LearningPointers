@@ -1,11 +1,12 @@
-const async = require('async');
+const Async = require('async');
 const child_process = require('child_process');
 const util = require('util');
 const Promise = require('bluebird');
-
-const after_parser = require('./after_watch_added_parser.js');
-const parser = require('./display_parser.js');
+const fs = require('fs');
 const Subject = require('rxjs/Subject').Subject;
+const EventEmitter = require('events');
+
+const PrintParser = require('./PrintParser.js');
 
 class GDB{
 	constructor(exec_file){
@@ -15,15 +16,42 @@ class GDB{
 		this.buffer_stderr = '';
 		this.done$ = new Subject();
 
-		this.process.stdout.on('data', (data) => {
-			this.buffer_stdout += data.toString();
+		this.stdout = new EventEmitter();
+		this.stderr = new EventEmitter();
 
-			if (this.buffer_stdout.endsWith('(gdb) '))
+		this.process.stdout.on('data', (data) => {
+
+			data = data.toString();
+
+			this.stdout.emit('data', data);
+
+
+			if(!/^\s+$/.test(data.toString())){
+				this.buffer_stdout += data.toString();
+			}
+
+			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
 				this.done$.next(this.buffer_stdout);
+			}
+
+			if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
+				this.done$.next(this.buffer_stdout);
+			}
 		});
 
 		this.process.stderr.on('data', (data) => {
-			this.buffer_stderr += data.toString();
+			data = data.toString();
+
+			this.stderr.emit('data', data);
+
+			this.buffer_stderr += data;
+			if(data.startsWith('No symbol')){
+				this.done$.next(this.buffer_stdout);
+			}
+
+			if(data.includes('syntax error')){
+				this.done$.next(this.buffer_stdout);
+			}
 		});
 	}
 
@@ -41,8 +69,8 @@ class GDB{
 	 * @param {string} cmd The command to send
 	 */
 	send_command(cmd){
+		this.clear();
 		return new Promise((resolve, reject) => {
-			this.clear();
 			this.process.stdin.write(util.format('%s\n', cmd));
 			this.done$.subscribe(value => {
 				resolve({
@@ -52,17 +80,13 @@ class GDB{
 			});
 		});
 	}
-
 	/**
 	 * Quits the debugger session
 	 */
 	quit(){
+		// Improvement: Kill process instead of sending `quit` command (works on infinite loops)
 		return new Promise((resolve, reject) => {
-			this.process.stdin.write('q');
-			setTimeout(()=>{
-				this.process.stdin.write('y');
-				resolve();
-			}, 10);
+			this.process.kill();
 		});
 	}
 
@@ -92,6 +116,55 @@ class GDB{
 	}
 
 	/**
+	* Adds multiple breakpoints
+	* @param {breaks} Breakpoints to be added
+	* Breakpoint format:
+	* {
+	*		line: ..., (number)
+	*		condition: ...., (boolean expression)
+	*		temporary: true/false
+	* }
+	*/
+
+	add_breakpoints(breaks){
+		return new Promise((resolve, reject) => {
+			let added = [];
+			Async.eachOfSeries(breaks, (key, value, callback) => {
+				this.clear();
+				let breakpoint = key;
+				if(breakpoint.temporary){
+					this.add_temporary_breakpoint(breakpoint.line).then(data => {
+						added.push(breakpoint.line);
+						callback();
+					});
+				} else if(breakpoint.condition){
+					this.check_expression(breakpoint.condition).then(status => {
+						if(status){
+							this.add_breakpoint_conditional(breakpoint.line, breakpoint.condition).then(data => {
+								if(!data.stderr.includes('No symbol') && !data.stderr.includes('syntax error')){
+									added.push(breakpoint.line);
+								}
+								callback();
+							});
+						}
+						else {
+							callback();
+						}
+					});
+				} else {
+					this.add_breakpoint(breakpoint.line).then(data =>{
+						added.push(breakpoint.line);
+						callback();
+					});
+				}
+			}, () => {
+				resolve(added);
+			});
+		});
+
+	}
+
+	/**
 	 * Removes a breakpoint from a specified line
 	 * @param {number} line
 	 */
@@ -114,80 +187,113 @@ class GDB{
 	}
 
     /**
-     * Adds an expression as watch
-	 * @param {string} expr The expression to be added in watch
+     * Prints the value of an expression
+	 * @param {string} expr The expression to be printed
 	 */
-	add_watch(expr){
+	print_expression(expr, callback){
 		return new Promise((resolve, reject) => {
-			this.clear();
-			this.process.stdin.write(util.format('display %s\n', expr));
-			this.done$.subscribe(value => {
-				let result;
-				if(this.buffer_stderr.includes('No symbol')){
-					result = {
-						expr: expr,
+			this.send_command(util.format('print %s', expr)).then(data => {
+				if(data.stderr.indexOf('No symbol') != -1){
+					resolve({
+						expression: expr,
 						value: 'Invalid'
-					};
+					});
 				} else {
-					result = after_parser(this.buffer_stdout);
+					let printed = new PrintParser(data.stdout).get_value();
+					resolve({
+						expression: expr,
+						value: printed
+					});
 				}
-
-				resolve({
-					stdout: this.buffer_stdout,
-					stderr: this.buffer_stderr,
-					result: result
-				});
 			});
 		});
 	}
 
 	/**
-	 * Sends the next command to the debugger
+	 * Prints the value of multiple expressions
+	 * @param {array} expressions An array of expression to be printed
 	 */
-	next(){
+
+	print_expressions(expressions){
 		return new Promise((resolve, reject) => {
-			this.clear();
-			this.process.stdin.write('n\n');
-			this.done$.subscribe(value => {
-				resolve({
-					stdout: this.buffer_stdout,
-					stderr: this.buffer_stderr,
-					result: parser(this.buffer_stdout)
+			let result = {};
+			Async.eachOfSeries(expressions, (key, value, callback) => {
+				this.print_expression(key).then(data => {
+					result[key] = data.value;
+					callback();
 				});
+			}, () => {
+				resolve(result);
+			});
+		});
+	}
+
+	/**
+	* Checks if an expression is valid
+	* @param {string} expr
+	*/
+
+	check_expression(expr){
+		return new Promise((resolve, reject) => {
+			this.send_command(util.format('print %s', expr)).then(data=>{
+				if(data.stderr.includes('No symbol') || data.stderr.includes('syntax error')){
+					resolve(false);
+				}
+				else resolve(true);
+			});
+		});
+	}
+
+	/**
+	 * Sends the next command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
+	 */
+	next(watches){
+		return new Promise((resolve, reject) => {
+			this.send_command('n').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
 			});
 		});
 	}
 
     /**
-	 * Sends the step command to the debugger
+	 * Sends the step command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
 	 */
-	step(){
+	step(watches){
 		return new Promise((resolve, reject) => {
-			this.clear();
-			this.process.stdin.write('s\n');
-			this.done$.subscribe(value => {
-				resolve({
-					stdout: this.buffer_stdout,
-					stderr: this.buffer_stderr,
-					result: parser(this.buffer_stdout)
-				});
+			this.send_command('s').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
 			});
 		});
 	}
 
     /**
-	 * Sends the continue command to the debugger
+	 * Sends the continue command to the debugger and prints watches
+	 * @param {array} watches The array of expression to be printed
 	 */
-	cont(){
+	cont(watches){
 		return new Promise((resolve, reject) => {
-			this.clear();
-			this.process.stdin.write('c\n');
-			this.done$.subscribe(value => {
-				resolve({
-					stdout: this.buffer_stdout,
-					stderr: this.buffer_stderr,
-					result: parser(this.buffer_stdout)
-				});
+			this.send_command('c').then(()=>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve(data);
+					});
+				} else {
+					resolve();
+				}
 			});
 		});
 	}

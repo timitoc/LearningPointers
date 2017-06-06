@@ -1,5 +1,7 @@
 var Global  = {
     diplayIndexCounter: 0,
+    breakpointsArray: [],
+    status: 'off',
     htmlDecode: function(input)
     {
         var doc = new DOMParser().parseFromString(input, "text/html");

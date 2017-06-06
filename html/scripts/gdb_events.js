@@ -16,6 +16,8 @@ $("#send_command").click(function(){
 });
 
 socket.on("compile_error",function(data){
+	waitingDialog.hide();
+
 	$("#errors").text(data);
 	$("#compilation_error_modal").modal();
 
@@ -68,6 +70,15 @@ socket.on("continue", function(data){
     memoryHandler.gatherVarData();
     moveHighlight(data.result.line-1);
 });
+
+function recievedData(data) {
+    console.log(data);
+}
+
+socket.on("print_expressions", function(data){
+    recievedData(data);
+});
+
 socket.on("gdb_stdout",function(data){
     $("#output").append(data);
 });
@@ -99,4 +110,8 @@ socket.on('code_saved', function(data) {
 socket.on('editor_source', function(data){
     console.log("editor: " + data);
     editor.setValue(data, 1);
+});
+
+socket.on('add_breakpoints_result', function(data){
+    console.log(data);
 });

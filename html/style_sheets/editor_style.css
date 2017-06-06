@@ -1,12 +1,18 @@
-body{
-	/*background-color: #2F4F4F;*/
+body, html{
+	padding: 0 !important;
+	margin: 0 !important;
 }
-#editor{
-	/*margin: 20px !important;*/
+
+#left_content{
+	padding: 10px;
 }
 
 #toolbar{
 	padding: 10px;
+}
+
+#pls{
+	margin: 10px !important;
 }
 
 .ace_editor {
@@ -20,7 +26,9 @@ body{
 #editor {
 	/** Setting height is also important, otherwise editor wont showup**/
 	height: 300px;
-	margin: 0 auto;
+	margin-top: 10px;
+	margin-left: 90px;
+	margin-right: 90px;
 }
 .myMarker {
 	position:absolute;

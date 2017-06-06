@@ -43,7 +43,6 @@ function get_available_port(){
 
 io.on('connection', (socket) => {
 	console.log('A user connected with id ',socket.id);
-
 	let port = get_available_port();
 	handler.getCodeFromId(pathId,  function (code, status){
 		if (status === true)
@@ -101,20 +100,29 @@ io.on('connection', (socket) => {
 				socket.emit('gdb_stderr',data);
 			});
 
+			CONTAINERS[socket.id].on('debug', (data)=>{
+			   console.log("Debug data: " + JSON.stringify(data));
+			});
+
 			CONTAINERS[socket.id].on('step', (data)=>{
 				socket.emit('step', data);
 			});
-
-			//CONTAINERS[socket.id].on('debug', (data)=>{
-			//    console.log("Debug data: " + JSON.stringify(data));
-			//});
-
+			
 			CONTAINERS[socket.id].on('next', (data)=>{
 				socket.emit('next', data);
 			});
 
 			CONTAINERS[socket.id].on('continue', (data)=>{
 				socket.emit('continue', data);
+			});
+
+			CONTAINERS[socket.id].on('add_breakpoints', (data)=>{
+				socket.emit('add_breakpoints_result', data);
+			});
+
+			CONTAINERS[socket.id].on('print_expressions', (data)=>{
+				console.log("aici");
+				socket.emit('print_expressions', data);
 			});
 
 			socket.on('run',(data)=>{
@@ -126,11 +134,11 @@ io.on('connection', (socket) => {
 			});
 
 			socket.on('step', (data)=>{
-				CONTAINERS[socket.id].emit('step');
+				CONTAINERS[socket.id].emit('step', data);
 			});
 
 			socket.on('next', (data)=>{
-				CONTAINERS[socket.id].emit('next');
+				CONTAINERS[socket.id].emit('next', data);
 			});
 
 			socket.on('continue', (data)=>{
@@ -146,6 +154,14 @@ io.on('connection', (socket) => {
 				CONTAINERS[socket.id].emit('remove_watch', data);
 			});
 
+			socket.on('add_breakpoints', (data)=>{
+				CONTAINERS[socket.id].emit('add_breakpoints', data);
+			});
+
+			socket.on('request_expressions', (data)=>{
+				CONTAINERS[socket.id].emit('print_expressions', data);
+			});
+			
 			socket.on('save_code', (data) => {
 				console.log("saving " + JSON.stringify(data));
 				handler.addCode(data, function(result, status) {

@@ -2,20 +2,26 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/c_cpp");
 
-//editor.setAutoScrollEditorIntoView(true);
+editor.setAutoScrollEditorIntoView(true);
 editor.setOption("maxLines", 30);
-editor.setOption("minLines", 30);
+editor.setOption("minLines", 36);
+
+editor.setOptions({
+	fontSize: "10pt"
+});
 
 var vim_enabled = false;
 
-var persistentBreakpoints = [];
-
-$("#enable_vim").change(function(){
+function toggle_vim(){
 	if(!vim_enabled)
 		editor.setKeyboardHandler("ace/keyboard/vim");
 	else editor.setKeyboardHandler("ace/keyboard/textinput");
 
 	vim_enabled = !vim_enabled;
+}
+
+$("#enable_vim").change(function(){
+	toggle_vim();
 });
 
 
@@ -27,9 +33,9 @@ editor.setOptions({
     enableLiveAutocompletion: true
 });
 
-editor.on("guttermousedown", function(e) {	
+editor.on("guttermousedown", function(e) {
     var row = e.getDocumentPosition().row;
-    toggleBreakpoint(row);	
+    toggleBreakpoint(row);
 });
 
 function toggleBreakpoint(row) {
@@ -37,15 +43,22 @@ function toggleBreakpoint(row) {
     if(typeof breakpoints[row] === typeof undefined) {
         editor.session.setBreakpoint(row);
         //socket.emit("add_breakpoint", row+1);
-        sendCommand("b " + (row+1));
-        persistentBreakpoints.push(row+1);
+        if (Global.status === 'debugging') {
+            console.log("epa");
+            var tosa = [];
+            tosa.push({line: row+1});
+            socket.emit("add_breakpoints", tosa);
+        }
+        Global.breakpointsArray.push({line: row+1});
     }
     else {
         editor.session.clearBreakpoint(row);
         //socket.emit("remove_breakpoint", row+1);
-        sendCommand("clear " + (row+1));
-        var index = persistentBreakpoints.indexOf(row+1);
+        if (Global.status === 'debugging') {
+            sendCommand("clear " + (row+1));
+        }
+        var index = Global.breakpointsArray.indexOf({line: row+1});
         if (index >= 0)
-            persistentBreakpoints.splice(index, 1);
+            Global.breakpointsArray.splice(index, 1);
     }
 }

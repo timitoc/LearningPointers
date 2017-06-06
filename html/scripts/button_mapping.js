@@ -1,23 +1,18 @@
-var breakpointList = [];
 var makers = {};
 var debuggerLine;
 var crtLineMarker;
 
 $("#compile_code_button").click(function() {
     var code = editor.getValue();
+	waitingDialog.show('Compiling...');
     socket.emit("code",code);
 });
+
 $("#run_code_button").click(function() {
-    socket.emit("run");
+    Global.status = 'debugging';
+    socket.emit("run", {br:Global.breakpointsArray, we:expresionList});
 });
-$("#debug_code_button").click(function() {
-    if (breakpointList.length > 0)
-        sendCommand("run");
-    else {
-        addBreakpoint();
-        sendCommand("run");
-    }
-})
+
 $("#add_breakpoint_button").click(function() {
     var pos = editor.getCursorPosition();
     var crtRow = parseInt(pos.row)+1;
@@ -25,11 +20,9 @@ $("#add_breakpoint_button").click(function() {
 })
 $("#step_debugger").click(function() {
     stepDebugger();
-    requestUpdateWatches();
 });
 $("#next_debugger").click(function(){
-	socket.emit("next");	
-    requestUpdateWatches();
+	nextDebugger();
 });
 $("#continue_debugger").click(function(){
 	socket.emit("continue");		
@@ -52,7 +45,11 @@ $("#save_code").click(function() {
 let temp = 2;
 
 function stepDebugger() {
-    socket.emit("step");
+    socket.emit("step", expresionList);
+}
+
+function nextDebugger() {
+    socket.emit("next", expresionList);
 }
 
 var Range = ace.require('ace/range').Range;
