@@ -73,6 +73,10 @@ socket.on("continue", function(data){
 
 function recievedData(data) {
     console.log(data);
+    updateWatchesData(data);
+    simpleVar.updateVarData(data);
+    pointerVar.updateVarData(data);
+    memoryHandler.gatherVarData();
 }
 
 socket.on("print_expressions", function(data){
