@@ -33,7 +33,11 @@
 
 		<script async src="/scripts/bootstrap-waitingfor.min.js"></script>
 
-		<script async src="/scripts/js.cookie.js"></script>
+		<script src="/scripts/js.cookie.js"></script>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
 		<title>LearningPointers</title>
 	</head>
@@ -76,11 +80,21 @@
 					<label class="checkbox-inline">
 						<input data-toggle="toggle" type="checkbox" id="enable_vim"/> Enable VIM
 					</label>
+					<br/>
+					<br/>
+					Choose theme
+					<select class="selectpicker">
+					  <option value="dark">Dark</option>
+					  <option value="light">Light</option>
+					</select>
 				</center>
 				<script>
 					$(function() {
 						$("#enable_vim").bootstrapToggle("off");
 						toggle_vim();
+						$('.selectpicker').selectpicker({
+						});
+
 					});
 				</script>
 			</div>

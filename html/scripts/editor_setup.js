@@ -1,5 +1,9 @@
 var editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
+
+if(Cookies.get('theme'))
+	editor.setTheme(Cookies.get('theme'))
+else editor.setTheme("ace/theme/monokai");
+
 editor.getSession().setMode("ace/mode/c_cpp");
 
 editor.setAutoScrollEditorIntoView(true);
@@ -8,6 +12,17 @@ editor.setOption("minLines", 36);
 
 editor.setOptions({
 	fontSize: "10pt"
+});
+
+$(".selectpicker").change(function(e){
+	if(this.value == "dark"){
+		editor.setTheme("ace/theme/monokai");
+		Cookies.set('theme', 'ace/theme/monokai');
+	}
+	else{
+		editor.setTheme("ace/theme/eclipse");
+		Cookies.set('theme', 'ace/theme/eclipse');
+	}
 });
 
 var vim_enabled = false;
