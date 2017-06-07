@@ -1,3 +1,20 @@
+	Learining Pointers este un proiect cu scop educativ menit sa faciliteze
+studierea pointerilor in C++. Pentru ca lectiile sa fie cat mai practice am
+creat o unealta prin care exemplele explicative sa poata fi testate de
+utilizator dupa bunul plac. Unealta este reprezentata de un debugger de c++
+complet, un IDE de sine statator, care depaseste in facilitati si directii de
+dezvoltare orice alt debugger online existent.
+
+	Rolul componentelor echipei:
+Ardelean Andrei-Timotei
+->
+
+Gasparovici Andrei:
+->
+
+
+
+
 We are using https://github.com/ajaxorg/ace for the editor (BSD-3 LICENSE).
 Also for the watches, the jstree-table: https://github.com/adamjimenez/jstree-table (MIT LICENSE) came in handy :)
 Mysql bash script inspired from https://stackoverflow.com/questions/33470753/create-mysql-database-and-user-in-bash-script
