@@ -5,10 +5,16 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const Subject = require('rxjs/Subject').Subject;
 const EventEmitter = require('events');
+const chokidar = require('chokidar');
 
 const PrintParser = require('./PrintParser.js');
 
 class GDB{
+
+	init_output_file(){
+		fs.writeFileSync('output.txt','');
+	}
+
 	constructor(exec_file){
 		this.process = child_process.spawn('gdb',['-silent', exec_file]);
 
@@ -18,6 +24,15 @@ class GDB{
 
 		this.stdout = new EventEmitter();
 		this.stderr = new EventEmitter();
+
+		this.program_stdout = new EventEmitter();
+		this.init_output_file();
+
+		this.watcher = chokidar.watch('output.txt');
+
+		this.watcher.on('change', () => {
+			this.program_stdout.emit('data', fs.readFileSync('output.txt').toString());
+		});
 
 		this.breakpoints = [];
 
@@ -54,6 +69,15 @@ class GDB{
 			if(data.includes('syntax error')){
 				this.done$.next(this.buffer_stdout);
 			}
+		});
+	}
+
+	write_input(input){
+		return new Promise((resolve, reject) => {
+			fs.writeFile('input.txt', input + '\n', err =>{
+				if(err) throw err;
+				resolve();
+			});
 		});
 	}
 
@@ -175,17 +199,31 @@ class GDB{
 	}
 
 	/**
+	 * Gets program output from a buffer
+	 * @param {string} buffer The stdout buffer
+	 */
+	get_stdout(buffer){
+		console.log(buffer.split('\n'));
+
+	}
+
+	/**
 	 * Starts the program
 	 */
 	run(){
 		return new Promise((resolve, reject) => {
-			this.send_command('r').then(output => {
+			this.clear();
+			this.init_output_file();
+			this.send_command('run < input.txt > output.txt').then(output => {
 				if(this.breakpoints.length != 0){
 					resolve({
-						line: this.get_line(output)
+						line: this.get_line(output),
+						output: output
 					});
 				} else {
-					resolve(output);
+					resolve({
+						output: output
+					});
 				}
 			});
 		});

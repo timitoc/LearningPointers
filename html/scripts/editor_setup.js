@@ -15,7 +15,7 @@ editor.getSession().setMode("ace/mode/c_cpp");
 
 editor.setAutoScrollEditorIntoView(true);
 editor.setOption("maxLines", 30);
-editor.setOption("minLines", 36);
+editor.setOption("minLines", 25);
 
 editor.setOptions({
     fontSize: "10pt"

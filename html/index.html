@@ -93,20 +93,24 @@
 							<option value="light">Light</option>
 						</select>
 						<br>
-						<button id="full_screen" class="pure-button"> 						
+						<button id="full_screen" class="pure-button">
 							Full Screen
 						</button>
 					</div>
 				</div>
+				<center>
+				<div>
+
+					<textarea rows=6 cols=27 id="input" placeholder="Enter program input"></textarea>
+					<textarea rows=6 cols=27 id="output" placeholder="Program output" disabled></textarea>
+				</div>
+				</center>
 				<script>
 					$(function() {
 						$("#enable_vim").bootstrapToggle("off");
 						toggle_vim();
 						$('.selectpicker').selectpicker({width: '80px'});
 					});
-					// $("#full_screen").click(function() {
-					// 	goFullScreen();
-					// });
 				</script>
 			</div>
 			<div class="pure-u-1-4">

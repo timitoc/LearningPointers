@@ -10,7 +10,11 @@ $("#compile_code_button").click(function() {
 
 $("#run_code_button").click(function() {
     Global.status = 'debugging';
-    socket.emit("run", {br:Global.breakpointsArray, we:expresionList});
+    socket.emit("run", {
+		br:Global.breakpointsArray,
+		we:expresionList,
+		input: $("#input").val()
+	});
 });
 
 $("#add_breakpoint_button").click(function() {

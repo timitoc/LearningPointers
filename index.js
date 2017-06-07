@@ -96,6 +96,10 @@ io.on('connection', (socket) => {
 				socket.emit('gdb_stdout',data);
 			});
 
+			CONTAINERS[socket.id].on('program_stdout', data=>{
+				socket.emit('program_stdout', data);
+			});
+
 			CONTAINERS[socket.id].on('gdb_stderr', (data)=>{
 				socket.emit('gdb_stderr',data);
 			});

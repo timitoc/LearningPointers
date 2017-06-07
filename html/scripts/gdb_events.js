@@ -15,6 +15,10 @@ $("#send_command").click(function(){
     sendCommand(cmd);
 });
 
+socket.on("program_stdout", function(data){
+	$("#output").val(data);
+});
+
 socket.on("compile_error",function(data){
 	waitingDialog.hide();
 

@@ -62,6 +62,9 @@ let procs = {};
 
 			@return Map expression => value
 			If an expression is invalid from various reasons, its value whill be 'Invalid'
+
+		program_output
+			Sends program output
 */
 
 io.on('connection', (socket)=>{
@@ -92,19 +95,22 @@ io.on('connection', (socket)=>{
 					socket.emit('gdb_stderr', data);
 				});
 
+				procs[socket.id].program_stdout.on('data', data => {
+					socket.emit('program_stdout', data);
+				});
 			});
 		});
 	});
 
 	socket.on('run', (data) => {
-		console.log('RUN');
-		console.log(data);
-		procs[socket.id].add_breakpoints(data.br).then(result => {
-			socket.emit('add_breakpoints', result);
-			procs[socket.id].run().then(result => {
-				socket.emit('run', result);
-				socket.emit('debug', 'Started debugger');
-				socket.emit('debug', result);
+		procs[socket.id].write_input(data.input).then(() => {
+			procs[socket.id].add_breakpoints(data.br).then(result => {
+				socket.emit('add_breakpoints', result);
+				procs[socket.id].run().then(result => {
+					socket.emit('run', result);
+					socket.emit('debug', 'Started debugger');
+					socket.emit('debug', result);
+				});
 			});
 		});
 	});
