@@ -147,7 +147,7 @@ io.on('connection', (socket) => {
 			});
 
 			socket.on('continue', (data)=>{
-				CONTAINERS[socket.id].emit('continue');
+				CONTAINERS[socket.id].emit('continue', data);
 			});
 
 			socket.on('add_watch', (data)=>{

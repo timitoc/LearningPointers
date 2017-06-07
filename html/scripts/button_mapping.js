@@ -25,8 +25,9 @@ $("#next_debugger").click(function(){
 	nextDebugger();
 });
 $("#continue_debugger").click(function(){
-	socket.emit("continue");
-	requestUpdateWatches();
+	//socket.emit("continue");
+	//requestUpdateWatches();
+    continueDebuger();
 });
 $("#stop_button").click(function(){
 	socket.emit("stop");
@@ -49,6 +50,10 @@ function stepDebugger() {
 
 function nextDebugger() {
     socket.emit("next", expresionList);
+}
+
+function continueDebuger() {
+    socket.emit("continue", expresionList);
 }
 
 var Range = ace.require('ace/range').Range;
