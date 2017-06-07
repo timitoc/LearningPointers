@@ -166,7 +166,7 @@ io.on('connection', (socket) => {
 			socket.on('request_expressions', (data)=>{
 				CONTAINERS[socket.id].emit('print_expressions', data);
 			});
-			
+
 			socket.on('save_code', (data) => {
 				console.log("saving " + JSON.stringify(data));
 				handler.addCode(data, function(result, status) {
@@ -209,10 +209,10 @@ app.get('/',(req,res)=>{
 
 http_server.listen(3000,()=>{
 	console.log('Server started on port %s',3000);
+	console.log("Type 'stop' to stop server");
 });
 
-process.on('SIGINT',() => {
-	console.log('Cleaning up...');
+function cleanup(){
 	docker.listContainers((err, containers) => {
 		async.eachSeries(containers, (container,callback)=>{
 			docker.getContainer(container.Id).stop(callback);
@@ -225,4 +225,18 @@ process.on('SIGINT',() => {
 			});
 		});
 	});
+}
+
+
+process.stdin.on('data', data => {
+	data = data.toString();
+	if(data == "stop\n"){
+		console.log('Cleaning up...');
+		cleanup();
+	}
+});
+
+process.on('SIGINT',() => {
+	console.log('Cleaning up...');
+	cleanup();
 });

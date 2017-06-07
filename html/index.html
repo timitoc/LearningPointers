@@ -39,6 +39,8 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
+		<link rel="stylesheet" href="/style_sheets/jquery.dropdown.min.css"/>
+
 		<title>LearningPointers</title>
 	</head>
 	<body>
@@ -57,10 +59,10 @@
 							Compile
 						</button>
 						<button id="run_code_button" class="pure-button">
-							<i class="fa fa-play" aria-hidden="true"></i> Start debugger
+							<!--<i class="fa fa-play" aria-hidden="true"></i>--> Start
 						</button>
 						<button id="stop_button" class="pure-button" disabled>
-							<i class="fa fa-stop" aria-hidden="true"></i> Stop
+							<!--<i class="fa fa-stop" aria-hidden="true"></i>--> Stop
 						</button>
 						<button id="step_debugger" class="pure-button" disabled>
 							Step
@@ -72,29 +74,31 @@
 							Continue
 						</button>
 						<button id="save_code" class="pure-button">
-							<i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+							<!--<i class="fa fa-floppy-o" aria-hidden="true"></i>--> Save
 						</button>
+						<button data-jq-dropdown="#jq-dropdown-1" class="pure-button">Options </button>
 					</div>
 					<div id="editor"></div>
-					<br/>
-					<label class="checkbox-inline">
-						<input data-toggle="toggle" type="checkbox" id="enable_vim"/> Enable VIM
-					</label>
-					<br/>
-					<br/>
-					Choose theme
-					<select class="selectpicker">
-					  <option value="dark">Dark</option>
-					  <option value="light">Light</option>
-					</select>
 				</center>
+				<br/>
+				<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
+					<div class="jq-dropdown-panel">
+						<label class="checkbox-inline">
+							<input data-toggle="toggle" type="checkbox" id="enable_vim"/>&nbsp;Enable VIM
+						</label>
+						<br/>
+						Choose theme
+						<select class="selectpicker">
+							<option value="dark">Dark</option>
+							<option value="light">Light</option>
+						</select>
+					</div>
+				</div>
 				<script>
 					$(function() {
 						$("#enable_vim").bootstrapToggle("off");
 						toggle_vim();
-						$('.selectpicker').selectpicker({
-						});
-
+						$('.selectpicker').selectpicker({width: '80px'});
 					});
 				</script>
 			</div>
@@ -123,6 +127,8 @@
 			</div>
 		</div>
 
+
+		<script src="/scripts/jquery.dropdown.min.js"></script>
 		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
