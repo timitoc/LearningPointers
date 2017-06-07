@@ -121,15 +121,14 @@ MemoryVarHandler.prototype.removeDisplay = function(exprName) {
     if (exprName === "") return;
     if (this.tip === "Simple")
         exprName = "&" + exprName;
-    console.log("remove var: " + exprName);
+    removeExpressionFromDisplayList(exprName);
 }
 
 MemoryVarHandler.prototype.addDiplay = function(exprName) {
     if (exprName === "") return;
     if (this.tip === "Simple")
         exprName = "&" + exprName;
-    socket.emit('add_watch', exprName);
-    console.log("add var: " + exprName);
+    addExpressionToDiplayList(exprName);
 }
 
 MemoryVarHandler.prototype.updateVarData = function(jsonObject) {

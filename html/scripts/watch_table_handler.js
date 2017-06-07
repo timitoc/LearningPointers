@@ -102,14 +102,14 @@ function addJstreeData(element) {
 }
 
 function removeExpressionFromDisplayList(exprName) {
-    console.log("deleting " + exprName);
+    console.log("removing " + exprName);
     var index = expresionList.indexOf(exprName);
     if (index >= 0)
         expresionList.splice(index, 1);
 }
 
 function addExpressionToDiplayList(exprName) {
-    //socket.emit('add_watch', exprName);
+    console.log("adding " + exprName);
     expresionList.push(exprName);
     if (Global.status === 'debugging') {
         requestUpdateWatches();
