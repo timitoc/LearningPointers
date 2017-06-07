@@ -206,7 +206,7 @@ app.get('/code',(req,res)=>{
 
 app.get('/code/:id', (req, res)=>{
 	pathId = req.params.id;
-	res.sendFile(path.join(__dirname,"html","ide.html"));
+	res.sendFile(path.join(__dirname,"html","editor.html"));
 });
 
 app.get('/admin/add', (req, res) => {
