@@ -1,4 +1,7 @@
 We are using https://github.com/ajaxorg/ace for the editor (BSD-3 LICENSE).
 Also for the watches, the jstree-table: https://github.com/adamjimenez/jstree-table (MIT LICENSE) came in handy :)
+Mysql bash script inspired from https://stackoverflow.com/questions/33470753/create-mysql-database-and-user-in-bash-script
+jQuery drop-down plugin https://github.com/claviska/jquery-dropdown
+Used for maintaining cookies https://github.com/js-cookie/js-cookie
 
-Trebuie creat un folder programs + npm install
+
