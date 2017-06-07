@@ -7,10 +7,14 @@ dezvoltare orice alt debugger online existent.
 
 	Rolul componentelor echipei:
 Ardelean Andrei-Timotei
-->
+-> IDE tools: configurarea editorului, watches, memory-watches; comunicarea cu
+serverul (comunicarea prin socket pentru a trimite comenzi catre docker),
+operatiile cu baza de date, continutul lectiilor.
 
 Gasparovici Andrei:
-->
+-> Securizarea aplicatiei: configurarea dockerului, crearea interfetei de
+comunicare cu gdb-ul, comunicarea intre server si docker; Grafica si
+componente de frontend, UI si UX.
 
 
 
