@@ -61,12 +61,9 @@ editor.on("guttermousedown", function (e) {
 });
 
 editor.getSession().on('change', function () {
-    Cookies.set('code', editor.getValue(), {
-        expires: 7
-    });
-});
-
-$(function () {
+    Cookies.set('code', editor.getValue());
+	console.log('Changed');
+	console.log(editor.getValue());
 });
 
 function toggleBreakpoint(row) {

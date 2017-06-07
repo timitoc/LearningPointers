@@ -138,12 +138,18 @@ socket.on('code_saved', function(data) {
     }
 });
 
+$(function(){
+	editor.setValue(Cookies.get('code'), 1);
+	console.log('Setting code from cookie');
+});
+
 socket.on('editor_source', function(data){
+	console.log('Recieved' + data);
 	if(data.indexOf('no source code') != -1){
 		if(Cookies.get('code'))
 			editor.setValue(Cookies.get('code'), 1);
 	} else {
-		console.log("editor: " + data);
+		console.log('Setting code from socket');
 		editor.setValue(data, 1);
 	}
 });
