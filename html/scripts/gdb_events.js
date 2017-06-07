@@ -63,28 +63,34 @@ socket.on('gdb_stderr', function(data){
 
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
-    updateWatchesData(data.watches);
-    simpleVar.updateVarData(data.watches);
-    pointerVar.updateVarData(data.watches);
-    memoryHandler.gatherVarData();
+	if(data.watches){
+		updateWatchesData(data.watches);
+		simpleVar.updateVarData(data.watches);
+		pointerVar.updateVarData(data.watches);
+		memoryHandler.gatherVarData();
+	}
     moveHighlight(data.line-1);
 });
 
 socket.on("next", function(data){
 	console.log(JSON.stringify(data));
 	console.log("next data: " + JSON.stringify(data));
-    updateWatchesData(data.watches);
-    simpleVar.updateVarData(data.watches);
-    pointerVar.updateVarData(data.watches);
-    memoryHandler.gatherVarData();
+	if(data.watches){
+		updateWatchesData(data.watches);
+		simpleVar.updateVarData(data.watches);
+		pointerVar.updateVarData(data.watches);
+		memoryHandler.gatherVarData();
+	}
     moveHighlight(data.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
-    updateWatchesData(data.watches);
-    simpleVar.updateVarData(data.watches);
-    pointerVar.updateVarData(data.watches);
-    memoryHandler.gatherVarData();
+	if(data.watches){
+		updateWatchesData(data.watches);
+		simpleVar.updateVarData(data.watches);
+		pointerVar.updateVarData(data.watches);
+		memoryHandler.gatherVarData();
+	}
     moveHighlight(data.line-1);
 });
 
