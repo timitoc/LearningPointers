@@ -1,21 +1,19 @@
 #!/usr/bin/env node
-
-//if(process.getuid || process.getuid() !== 0){
-//	console.log('Run this script as root!');
-//	process.exit(0);
-//}
-
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const path = require('path');
 const socketio_client = require('socket.io-client');
 const child_process = require('child_process');
+const body_parser = require('body-parser');
+const async = require('async');
+const Docker = require('dockerode');
+const Chance = require('chance');
 
-let async = require('async');
-let Docker = require('dockerode');
-let Chance = require('chance');
-let DBHandlerClass = require('./DbHandler.js');
+require('./sequelize');
+
+const DatabaseApi = require('./db_api');
+const DbApi = new DatabaseApi();
 
 let app = express();
 let http_server = http.Server(app);
@@ -23,10 +21,13 @@ let io = socketio(http_server);
 
 let chance = new Chance();
 let docker = new Docker();
-let handler = new DBHandlerClass();
-handler.init();
 
-app.use(require('express').static(path.join(__dirname,"html")));
+app.use(require('express').static(path.join(__dirname,"static")));
+
+app.use(body_parser.urlencoded({ extended: false }));
+app.use(body_parser.json());
+
+app.set('view engine', 'ejs');
 
 let CONTAINERS = {};
 let USED_PORTS = {};
@@ -45,14 +46,16 @@ io.on('connection', (socket) => {
 	console.log('A user connected with id ',socket.id);
 	let port = get_available_port();
 
-	handler.getCodeFromId(pathId,  function (code, status){
-		console.log('PATH ID');
-		console.log(pathId);
-		if (status === true)
-			socket.emit('editor_source', code);
-		else
-			socket.emit('editor_source', "There is no source code saved with this id");
-	});
+	if(pathId != -1){
+
+		DbApi.get_code(pathId).then(code => {
+			code = code.code;
+			if(code){
+				socket.emit('editor_source', code);
+			}
+			else socket.emit('editor_source', 'There is no source code saved with this id');
+		});
+	}
 
 	docker.createContainer({
 		Image: 'learning-pointers',
@@ -71,7 +74,6 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id] = socketio_client('http://localhost:'+port.toString());
 
 			CONTAINERS[socket.id].on('connect',()=>{
-				console.log('Connected to container!');
 			});
 
 			socket.on('code',(data)=>{
@@ -92,7 +94,6 @@ io.on('connection', (socket) => {
 
 			CONTAINERS[socket.id].on('add_watch', (data)=>{
 				socket.emit('add_watch', data);
-				console.log(data);
 			});
 
 			CONTAINERS[socket.id].on('gdb_stdout', (data)=>{
@@ -109,7 +110,6 @@ io.on('connection', (socket) => {
 
 			CONTAINERS[socket.id].on('debug', (data)=>{
 				socket.emit('debug', data);
-			   console.log("Debug data: " + JSON.stringify(data));
 			});
 
 			CONTAINERS[socket.id].on('step', (data)=>{
@@ -133,8 +133,6 @@ io.on('connection', (socket) => {
 			});
 
 			CONTAINERS[socket.id].on('print_expressions', (data)=>{
-				console.log("aici");
-				socket.emit('print_expressions', data);
 			});
 
 			socket.on('run',(data)=>{
@@ -158,7 +156,6 @@ io.on('connection', (socket) => {
 			});
 
 			socket.on('add_watch', (data)=>{
-				console.log("sending watch request " + data);
 				CONTAINERS[socket.id].emit('add_watch', data);
 			});
 
@@ -176,8 +173,8 @@ io.on('connection', (socket) => {
 
 			socket.on('save_code', (data) => {
 				console.log("saving " + JSON.stringify(data));
-				handler.addCode(data, function(result, status) {
-					socket.emit('code_saved', {id: result, status: status});
+				DbApi.add_code(data).then((id) => {
+					socket.emit('code_saved', {id: id});
 				});
 			});
 
@@ -197,20 +194,37 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, "html", "index.html"));
+	res.render("home");
 });
 
 app.get('/code',(req,res)=>{
-	res.sendFile(path.join(__dirname,"html","editor.html"));
+	res.render("editor");
 });
 
 app.get('/code/:id', (req, res)=>{
 	pathId = req.params.id;
-	res.sendFile(path.join(__dirname,"html","ide.html"));
+	res.render("editor");
 });
 
-app.get('/admin/add', (req, res) => {
-	res.sendFile(path.join(__dirname, "html", "admin", "add.html"));
+app.get('/lessons', (req, res) =>{
+	DbApi.get_lessons().then(data => {
+		res.render("lessons", {
+			lessons: data
+		});
+	});
+});
+
+app.get('/lesson/add', (req, res) => {
+	res.render("lesson_add", {});
+});
+
+
+app.get('/lesson/:id', (req, res) => {
+	DbApi.get_lesson_by_id(req.params.id).then(lesson => {
+		res.render("lesson", {
+			lesson: lesson
+		});
+	});
 });
 
 http_server.listen(3000,()=>{

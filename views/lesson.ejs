@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet"/>
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+	<script src="/scripts/markdown.min.js"></script>
+	<script src="/scripts/jquery-3.2.1.min.js"></script>
+
+	<script>
+	<% if (lesson) { %>
+		var md = '<%=lesson.content%>';
+	<% } else { %>
+		var md = '';
+	<% } %>
+		console.log(md);
+		var html = markdown.toHTML(md);
+
+		$(function(){
+			$("#content").html(html);
+		});
+	</script>
+
+	<style>
+	body{
+		font-family: 'Roboto', sans-serif !important;
+		margin: 10px auto;
+		width: 80%;
+	}
+	</style>
+	<title>LearningPointers</title>
+</head>
+<body>
+	<% if (lesson) { %>
+	<h1><%= lesson.title %></h1>
+	<% } %>
+	<div id="content">
+	</div>
+</body>
+</html>

@@ -61,7 +61,7 @@ editor.on("guttermousedown", function (e) {
 });
 
 editor.getSession().on('change', function () {
-    Cookies.set('code', editor.getValue());
+    //Cookies.set('code', editor.getValue());
 	console.log('Changed');
 	console.log(editor.getValue());
 });

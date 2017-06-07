@@ -110,9 +110,6 @@ socket.on("print_expressions", function(data){
     recievedData(data);
 });
 
-// socket.on('add_watch',function(data){
-// 	updateWatchesData(data);
-// });
 socket.on('add_watch', function(data){
     console.log(JSON.stringify(data));
     var x = {};
@@ -130,28 +127,13 @@ socket.on('run', function(data){
 });
 
 socket.on('code_saved', function(data) {
-    if (data.status == false) {
-        alert("saving failed");
-    }
-    else {
-        alert("Code successfully saved as http://localhost:3000/code/" + data.id);
-    }
-});
-
-$(function(){
-	editor.setValue(Cookies.get('code'), 1);
-	console.log('Setting code from cookie');
+	data = data.id;
+	alert("Code successfully saved as http://localhost:3000/code/" + data);
 });
 
 socket.on('editor_source', function(data){
 	console.log('Recieved' + data);
-	if(data.indexOf('no source code') != -1){
-		if(Cookies.get('code'))
-			editor.setValue(Cookies.get('code'), 1);
-	} else {
-		console.log('Setting code from socket');
-		editor.setValue(data, 1);
-	}
+	editor.setValue(data, 1);
 });
 
 socket.on('add_breakpoints_result', function(data){

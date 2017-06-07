@@ -11,6 +11,13 @@ body, html{
 	padding: 10px;
 }
 
+#options{
+	padding: 0;
+}
+#options li{
+	padding: 10px;
+}
+
 #pls{
 	margin: 10px !important;
 }
