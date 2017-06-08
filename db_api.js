@@ -42,6 +42,18 @@ class DatabaseApi{
 			});
 		});
 	}
+
+	add_lesson(title, content){
+		return new Promise((resolve, reject) => {
+			Lesson.create({
+				title: title,
+				content: content
+			}).then((newlesson)=>{
+				resolve(newlesson.id);
+			});
+		});
+
+	}
 }
 
 module.exports = DatabaseApi;

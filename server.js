@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
@@ -9,6 +10,7 @@ const body_parser = require('body-parser');
 const async = require('async');
 const Docker = require('dockerode');
 const Chance = require('chance');
+const basicAuth = require('express-basic-auth')
 
 require('./sequelize');
 
@@ -214,8 +216,21 @@ app.get('/lessons', (req, res) =>{
 	});
 });
 
-app.get('/lesson/add', (req, res) => {
+app.get('/lesson/add',
+basicAuth({
+    users: {
+		'andrei' : 'infoeducatie'
+	},
+	challenge: true,
+    realm: 'Nu aveti permisiuni pentru a accesa pagina'
+}), (req, res) => {
 	res.render("lesson_add", {});
+});
+
+app.post('/lesson/add', (req, res) => {
+	DbApi.add_lesson(req.body.title, req.body.content).then(newlesson => {
+		res.send('Saved with id '+newlesson);
+	});
 });
 
 

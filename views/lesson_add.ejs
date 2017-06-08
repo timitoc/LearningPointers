@@ -7,7 +7,12 @@
 
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"> 
 	<script src="/scripts/jquery-3.2.1.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+	<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
 
 	<style>
 	body{
@@ -19,6 +24,17 @@
 	<title>LearningPointers</title>
 </head>
 <body>
-	baga
+	<h2>Introduceti continutul noii lectii in Markdown: </h2>
+	<form action="/lesson/add" method="post" class="pure-form">
+		<label>Titlu: </label>
+		<input type="text" name="title" required/>
+		<br/>
+		<br/>
+		<textarea name="content"></textarea>
+		<script>
+			var simplemde = new SimpleMDE();
+		</script>
+		<button class="pure-button" style="cursor:pointer">Save</button>
+	</form>
 </body>
 </html>

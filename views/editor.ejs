@@ -15,6 +15,7 @@
 		<style>
 		body{
 			font-family: 'Roboto', sans-serif !important;
+			background: #F0F0F0;
 		}
 		</style>
 
@@ -61,7 +62,7 @@
 						<button id="run_code_button" class="pure-button">
 							<!--<i class="fa fa-play" aria-hidden="true"></i>--> Start
 						</button>
-						<button id="stop_button" class="pure-button" disabled>
+						<button id="stop_button" class="pure-button" >
 							<!--<i class="fa fa-stop" aria-hidden="true"></i>--> Stop
 						</button>
 						<button id="step_debugger" class="pure-button" disabled>
@@ -78,7 +79,7 @@
 						</button>
 						<button data-jq-dropdown="#jq-dropdown-1" class="pure-button">Options </button>
 					</div>
-					<div id="editor"></div>
+					<div id="editor">//Write your code here</div>
 				</center>
 				<br/>
 				<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
@@ -109,7 +110,7 @@
 				<div class="pure-form">
 
 					<textarea rows=6 cols=27 id="input" placeholder="Enter program input"></textarea>
-					<textarea rows=6 cols=27 id="output" placeholder="Program output" disabled></textarea>
+					<textarea rows=6 cols=27 id="output" placeholder="Program output" ></textarea>
 				</div>
 				</center>
 				<script>

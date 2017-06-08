@@ -66,7 +66,7 @@ function addJstreeData(element) {
                 draggable: false,
                 contextmenu: true,
                 width: 300,
-                height: 300
+                height: 350
             },
         });
         $('#pls').click(function () {

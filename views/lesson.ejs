@@ -12,17 +12,12 @@
 	<script src="/scripts/jquery-3.2.1.min.js"></script>
 
 	<script>
-	<% if (lesson) { %>
-		var md = '<%=lesson.content%>';
-	<% } else { %>
-		var md = '';
-	<% } %>
-		console.log(md);
-		var html = markdown.toHTML(md);
-
-		$(function(){
-			$("#content").html(html);
-		});
+	$(function(){
+		$("#raw").hide();
+		var html = markdown.toHTML($("#raw").text());
+		$("#content").html(html);
+	});
+	</script>
 	</script>
 
 	<style>
@@ -30,15 +25,40 @@
 		font-family: 'Roboto', sans-serif !important;
 		margin: 10px auto;
 		width: 80%;
+		background-color: #f0f0f0;
+	}
+	h1{
+		margin-left: 50px;
+		font-size: 220%;
+		outline: none;
+		border-radius: 2px;
+		border-style: none;
+		background-color: seagreen;
+		padding: 10px;
+		padding-left: 15px;
+		padding-right: 15px;
+		text-decoration: none;
+		color: #FFFFFF;
+		transition: all 0.3s ease 0s;
+		cursor: pointer;
+		margin-bottom: 50px;
 	}
 	</style>
 	<title>LearningPointers</title>
 </head>
 <body>
+	<% if (lesson){ %>
+	<div id="raw"><%=lesson.content%></div>
 	<% if (lesson) { %>
 	<h1><%= lesson.title %></h1>
 	<% } %>
 	<div id="content">
 	</div>
+	<% } else { %>
+		<center>
+			<h2>Lesson not found</h2>
+		</center>
+
+	<% } %>
 </body>
 </html>
