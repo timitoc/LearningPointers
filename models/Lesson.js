@@ -16,7 +16,7 @@ const Lesson = sequelize.define('lesson', {
 		type: Sequelize.TEXT,
 		allowNull: false
 	}
-});
+},{charset: 'utf8',collate: 'utf8_unicode_ci'});
 
 if(process.env.ENVIRONMENT == 'development'){
 	Lesson.sync({force: true}).then(() => {
