@@ -107,6 +107,7 @@ function recievedData(data) {
 }
 
 socket.on("print_expressions", function(data){
+	console.log("here print expr");
     recievedData(data);
 });
 

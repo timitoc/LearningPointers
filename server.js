@@ -135,6 +135,7 @@ io.on('connection', (socket) => {
 			});
 
 			CONTAINERS[socket.id].on('print_expressions', (data)=>{
+				socket.emit('print_expressions', data);
 			});
 
 			socket.on('run',(data)=>{
