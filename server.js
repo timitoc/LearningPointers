@@ -217,7 +217,7 @@ app.get('/lessons', (req, res) =>{
 	});
 });
 
-app.get('/lesson/add',
+app.get('/lessons/add',
 basicAuth({
     users: {
 		'andrei' : 'infoeducatie'
@@ -228,7 +228,7 @@ basicAuth({
 	res.render("lesson_add", {});
 });
 
-app.post('/lesson/add', (req, res) => {
+app.post('/lessons/add', (req, res) => {
 	DbApi.add_lesson(req.body.title, req.body.content).then(newlesson => {
 		res.send('Saved with id '+newlesson);
 	});
@@ -241,6 +241,16 @@ app.get('/lesson/:id', (req, res) => {
 			lesson: lesson
 		});
 	});
+});
+
+app.get('/admin', basicAuth({
+    users: {
+		'andrei' : 'infoeducatie'
+    },
+    challenge: true,
+    realm: 'Nu aveti permisiuni pentru a accesa pagina'
+}), (req, res) => {
+    res.render("admin/index");
 });
 
 http_server.listen(3000,()=>{

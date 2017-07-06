@@ -5,36 +5,70 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet"/>
 
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>-->
 
-	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"> 
+    <!--<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">-->
+
 	<script src="/scripts/jquery-3.2.1.min.js"></script>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-	<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <link
+         rel="stylesheet"
+         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+         crossorigin="anonymous">
 
+    <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 
-	<style>
-	body{
-		font-family: 'Roboto', sans-serif !important;
-		margin: 10px auto;
-		width: 80%;
-	}
-	</style>
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet" href="/style_sheets/lesson_add.css">
+
+    <!-- Nu mai folosim SimpleMDE -->
+	<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>-->
+
+    <!-- Showdown JS ftw -->
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
+
 	<title>LearningPointers</title>
 </head>
 <body>
-	<h2>Introduceti continutul noii lectii in Markdown: </h2>
-	<form action="/lesson/add" method="post" class="pure-form">
-		<label>Titlu: </label>
-		<input type="text" name="title" required/>
-		<br/>
-		<br/>
-		<textarea name="content"></textarea>
-		<script>
-			var simplemde = new SimpleMDE();
-		</script>
-		<button class="pure-button" style="cursor:pointer">Save</button>
-	</form>
+    <div class="container">
+        <h2>Enter new lesson content (in markdown)</h2>
+        <small>
+            For more information regarding markdown syntax, read the
+            <a href="https://github.com/showdownjs/showdown/wiki/Showdown's-Markdown-syntax">documentation</a>
+        </small>
+        <br>
+        <br>
+        <div class="form-group">
+            <label>Title: </label>
+            <input type="text" name="title" required class="form-control" autofocus/>
+        </div>
+        <div class="row">
+            <div class="col-lg-5">
+                <form action="/lesson/add" method="post">
+                    <div class="form-group">
+                        <label>Content: </label>
+                        <div id="editor"></div>
+                    </div>
+                    <button class="btn btn-primary">Save</button>
+                </form>
+            </div>
+            <div class="col-lg-5" id="view-container">
+                <label>Preview: </label>
+                <div id="view"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- ACE Setup -->
+    <script src="/scripts/lesson_add.js"></script>
 </body>
 </html>
