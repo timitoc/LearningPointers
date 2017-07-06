@@ -66,11 +66,17 @@ editor.getSession().on('change', function () {
 	console.log(editor.getValue());
 });
 
+Array.prototype.myActualIndexOf = function(element){
+    for (var i = 0; i < this.length; i++)
+        if (Object.equals(this[i], element))
+            return i;
+    return -1;
+}
+
 function toggleBreakpoint(row) {
     var breakpoints = editor.session.getBreakpoints(row, 0);
     if (typeof breakpoints[row] === typeof undefined) {
         editor.session.setBreakpoint(row);
-        //socket.emit("add_breakpoint", row+1);
         if (Global.status === 'debugging') {
             console.log("epa");
             var tosa = [];
@@ -81,11 +87,13 @@ function toggleBreakpoint(row) {
     }
     else {
         editor.session.clearBreakpoint(row);
-        //socket.emit("remove_breakpoint", row+1);
         if (Global.status === 'debugging') {
             sendCommand("clear " + (row + 1));
         }
-        var index = Global.breakpointsArray.indexOf({ line: row + 1 });
+        var elem = {line: row+1};
+        //console.log("Looking for " + JSON.stringify(elem) + " in " + JSON.stringify(Global.breakpointsArray));
+        var index = Global.breakpointsArray.myActualIndexOf(elem);
+        //console.log("Found index " + index);
         if (index >= 0)
             Global.breakpointsArray.splice(index, 1);
     }

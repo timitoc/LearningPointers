@@ -138,5 +138,5 @@ socket.on('editor_source', function(data){
 });
 
 socket.on('add_breakpoints_result', function(data){
-    console.log(data);
+    console.log('add_breakpoints_result ' + JSON.stringify(data));
 });

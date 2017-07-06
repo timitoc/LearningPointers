@@ -10,6 +10,7 @@ $("#compile_code_button").click(function() {
 
 $("#run_code_button").click(function() {
     Global.status = 'debugging';
+    alert('run with ' + JSON.stringify(Global.breakpointsArray));
     socket.emit("run", {
 		br:Global.breakpointsArray,
 		we:expresionList,
@@ -17,11 +18,6 @@ $("#run_code_button").click(function() {
 	});
 });
 
-$("#add_breakpoint_button").click(function() {
-    var pos = editor.getCursorPosition();
-    var crtRow = parseInt(pos.row)+1;
-    toggleBreakpoint(crtRow-1);
-})
 $("#step_debugger").click(function() {
     stepDebugger();
 });
