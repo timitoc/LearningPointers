@@ -78,20 +78,16 @@ io.on('connection', (socket) => {
 			CONTAINERS[socket.id].on('connect',()=>{
 			});
 
-			socket.on('code',(data)=>{
-				CONTAINERS[socket.id].emit('code',data);
-			});
-
-			socket.on('stop', (data) => {
-				CONTAINERS[socket.id].emit('stop');
-			})
-
 			CONTAINERS[socket.id].on('compile_error',(data)=>{
-				socket.emit('compile_error',data);
+				socket.emit('compile_result', data);
 			});
 
 			CONTAINERS[socket.id].on('compile_success',(data)=>{
-				socket.emit('compile_error',data);
+				socket.emit('compile_result', data);
+			});
+
+			CONTAINERS[socket.id].on('run', (data)=>{
+				socket.emit('run', data);
 			});
 
 			CONTAINERS[socket.id].on('add_watch', (data)=>{
@@ -130,14 +126,23 @@ io.on('connection', (socket) => {
 				socket.emit('add_breakpoints_result', data);
 			});
 
-			socket.on('print_expressions', data => {
-				CONTAINERS[socket.id].emit('print_expressions', data);
-			});
-
 			CONTAINERS[socket.id].on('print_expressions', (data)=>{
 				socket.emit('print_expressions', data);
 			});
 
+			socket.on('code',(data)=>{
+				CONTAINERS[socket.id].emit('code',data);
+			});
+
+			socket.on('stop', (data) => {
+				CONTAINERS[socket.id].emit('stop');
+			});
+
+			socket.on('print_expressions', data => {
+				CONTAINERS[socket.id].emit('print_expressions', data);
+			});
+
+			
 			socket.on('run',(data)=>{
 				CONTAINERS[socket.id].emit('run',data);
 			});

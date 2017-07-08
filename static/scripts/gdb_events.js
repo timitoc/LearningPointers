@@ -1,6 +1,6 @@
 var socket = io();
 
-$("#run_code_button").prop('disabled', true);
+$("#stop_button").prop('disabled', true);
 $("#step_debugger").prop('disabled', true);
 $("#next_debugger").prop('disabled', true);
 $("#continue_debugger").prop('disabled', true);
@@ -19,35 +19,26 @@ socket.on("program_stdout", function(data){
 	$("#output").val(data);
 });
 
-socket.on("compile_error",function(data){
+socket.on("compile_result",function(data){
 	waitingDialog.hide();
-
 	$("#errors").text(data);
 	$("#compilation_error_modal").modal();
 
 	if(data == "Successfully compiled!"){
 		console.log("Sucessfully compiled!");
-		$("#run_code_button").prop('disabled', false);
-		$("#step_debugger").prop('disabled', false);
-		$("#next_debugger").prop('disabled', false);
-		$("#continue_debugger").prop('disabled', false);
-		$("#stop_button").prop('disabled', false);
-		$("#pls").prop('disabled', false);
+		var brArray = [];
+		if (Global.status == "debugging")
+			brArray = Global.breakpointsArray;
+		socket.emit("run", {
+			br: brArray,
+			we: expresionList,
+			input: $("#input").val()
+		});
 	}
-
-	else console.log("Compilation error!");
-});
-
-socket.on("compile_success",function(data){
-	$("#errors").text(data);
-	$("#compilation_error_modal").modal();
-
-
-	$("#run_code_button").prop('disabled', false);
-	$("#step_debugger").prop('disabled', false);
-	$("#next_debugger").prop('disabled', false);
-	$("#continue_debugger").prop('disabled', false);
-	$("#pls").prop('disabled', false);
+	else {
+		console.log("Compilation error!");
+		Global.status = "off";
+	}
 });
 
 socket.on('debug', function(data){
@@ -122,9 +113,16 @@ socket.on('add_watch', function(data){
 });
 
 socket.on('run', function(data){
-	alert('RUN'+data);
+	console.log("RUN " + JSON.stringify(data));
 	if(data.line)
 		moveHighlight(data.line-1);
+	if (Global.status == "debugging") {
+		$("#step_debugger").prop('disabled', false);
+		$("#next_debugger").prop('disabled', false);
+		$("#continue_debugger").prop('disabled', false);
+		$("#stop_button").prop('disabled', false);
+		$("#pls").prop('disabled', false);
+	}
 });
 
 socket.on('code_saved', function(data) {

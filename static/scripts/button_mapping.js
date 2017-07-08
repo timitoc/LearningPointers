@@ -3,19 +3,24 @@ var debuggerLine;
 var crtLineMarker;
 
 $("#compile_code_button").click(function() {
-    var code = editor.getValue();
-	waitingDialog.show('Compiling...');
-    socket.emit("code",code);
+    
+});
+
+$("#debug_code_button").click(function() {
+    Global.status = "debugging";
+    startDebugging();
 });
 
 $("#run_code_button").click(function() {
-    Global.status = 'debugging';
-    socket.emit("run", {
-		br:Global.breakpointsArray,
-		we:expresionList,
-		input: $("#input").val()
-	});
+    Global.status = "running";
+    startDebugging();
 });
+
+function startDebugging() {
+    var code = editor.getValue();
+	waitingDialog.show('Compiling...');
+    socket.emit("code",code);
+}
 
 $("#step_debugger").click(function() {
     stepDebugger();
