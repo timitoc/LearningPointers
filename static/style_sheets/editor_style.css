@@ -39,7 +39,7 @@ body, html{
 }
 .myMarker {
 	position:absolute;
-	background-color: #505050;
+	background-color: #505050 !important;
 	/*z-index:20*/
 }
 .ace_gutter-cell.ace_breakpoint{ 
