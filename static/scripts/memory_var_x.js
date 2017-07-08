@@ -3,6 +3,7 @@ var MemoryVarHandler = function(tip) {
     this.tip = tip;
     this.treeEquiv;
     this.hm = {};
+    this.hmsize = {};
 }
 
 
@@ -100,7 +101,10 @@ MemoryVarHandler.prototype.initTable = function() {
         self.JUIElement.bind("hover_node.jstree", function (evt, data) {
             //console.log(data.node.text);
             // TODO: use that text to acces pointer location from hm, and move selection to that adress
-            memoryHandler.select(self.hm[data.node.text]);
+            if (self.hmsize[data.node.text])
+                memoryHandler.select(self.hm[data.node.text], self.hmsize[data.node.text]);
+            else
+                memoryHandler.select(self.hm[data.node.text], 1);
         });
 
     });
@@ -119,15 +123,20 @@ MemoryVarHandler.prototype.getEntries = function() {
 
 MemoryVarHandler.prototype.removeDisplay = function(exprName) {
     if (exprName === "") return;
+    exprName = Global.htmlDecode(exprName);
     if (this.tip === "Simple")
         exprName = "&" + exprName;
     removeExpressionFromDisplayList(exprName);
+    removeExpressionFromDisplayList(sizeFormat(exprName));
 }
 
 MemoryVarHandler.prototype.addDiplay = function(exprName) {
     if (exprName === "") return;
-    if (this.tip === "Simple")
+    exprName = Global.htmlDecode(exprName);
+    if (this.tip === "Simple") {
+        addExpressionToDiplayList(sizeFormat(exprName)); /// added without &
         exprName = "&" + exprName;
+    }
     addExpressionToDiplayList(exprName);
 }
 
@@ -138,14 +147,24 @@ MemoryVarHandler.prototype.updateVarData = function(jsonObject) {
             if (!(v[i].parent === "#"))
                 continue;
             var txt = "" + Global.htmlDecode(v[i].text);
+            if (this.tip === "Simple" && jsonObject.hasOwnProperty(sizeFormat(txt))) {
+                this.hmsize[txt] = parseInt(jsonObject[sizeFormat(txt)]);
+            }
+            else
+                this.hmsize[txt] = 1;
             if (this.tip === "Simple")
                 txt = "&" + v[i].text;
             console.log("vreau " + txt);
             if (jsonObject.hasOwnProperty(txt)) { 
                 this.hm["" + v[i].text] = extract(jsonObject[txt]);    
             }
+            
         }
         notifyChange();
+}
+
+var sizeFormat = function(expr) {
+    return "sizeof (" + expr + ")";
 }
 
 var extract = function(str) {

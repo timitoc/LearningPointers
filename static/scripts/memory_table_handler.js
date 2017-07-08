@@ -52,7 +52,7 @@ MemoryHandler.prototype.gatherVarData = function() {
         a.push(b[i]);
     }
     this.adresses = uniq(a);
-    console.log(this.adresses);
+    console.log("gatherVarData adresses " + this.adresses);
 }
 
 MemoryHandler.prototype.reColor = function() {
@@ -82,13 +82,25 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     //filteredCells.css('color', 'red');
 }
 
-MemoryHandler.prototype.select = function(str) {
-    console.log("looking for " + str);
+/* Old version, to be removed
+
+MemoryHandler.prototype.select = function(str, size) {
+    console.log("looking for " + str + " with size " + size) ;
     var ind = findIndex(this.adresses, str);
     console.log("Selected index is " + ind);
     if (ind === -1) return;
     ++ind;
-    this.highlight(ind, ind);
+    this.highlight(ind, ind+size-1);
+}*/
+
+MemoryHandler.prototype.select = function(str, size) {
+    console.log("looking for " + str + " with size " + size) ;
+    var nr = parseInt(str, 16);
+    var ind = (nr - parseInt(this.adresses[0], 16));
+    console.log("Selected index is " + ind);
+    if (ind < 0) return;
+    ++ind;
+    this.highlight(ind, ind+size-1);
 }
 
 function findIndex(array, elem) {

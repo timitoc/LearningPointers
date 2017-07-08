@@ -58,58 +58,40 @@ socket.on('gdb_stderr', function(data){
 
 socket.on("step", function(data){
     console.log("step data: " + JSON.stringify(data));
-	if(data.watches){
-		updateWatchesData(data.watches);
-		simpleVar.updateVarData(data.watches);
-		pointerVar.updateVarData(data.watches);
-		memoryHandler.gatherVarData();
-	}
+	recievedData(data.watches);
     moveHighlight(data.line-1);
 });
 
 socket.on("next", function(data){
-	console.log(JSON.stringify(data));
 	console.log("next data: " + JSON.stringify(data));
-	if(data.watches){
-		updateWatchesData(data.watches);
-		simpleVar.updateVarData(data.watches);
-		pointerVar.updateVarData(data.watches);
-		memoryHandler.gatherVarData();
-	}
+	recievedData(data.watches);
     moveHighlight(data.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
-	if(data.watches){
-		updateWatchesData(data.watches);
-		simpleVar.updateVarData(data.watches);
-		pointerVar.updateVarData(data.watches);
-		memoryHandler.gatherVarData();
-	}
+	recievedData(data.watches);
     moveHighlight(data.line-1);
 });
 
-function recievedData(data) {
-    console.log(data);
-    updateWatchesData(data);
-    simpleVar.updateVarData(data);
-    pointerVar.updateVarData(data);
-    memoryHandler.gatherVarData();
-}
-
 socket.on("print_expressions", function(data){
-	console.log("here print expr");
+	console.log("print expressions " + JSON.stringify(data));
     recievedData(data);
 });
 
+function recievedData(dataWatches) {
+	if (dataWatches) {
+		updateWatchesData(dataWatches);
+		simpleVar.updateVarData(dataWatches);
+		pointerVar.updateVarData(dataWatches);
+		memoryHandler.gatherVarData();
+	}
+}
+
 socket.on('add_watch', function(data){
-    console.log(JSON.stringify(data));
+    console.log("add watch " + JSON.stringify(data));
     var x = {};
     x[data.result.expr] = data.result.value;
-    updateWatchesData(x);
-    simpleVar.updateVarData(x);
-    pointerVar.updateVarData(x);
-    memoryHandler.gatherVarData();
+    recievedData(x);
 });
 
 socket.on('run', function(data){
