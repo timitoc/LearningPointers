@@ -10,7 +10,6 @@ $("#compile_code_button").click(function() {
 
 $("#run_code_button").click(function() {
     Global.status = 'debugging';
-    alert('run with ' + JSON.stringify(Global.breakpointsArray));
     socket.emit("run", {
 		br:Global.breakpointsArray,
 		we:expresionList,
@@ -25,24 +24,16 @@ $("#next_debugger").click(function(){
 	nextDebugger();
 });
 $("#continue_debugger").click(function(){
-	//socket.emit("continue");
-	//requestUpdateWatches();
     continueDebuger();
 });
 $("#stop_button").click(function(){
 	socket.emit("stop");
 });
 
-$("#expressions_button").click(function(){
-    var expr = prompt('Enter some expressions','').split(',');
-    socket.emit('add_watch',expr);
-});
-
 $("#save_code").click(function() {
     var cod = editor.getValue();
     socket.emit('save_code', cod);
 });
-let temp = 2;
 
 function stepDebugger() {
     socket.emit("step", expresionList);

@@ -27,11 +27,6 @@ $( document ).ready(function() {
     $("#left_content").append(wrapper2);
 
     watchTable();
-
-    /// TODO: Set editor value given by URL
-    //editor.setValue("gigea", 1);
-
-    //var result = convertGDBToJSON("e = {fi = 12, se = 23}");
     var result = convertGDBToJSON("es = {fi = 0, se = 23}");
     console.log(JSON.stringify(result));
 });
