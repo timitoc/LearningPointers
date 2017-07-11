@@ -55,7 +55,13 @@ $("#enable_vim").change(function () {
 
 editor.on("guttermousedown", function (e) {
     var row = e.getDocumentPosition().row;
-    toggleBreakpoint(row);
+    var gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
+    if (gutterRegion == "foldWidgets") {
+        console.log("Folding");
+    }
+    else {
+        toggleBreakpoint(row);
+    }
 });
 
 editor.getSession().on('change', function () {
