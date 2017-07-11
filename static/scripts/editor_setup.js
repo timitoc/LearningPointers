@@ -51,19 +51,6 @@ $("#enable_vim").change(function () {
     toggle_vim();
 });
 
-
-
-editor.on("guttermousedown", function (e) {
-    var row = e.getDocumentPosition().row;
-    var gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
-    if (gutterRegion == "foldWidgets") {
-        console.log("Folding");
-    }
-    else {
-        toggleBreakpoint(row);
-    }
-});
-
 editor.getSession().on('change', function () {
     //Cookies.set('code', editor.getValue());
 	console.log('Changed');
@@ -77,6 +64,7 @@ Array.prototype.myActualIndexOf = function(element){
     return -1;
 }
 
+setGutterInteractions();
 function toggleBreakpoint(row) {
     var breakpoints = editor.session.getBreakpoints(row, 0);
     if (typeof breakpoints[row] === typeof undefined) {
@@ -95,9 +83,7 @@ function toggleBreakpoint(row) {
             sendCommand("clear " + (row + 1));
         }
         var elem = {line: row+1};
-        //console.log("Looking for " + JSON.stringify(elem) + " in " + JSON.stringify(Global.breakpointsArray));
         var index = Global.breakpointsArray.myActualIndexOf(elem);
-        //console.log("Found index " + index);
         if (index >= 0)
             Global.breakpointsArray.splice(index, 1);
     }
