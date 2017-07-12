@@ -84,28 +84,43 @@
 				<br/>
 				<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
 					<div class="jq-dropdown-panel">
-					<ul id="options">
+						<ul id="options">
+							<li>
+								<label class="checkbox-inline">
+									<input data-toggle="toggle" type="checkbox" id="enable_vim"/>&nbsp;Enable VIM
+								</label>
+
+							</li>
+							<li>
+								Choose theme
+								<select class="selectpicker">
+									<option value="dark">Dark</option>
+									<option value="light">Light</option>
+								</select>
+							</li>
+							<li>
+								<button id="full_screen" class="pure-button">
+									Full Screen
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<span id="br_parent">
+					<ul id="breakpoint_options">
 						<li>
 							<label class="checkbox-inline">
-								<input data-toggle="toggle" type="checkbox" id="enable_vim"/>&nbsp;Enable VIM
+								<input  data-toggle="toggle" type="checkbox" id="temp_br"/>
+									<span style="color: white">&nbsp;Temporary</span>
 							</label>
 
 						</li>
 						<li>
-							Choose theme
-							<select class="selectpicker">
-								<option value="dark">Dark</option>
-								<option value="light">Light</option>
-							</select>
-						</li>
-						<li>
-							<button id="full_screen" class="pure-button">
-								Full Screen
-							</button>
+							<span style="color: white">Condition</span>
+							<input type="text" id="cond_br"/>
 						</li>
 					</ul>
-					</div>
-				</div>
+				</span>
 				<center>
 				<div class="pure-form">
 
