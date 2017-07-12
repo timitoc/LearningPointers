@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const Subject = require('rxjs/Subject').Subject;
 const EventEmitter = require('events');
-const chokidar = require('chokidar');
 
 const PrintParser = require('./PrintParser.js');
 
@@ -25,23 +24,15 @@ class GDB{
 		this.stdout = new EventEmitter();
 		this.stderr = new EventEmitter();
 
-		this.program_stdout = new EventEmitter();
-		this.init_output_file();
-
-		this.watcher = chokidar.watch('output.txt');
-
-		this.watcher.on('change', () => {
-			this.program_stdout.emit('data', fs.readFileSync('output.txt').toString());
-		});
 
 		this.breakpoints = [];
 
 		this.process.stdout.on('data', (data) => {
 
 			data = data.toString();
+			console.log('Got on stdout: ', data);
 
 			this.stdout.emit('data', data);
-
 
 			if(!/^\s+$/.test(data.toString())){
 				this.buffer_stdout += data.toString();
@@ -142,15 +133,15 @@ class GDB{
 	}
 
 	/**
-	* Adds multiple breakpoints
-	* @param {breaks} Breakpoints to be added
-	* Breakpoint format:
-	* {
-	*		line: ..., (number)
-	*		condition: ...., (boolean expression)
-	*		temporary: true/false
-	* }
-	*/
+	 * Adds multiple breakpoints
+	 * @param {breaks} Breakpoints to be added
+	 * Breakpoint format:
+	 * {
+	 *		line: ..., (number)
+	 *		condition: ...., (boolean expression)
+	 *		temporary: true/false
+	 * }
+	 */
 
 	add_breakpoints(breaks){
 		return new Promise((resolve, reject) => {
@@ -213,7 +204,6 @@ class GDB{
 	run(){
 		return new Promise((resolve, reject) => {
 			this.clear();
-			this.init_output_file();
 			this.send_command('run < input.txt > output.txt').then(output => {
 				if(this.breakpoints.length != 0){
 					resolve({
@@ -236,8 +226,8 @@ class GDB{
 		return this.send_command('kill');
 	}
 
-    /**
-     * Prints the value of an expression
+	/**
+	 * Prints the value of an expression
 	 * @param {string} expr The expression to be printed
 	 */
 	print_expression(expr, callback){
@@ -279,9 +269,9 @@ class GDB{
 	}
 
 	/**
-	* Checks if an expression is valid
-	* @param {string} expr
-	*/
+	 * Checks if an expression is valid
+	 * @param {string} expr
+	 */
 
 	check_expression(expr){
 		return new Promise((resolve, reject) => {
@@ -342,7 +332,7 @@ class GDB{
 		});
 	}
 
-    /**
+	/**
 	 * Sends the step command to the debugger and prints watches
 	 * @param {array} watches The array of expression to be printed
 	 */
@@ -365,7 +355,7 @@ class GDB{
 		});
 	}
 
-    /**
+	/**
 	 * Sends the continue command to the debugger and prints watches
 	 * @param {array} watches The array of expression to be printed
 	 */

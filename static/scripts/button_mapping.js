@@ -1,9 +1,24 @@
+function toggle_running_state(x) { // true or false
+	if(x)
+	{
+		$("#running_state").text("Running");
+		editor.setReadOnly(true);
+		editor.renderer.$cursorLayer.element.style.display="none";
+	}
+	else
+	{
+		$("#running_state").text("Stopped");
+		editor.setReadOnly(false);
+		editor.renderer.$cursorLayer.element.style.display="";
+	}
+}
+
 var makers = {};
 var debuggerLine;
 var crtLineMarker;
 
 $("#compile_code_button").click(function() {
-    
+
 });
 
 $("#debug_code_button").click(function() {
@@ -33,6 +48,7 @@ $("#continue_debugger").click(function(){
 });
 $("#stop_button").click(function(){
 	socket.emit("stop");
+	toggle_running_state(false);
 });
 
 $("#save_code").click(function() {

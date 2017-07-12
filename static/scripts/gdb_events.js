@@ -19,10 +19,20 @@ socket.on("program_stdout", function(data){
 	$("#output").val(data);
 });
 
+//socket.on("running_state", function(data) {
+//	console.log('RUNNING STATE', data);
+//	switch(data) {
+//		case "running":
+//			$("#running_state").text("Running");
+//			break;
+//		case "stopped":
+//			$("#running_state").text("Stopped");
+//			break;
+//	}
+//});
+
 socket.on("compile_result",function(data){
 	waitingDialog.hide();
-	$("#errors").text(data);
-	$("#compilation_error_modal").modal();
 
 	if(data == "Successfully compiled!"){
 		console.log("Sucessfully compiled!");
@@ -34,10 +44,13 @@ socket.on("compile_result",function(data){
 			we: expresionList,
 			input: $("#input").val()
 		});
+		toggle_running_state(true);
 	}
 	else {
 		console.log("Compilation error!");
 		Global.status = "off";
+		$("#errors").text(data);
+		$("#compilation_error_modal").modal();
 	}
 });
 
@@ -50,6 +63,9 @@ socket.on('debug', function(data){
 
 socket.on('gdb_stdout', function(data){
 	console.log(data);
+	if(data.indexOf("[Inferrior process") != -1) {
+		$("#running_state").text("Stopped");
+	}
 });
 
 socket.on('gdb_stderr', function(data){
