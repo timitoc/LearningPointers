@@ -60,12 +60,17 @@ function moveInRegion(e) {
         return;
     }
     BROShown = position.row;
-    var left = (e.clientX+2) + "px"; 
-    var top = (e.clientY+2) + "px"; 
-    
+    //var left = (e.clientX+2) + "px"; 
+    //var top = (e.clientY+2) + "px"; 
+    //console.log(JSON.stringify( $('#editor_parent').offset()));
+    /// DO NOT TOUCH THE FOLLOWING 4 LINES
+    var left = editor.renderer.$cursorLayer.getPixelPosition(position, 1).left + 
+        $('#editor_parent').offset().left + 5;
+    var top = editor.renderer.$cursorLayer.getPixelPosition(position, 1).top + 
+        $('#editor_parent').offset().top + 10;
+
+
     $("#"+divid).css('left',left); 
     $("#"+divid).css('top',top); 
     $("#"+divid).show();
-
-    //$("#"+divid).toggle(); 
 }
