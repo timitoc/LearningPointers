@@ -65,12 +65,12 @@ let procs = {};
 
 		program_output
 			Sends program output
-*/
+			*/
 
 io.on('connection', (socket)=>{
 	console.log('A user connected');
 
-	
+
 
 	socket.on('code',(data)=>{
 		data = data.toString();
@@ -78,7 +78,7 @@ io.on('connection', (socket)=>{
 		let file_name = randomstring.generate(7);
 		let file_path = path.join(__dirname,"programs",file_name+".cpp");
 
-		fs.writeFile(file_path,data,() => {
+		fs.writeFile(file_path, data, () => {
 
 			let compile_command = util.format("g++ -g %s -o %s",file_path,"./programs/"+file_name);
 
@@ -90,16 +90,20 @@ io.on('connection', (socket)=>{
 
 				procs[socket.id] = new GDB('./programs/'+file_name);
 
-				procs[socket.id].stdout.on('data', data=>{
+				procs[socket.id].stdout.on('data', (data) => {
 					socket.emit('gdb_stdout', data);
 				});
-				procs[socket.id].stderr.on('data', data=>{
+				procs[socket.id].stderr.on('data', (data) => {
 					socket.emit('gdb_stderr', data);
 				});
 
-				procs[socket.id].program_stdout.on('data', data => {
-					socket.emit('program_stdout', data);
-				});
+				//procs[socket.id].program_stdout.on('data', (data) => {
+				//	socket.emit('program_stdout', data);
+				//});
+
+				//procs[socket.id].running_state.on('data', (data) => {
+				//	socket.emit('running_state', data);
+				//});
 			});
 		});
 	});
@@ -152,7 +156,7 @@ io.on('connection', (socket)=>{
 
 	socket.on('next', (data) => {
 		procs[socket.id].next(data).then(result => {
-				socket.emit('next', result);
+			socket.emit('next', result);
 		});
 	});
 

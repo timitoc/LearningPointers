@@ -75,6 +75,11 @@ io.on('connection', (socket) => {
 
 			CONTAINERS[socket.id] = socketio_client('http://localhost:'+port.toString());
 
+			CONTAINERS[socket.id].on('running_state', (data) => {
+				console.log('Running state', data);
+				socket.emit('running_state', data);
+			});
+
 			CONTAINERS[socket.id].on('connect',()=>{
 			});
 
