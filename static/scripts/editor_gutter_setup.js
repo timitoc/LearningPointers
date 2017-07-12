@@ -14,13 +14,7 @@ function setGutterInteractions() {
             }
         } 
         else if (gutterRegion == "markers") {
-            var position = e.getDocumentPosition();
-            var left = (e.clientX+2) + "px"; 
-            var top = (e.clientY+2) + "px"; 
-            var divid = "breakpoint_options";
-            $("#"+divid).css('left',left); 
-            $("#"+divid).css('top',top); 
-            //$("#"+divid).toggle(); 
+            moveInRegion(e);
             range = null;       
         }
         else
@@ -51,5 +45,27 @@ function setGutterInteractions() {
 
 /// Breakpoint options
 
-var isBROShown;
+var BROShown = -1;
 
+function moveInRegion(e) {
+    var position = e.getDocumentPosition();
+    //console.log(JSON.stringify(position));
+    if (BROShown == position.row)
+        return ;
+    var divid = "breakpoint_options";
+    var breakpoints = editor.session.getBreakpoints(position.row, 0);
+    if (typeof breakpoints[position.row] == typeof undefined) {
+        BROShown = -1;
+        $("#"+divid).hide();
+        return;
+    }
+    BROShown = position.row;
+    var left = (e.clientX+2) + "px"; 
+    var top = (e.clientY+2) + "px"; 
+    
+    $("#"+divid).css('left',left); 
+    $("#"+divid).css('top',top); 
+    $("#"+divid).show();
+
+    //$("#"+divid).toggle(); 
+}
