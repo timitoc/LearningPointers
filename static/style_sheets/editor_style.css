@@ -61,6 +61,7 @@ body, html{
 	width: -moz-fit-content;
 	position: absolute;
 	opacity: 0.99999;
+	background-color: #121212;
 	z-index: 10;
 	/*set margins*/
 }
