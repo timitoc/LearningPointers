@@ -100,10 +100,9 @@ MemoryVarHandler.prototype.initTable = function() {
 
         self.JUIElement.bind("hover_node.jstree", function (evt, data) {
             //console.log(data.node.text);
-            // TODO: use that text to acces pointer location from hm, and move selection to that adress
             if (self.hmsize[data.node.text])
                 memoryHandler.select(self.hm[data.node.text], self.hmsize[data.node.text]);
-            else
+            else //if (self.hm[data.node.text] && self.hm[data.node.text] != "Invalid")
                 memoryHandler.select(self.hm[data.node.text], 1);
         });
 
@@ -115,7 +114,8 @@ MemoryVarHandler.prototype.getEntries = function() {
     for (var key in this.hm) {
         if (this.hm.hasOwnProperty(key)) {
             console.log(key + " -> " + this.hm[key]);
-            entries.push(this.hm[key]);
+            if (this.hm[key] != "Invalid")
+                entries.push(this.hm[key]);
         }
     }
     return entries;
@@ -168,19 +168,21 @@ var sizeFormat = function(expr) {
 }
 
 var extract = function(str) {
-     var st = "";
-     var gas = 0;
-     for (var i = 0; i < str.length; i++) {
-        if (gas === 0 && i + 1 < str.length) {
-            if (str[i] === '0' && str[i+1] === 'x')
-                gas = 1;
-        }
-        if (gas === 1 && str[i] === ' ')
-            break;
-        if (gas === 1)
-        st += str[i];
-     }
-     return st;
+    if (str == "Invalid")
+        return str;
+    var st = "";
+    var gas = 0;
+    for (var i = 0; i < str.length; i++) {
+    if (gas === 0 && i + 1 < str.length) {
+        if (str[i] === '0' && str[i+1] === 'x')
+            gas = 1;
+    }
+    if (gas === 1 && str[i] === ' ')
+        break;
+    if (gas === 1)
+    st += str[i];
+    }
+    return st;
 }
 
 function notifyChange() {
