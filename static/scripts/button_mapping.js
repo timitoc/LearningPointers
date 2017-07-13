@@ -79,7 +79,7 @@ function stepDebugger() {
 }
 
 function nextDebugger() {
-	var nextnr = $("#stepnr").val();
+	var nextnr = $("#nextnr").val();
 	socket.emit("nextn", {
 		watches: expresionList,
 		n: nextnr
@@ -88,11 +88,11 @@ function nextDebugger() {
 
 function continueDebuger() {
 	console.log('CONTINUEEE');
-	var contnr = $("#contnr").val();
-	socket.emit("continuen", {
+	var contnr = $("#continuenr").val();
+	socket.emit("continuen", JSON.stringify({
 		watches: expresionList,
 		n: contnr
-	});
+	}));
 }
 
 var Range = ace.require('ace/range').Range;

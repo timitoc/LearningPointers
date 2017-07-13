@@ -136,8 +136,6 @@ io.on('connection', (socket) => {
 			});
 
 			CONTAINERS[socket.id].on('continuen', (data)=>{
-				console.log('CONTINUEN');
-				console.log(data);
 				socket.emit('continuen', data);
 			});
 
@@ -192,6 +190,9 @@ io.on('connection', (socket) => {
 			});
 
 			socket.on('continuen', (data) => {
+				console.log('****CONTINUEN*****');
+				console.log(JSON.parse(data));
+				data = JSON.parse(data);
 				CONTAINERS[socket.id].emit('continuen', data);
 			});
 
