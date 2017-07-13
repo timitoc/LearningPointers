@@ -95,11 +95,19 @@ MemoryHandler.prototype.select = function(str, size) {
 
 MemoryHandler.prototype.select = function(str, size) {
     console.log("looking for " + str + " with size " + size) ;
-    var nr = parseInt(str, 16);
-    var ind = (nr - parseInt(this.adresses[0], 16));
+    var nr = parseInt(str, 16), ind = -1;
+    if (nr == 0) 
+        ind = 0;
+    else {
+        var orig = parseInt(this.adresses[0], 16);
+        if (orig == 0)
+            ind = nr - parseInt(this.adresses[1], 16);
+        else
+            ind = nr - orig;
+        if (ind < 0) return;
+        ++ind;
+    }
     console.log("Selected index is " + ind);
-    if (ind < 0) return;
-    ++ind;
     this.highlight(ind, ind+size-1);
 }
 
