@@ -42,7 +42,7 @@ body, html{
 	background-color: #505050 !important;
 	/*z-index:20*/
 }
-.ace_gutter-cell.ace_breakpoint{ 
+.ace_gutter-cell.ace_breakpoint{
 	background: url('../rds.png') no-repeat;
 	background-position: left center;
 }
@@ -57,10 +57,26 @@ body, html{
 	list-style-type: none;
 	font-size: 80%;
 	width: fit-content;
-	width: -webkit-fit-content; 
+	width: -webkit-fit-content;
 	width: -moz-fit-content;
 	position: absolute;
 	opacity: 0.99999;
 	z-index: 10;
 	/*set margins*/
+}
+
+.toolbar-group {
+	border-radius: 3px;
+	margin: 10px;
+	padding: 13px;
+	padding-left:5px;
+	padding-right: 5px;
+	background-color: #778899;
+}
+
+input[type=number] {
+	vertical-align:middle;
+	border: 0;
+	padding: 5px;
+	border-radius: 3px;
 }

@@ -1,18 +1,21 @@
 var socket = io();
 
-$("#stop_button").prop('disabled', true);
+/*$("#stop_button").prop('disabled', true);
 $("#step_debugger").prop('disabled', true);
 $("#next_debugger").prop('disabled', true);
 $("#continue_debugger").prop('disabled', true);
 $("#pls").prop('disabled', true);
+*/
+
+toggle_running_state(false);
 
 function sendCommand(comand) {
-    socket.emit("gdb_command", comand);
+	socket.emit("gdb_command", comand);
 }
 
 $("#send_command").click(function(){
-    var cmd = $("#gdb_command").val();
-    sendCommand(cmd);
+	var cmd = $("#gdb_command").val();
+	sendCommand(cmd);
 });
 
 socket.on("program_stdout", function(data){
@@ -62,36 +65,36 @@ socket.on('debug', function(data){
 });
 
 socket.on('gdb_stdout', function(data){
-	console.log(data);
-	if(data.indexOf("[Inferrior process") != -1) {
-		$("#running_state").text("Stopped");
+	if(data.indexOf("Inferior") !== -1) {
+		toggle_running_state(false);
 	}
 });
 
 socket.on('gdb_stderr', function(data){
 	console.log(data);
+	console.log("kkkkkkkkkk");
 });
 
 socket.on("step", function(data){
-    console.log("step data: " + JSON.stringify(data));
+	console.log("step data: " + JSON.stringify(data));
 	recievedData(data.watches);
-    moveHighlight(data.line-1);
+	moveHighlight(data.line-1);
 });
 
 socket.on("next", function(data){
 	console.log("next data: " + JSON.stringify(data));
 	recievedData(data.watches);
-    moveHighlight(data.line-1);
+	moveHighlight(data.line-1);
 });
 socket.on("continue", function(data){
 	console.log("continue data: " + JSON.stringify(data));
 	recievedData(data.watches);
-    moveHighlight(data.line-1);
+	moveHighlight(data.line-1);
 });
 
 socket.on("print_expressions", function(data){
 	console.log("print expressions " + JSON.stringify(data));
-    recievedData(data);
+	recievedData(data);
 });
 
 function recievedData(dataWatches) {
@@ -104,10 +107,10 @@ function recievedData(dataWatches) {
 }
 
 socket.on('add_watch', function(data){
-    console.log("add watch " + JSON.stringify(data));
-    var x = {};
-    x[data.result.expr] = data.result.value;
-    recievedData(x);
+	console.log("add watch " + JSON.stringify(data));
+	var x = {};
+	x[data.result.expr] = data.result.value;
+	recievedData(x);
 });
 
 socket.on('run', function(data){
@@ -134,5 +137,5 @@ socket.on('editor_source', function(data){
 });
 
 socket.on('add_breakpoints_result', function(data){
-    console.log('add_breakpoints_result ' + JSON.stringify(data));
+	console.log('add_breakpoints_result ' + JSON.stringify(data));
 });

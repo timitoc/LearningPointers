@@ -154,14 +154,34 @@ io.on('connection', (socket)=>{
 		});
 	});
 
+	socket.on('stepn', (data) => {
+		procs[socket.id].stepn(data.watches, data.n).then(result => {
+			socket.emit('step', result);
+		});
+	});
+
 	socket.on('next', (data) => {
 		procs[socket.id].next(data).then(result => {
 			socket.emit('next', result);
 		});
 	});
 
+	socket.on('nextn', (data) => {
+		procs[socket.id].nextn(data.watches, data.n).then(result => {
+			socket.emit('next', result);
+		});
+	});
+
 	socket.on('continue', (data) => {
 		procs[socket.id].cont(data).then(result => {
+			socket.emit('continue', result);
+		});
+	});
+
+	socket.on('continuen', (data) => {
+		console.log('CONTINUEN');
+		console.log(data);
+		procs[socket.id].contn(data.watches, data.n).then(result => {
 			socket.emit('continue', result);
 		});
 	});

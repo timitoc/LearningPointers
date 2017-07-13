@@ -4,12 +4,26 @@ function toggle_running_state(x) { // true or false
 		$("#running_state").text("Running");
 		editor.setReadOnly(true);
 		editor.renderer.$cursorLayer.element.style.display="none";
+
+		if(Global.status == "debugging") {
+			$("#stop_button").prop('disabled', false);
+			$("#step_debugger").prop('disabled', false);
+			$("#stepnr").prop('disabled', false);
+			$("#next_debugger").prop('disabled', false);
+			$("#nextnr").prop('disabled', false);
+			$("#continue_debugger").prop('disabled', false);
+			$("#continuenr").prop('disabled', false);
+		}
 	}
 	else
 	{
 		$("#running_state").text("Stopped");
 		editor.setReadOnly(false);
 		editor.renderer.$cursorLayer.element.style.display="";
+		$("#stop_button").prop('disabled', true);
+		$("#step_debugger").prop('disabled',true);
+		$("#next_debugger").prop('disabled',true);
+		$("#continue_debugger").prop('disabled',true);
 	}
 }
 
@@ -57,15 +71,28 @@ $("#save_code").click(function() {
 });
 
 function stepDebugger() {
-    socket.emit("step", expresionList);
+	var stepnr = $("#stepnr").val();
+	socket.emit("stepn", {
+		watches: expresionList,
+		n: stepnr
+	});
 }
 
 function nextDebugger() {
-    socket.emit("next", expresionList);
+	var nextnr = $("#stepnr").val();
+	socket.emit("nextn", {
+		watches: expresionList,
+		n: nextnr
+	});
 }
 
 function continueDebuger() {
-    socket.emit("continue", expresionList);
+	console.log('CONTINUEEE');
+	var contnr = $("#contnr").val();
+	socket.emit("continuen", {
+		watches: expresionList,
+		n: contnr
+	});
 }
 
 var Range = ace.require('ace/range').Range;

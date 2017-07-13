@@ -55,31 +55,43 @@
 			</div>
 			<div class="pure-u-1-2">
 				<center>
-					<div class="pure-button-group" role="group" id="toolbar">
+					<div role="group" id="toolbar">
 						<button id="debug_code_button" class="pure-button">
 							Debug
 						</button>
 						<button id="run_code_button" class="pure-button">
-							<!--<i class="fa fa-play" aria-hidden="true"></i>--> Run
+							Run
 						</button>
 						<button id="stop_button" class="pure-button" disabled>
-							<!--<i class="fa fa-stop" aria-hidden="true"></i>--> Stop
-						</button>
-						<button id="step_debugger" class="pure-button" disabled>
-							Step
-						</button>
-						<button id="next_debugger" class="pure-button" disabled>
-							Next
-						</button>
-						<button id="continue_debugger" class="pure-button" disabled>
-							Continue
+							Stop
 						</button>
 						<button id="save_code" class="pure-button">
-							<!--<i class="fa fa-floppy-o" aria-hidden="true"></i>--> Save
+							Save
 						</button>
 						<button data-jq-dropdown="#jq-dropdown-1" class="pure-button">Options </button>
 					</div>
 					<div id="editor">//Write your code here</div>
+					<div role="group" id="toolbar">
+						<span class="toolbar-group">
+							<button id="step_debugger" class="pure-button" disabled>
+								Step
+							</button>
+							<input type="number" min="1" max="99" value="1" id="stepnr">
+						</span>
+						<span class="toolbar-group">
+							<button id="next_debugger" class="pure-button" disabled>
+								Next
+							</button>
+							<input type="number" min="1" max="99" value="1" id="nextnr">
+						</span>
+						<span class="toolbar-group">
+							<button id="continue_debugger" class="pure-button" disabled>
+								Continue
+							</button>
+							<input type="number" min="1" max="99" value="1" id="continuenr">
+						</span>
+					</div>
+
 				</center>
 				<br/>
 				<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">

@@ -333,6 +333,32 @@ class GDB{
 	}
 
 	/**
+	 * Sends multipe next commands to the debugger and prints watches after
+	 * @param {array} watches
+	 * @param {number} n
+	 */
+
+	nextn(watches, n) {
+		return new Promise((resolve, reject) => {
+			this.send_command('n '+n).then(output => {
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
+					});
+				} else {
+					resolve({
+						line: this.get_line(output)
+					});
+				}
+			});
+		});
+	}
+
+
+	/**
 	 * Sends the step command to the debugger and prints watches
 	 * @param {array} watches The array of expression to be printed
 	 */
@@ -356,12 +382,61 @@ class GDB{
 	}
 
 	/**
+	 * Sends multiple step commands to the debugger and prints watches after
+	 * @param {array} watches
+	 * @param {number} n The number of 'step' instructions to be executes
+	 */
+
+	stepn(watches, n) {
+		return new Promise((resolve, reject) => {
+			this.send_command('s '+n).then(output => {
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
+					});
+				} else {
+					resolve({
+						line: this.get_line(output)
+					});
+				}
+			});
+		});
+	}
+
+	/**
 	 * Sends the continue command to the debugger and prints watches
 	 * @param {array} watches The array of expression to be printed
 	 */
 	cont(watches){
 		return new Promise((resolve, reject) => {
 			this.send_command('c').then(output =>{
+				if(watches){
+					this.print_expressions(watches).then(data=>{
+						resolve({
+							watches: data,
+							line: this.get_line(output)
+						});
+					});
+				} else {
+					resolve({
+						line: this.get_line(output)
+					});
+				}
+			});
+		});
+	}
+
+	/** Sends the continue command to the debugger multiple times and prints watches
+	 * @param {array} watches
+	 * @param {number} n
+	 */
+
+	contn(watches, n) {
+		return new Promise((resolve, reject) => {
+			this.send_command('c '+n).then(output =>{
 				if(watches){
 					this.print_expressions(watches).then(data=>{
 						resolve({

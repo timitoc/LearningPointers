@@ -42,7 +42,7 @@ var vim_enabled = false;
 function toggle_vim() {
     if (!vim_enabled)
         editor.setKeyboardHandler("ace/keyboard/vim");
-    else 
+    else
         editor.setKeyboardHandler("ace/keyboard/textinput");
     vim_enabled = !vim_enabled;
 }

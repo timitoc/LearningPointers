@@ -119,12 +119,26 @@ io.on('connection', (socket) => {
 				socket.emit('step', data);
 			});
 
+			CONTAINERS[socket.id].on('stepn', (data)=>{
+				socket.emit('stepn', data);
+			});
+
 			CONTAINERS[socket.id].on('next', (data)=>{
 				socket.emit('next', data);
 			});
 
+			CONTAINERS[socket.id].on('nextn', (data)=>{
+				socket.emit('nextn', data);
+			});
+
 			CONTAINERS[socket.id].on('continue', (data)=>{
 				socket.emit('continue', data);
+			});
+
+			CONTAINERS[socket.id].on('continuen', (data)=>{
+				console.log('CONTINUEN');
+				console.log(data);
+				socket.emit('continuen', data);
 			});
 
 			CONTAINERS[socket.id].on('add_breakpoints', (data)=>{
@@ -147,7 +161,7 @@ io.on('connection', (socket) => {
 				CONTAINERS[socket.id].emit('print_expressions', data);
 			});
 
-			
+
 			socket.on('run',(data)=>{
 				CONTAINERS[socket.id].emit('run',data);
 			});
@@ -160,12 +174,25 @@ io.on('connection', (socket) => {
 				CONTAINERS[socket.id].emit('step', data);
 			});
 
+			socket.on('stepn', (data) => {
+				CONTAINERS[socket.id].emit('stepn', data);
+			});
+
+
 			socket.on('next', (data)=>{
 				CONTAINERS[socket.id].emit('next', data);
 			});
 
+			socket.on('nextn', (data) => {
+				CONTAINERS[socket.id].emit('nextn', data);
+			});
+
 			socket.on('continue', (data)=>{
 				CONTAINERS[socket.id].emit('continue', data);
+			});
+
+			socket.on('continuen', (data) => {
+				CONTAINERS[socket.id].emit('continuen', data);
 			});
 
 			socket.on('add_watch', (data)=>{
