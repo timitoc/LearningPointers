@@ -1,7 +1,17 @@
+$("#running_state").css({
+	'padding' : '10px',
+	'margin' : '10px',
+	'font-size': '20px',
+	'background-color' : '#D8000C',
+	'color': 'white'
+});
 function toggle_running_state(x) { // true or false
-	if(x)
-	{
+	if(x) {
 		$("#running_state").text("Running");
+		$("#running_state").css({
+			'background-color' : '#008000'
+		});
+
 		editor.setReadOnly(true);
 		editor.renderer.$cursorLayer.element.style.display="none";
 
@@ -15,15 +25,21 @@ function toggle_running_state(x) { // true or false
 			$("#continuenr").prop('disabled', false);
 		}
 	}
-	else
-	{
+	else {
 		$("#running_state").text("Stopped");
+		$("#running_state").css({
+			'background-color' : '#D8000C'
+		});
 		editor.setReadOnly(false);
 		editor.renderer.$cursorLayer.element.style.display="";
+
 		$("#stop_button").prop('disabled', true);
 		$("#step_debugger").prop('disabled',true);
+		$("#stepnr").prop('disabled',true);
 		$("#next_debugger").prop('disabled',true);
+		$("#nextnr").prop('disabled',true);
 		$("#continue_debugger").prop('disabled',true);
+		$("#continuenr").prop('disabled',true);
 	}
 }
 
