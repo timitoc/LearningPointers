@@ -1,16 +1,18 @@
 DONE Fix crash at undefined variables in watches 
--> Get line from gdb on debugger start
--> Allow fullscreen editor
--> Persistent breakpoints and watches + memory
--> Run program (without debug) option
--> Get rid of compile button entirely
--> UI for landing page and courses content
--> Save code instances (/asd24f1a)
--> Get input from stdin
--> Get ouput from stdout
--> Padd adress value with 0 for lexicografic comparison
--> Auto and Locals *
--> Kill GDB after some time
--> IDE interface (design)
--> Remove multiple script loading (+ script minify) => BUILD SYSTEM
--> Add print parsing for STL
+-> 1* Get line from gdb on debugger start      MARTI 18
+-> 3* Allow fullscreen editor on chrome                         VINERI 21
+-> 2* Persistent breakpoints and watches + memory              MARTI 18
+-> 2* Download cpp option                                  JOI 20
+-> 1* Get ouput from stdout                                    DUMINICA 16
+-> 2* Auto and Locals *                             GASPI MIERCURI, TIMI JOI
+-> 3* Kill GDB after some time
+-> 4* Remove multiple script loading (+ script minify) => BUILD SYSTEM
+-> 1* Python pretty printer                                     LUNI
+-> 1* Scroll for memory mapping					LUNI
+-> 2* Scroll for md editor and visual editor                   JOI/VINERI
+-> 1* Make temporary breakpoints work				DUMINICA
+-> 2* Code persistency						LUNI
+-> 1* Classes and courses and database and testing and stuff 	JOI 
+-> 1* Add comments to courses					SAMBATA
+
+
