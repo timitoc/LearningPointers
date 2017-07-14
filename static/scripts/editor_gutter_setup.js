@@ -28,6 +28,11 @@ function setGutterInteractions() {
         bracketMarker = null
     });
 
+    editor.on("mousemove", function (e){
+        if (BROShown != -1)
+            hideBreakpointOptions();
+    });
+
     editor.on("guttermousedown", function (e) {
         var row = e.getDocumentPosition().row;
         var gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
@@ -46,24 +51,24 @@ function setGutterInteractions() {
 /// Breakpoint options
 
 var BROShown = -1;
+var divid = "breakpoint_options";
 
 function moveInRegion(e) {
     var position = e.getDocumentPosition();
     //console.log(JSON.stringify(position));
     if (BROShown == position.row)
         return ;
-    var divid = "breakpoint_options";
     var breakpoints = editor.session.getBreakpoints(position.row, 0);
     if (typeof breakpoints[position.row] == typeof undefined) {
-        BROShown = -1;
-        $("#"+divid).hide();
+        hideBreakpointOptions();
         return;
     }
     BROShown = position.row;
     //var left = (e.clientX+2) + "px"; 
     //var top = (e.clientY+2) + "px"; 
     //console.log(JSON.stringify( $('#editor_parent').offset()));
-    /// DO NOT TOUCH THE FOLLOWING 4 LINES
+
+    /// NOT COMPATIBLE WITH CHROME
     var left = editor.renderer.$cursorLayer.getPixelPosition(position, 1).left + 
         $('#editor_parent').offset().left + 5;
     var top = editor.renderer.$cursorLayer.getPixelPosition(position, 1).top + 
@@ -72,5 +77,29 @@ function moveInRegion(e) {
 
     $("#"+divid).css('left',left); 
     $("#"+divid).css('top',top); 
+    
     $("#"+divid).show();
+}
+
+function hideBreakpointOptions() {
+    BROShown = -1;
+    $("#"+divid).hide();
+}
+
+
+/// Breakpoint class
+var BreakpointData = function(row, temp, cond) {
+    this.row = row || 0;
+    this.isTemporary = temp || false;
+    this.condition = cond || "true";
+}
+
+BreakpointData.prototype.populate = function() {
+    //$("#temp_br").toggle();
+    $("#cond_br").value = this.condition;
+}
+
+BreakpointData.prototype.generateSimple = function() {
+    var toR = {line: this.row, temporary: this.isTemporary, condition: this.condition};
+    return toR;
 }

@@ -84,8 +84,10 @@ function toggleBreakpoint(row) {
         }
         var elem = {line: row+1};
         var index = Global.breakpointsArray.myActualIndexOf(elem);
-        if (index >= 0)
+        if (index >= 0) {
             Global.breakpointsArray.splice(index, 1);
+            hideBreakpointOptions();
+        }
     }
 }
 
