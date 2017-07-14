@@ -10,9 +10,13 @@ DONE Fix crash at undefined variables in watches
 -> 1* Python pretty printer                                     LUNI
 -> 1* Scroll for memory mapping					LUNI
 -> 2* Scroll for md editor and visual editor                   JOI/VINERI
+-> 2* md editor with fallback for older browsers		VINERI
 -> 1* Make temporary breakpoints work				DUMINICA
 -> 2* Code persistency						LUNI
 -> 1* Classes and courses and database and testing and stuff 	JOI 
 -> 1* Add comments to courses					SAMBATA
+-> 1* Completat README					MAI INCOLO
+-> 2* Set variable value at runtime                         MIERCUREA VIITOARE
+-> ERROR HANDLING: watch no found field
 
 
