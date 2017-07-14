@@ -75,6 +75,7 @@ function toggleBreakpoint(row) {
             tosa.push({ line: row + 1 });
             socket.emit("add_breakpoints", tosa);
         }
+        Global.breakpointsMap[row+1] = new BreakpointData(row+1);
         Global.breakpointsArray.push({ line: row + 1 });
     }
     else {
@@ -84,8 +85,11 @@ function toggleBreakpoint(row) {
         }
         var elem = {line: row+1};
         var index = Global.breakpointsArray.myActualIndexOf(elem);
-        if (index >= 0)
+        if (index >= 0) {
             Global.breakpointsArray.splice(index, 1);
+            delete Global.breakpointsMap[row+1];
+            hideBreakpointOptions();
+        }
     }
 }
 

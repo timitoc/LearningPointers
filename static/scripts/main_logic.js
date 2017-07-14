@@ -1,6 +1,7 @@
 var Global  = {
     diplayIndexCounter: 0,
     breakpointsArray: [],
+    breakpointsMap: {},
     status: 'off',
     htmlDecode: function(input)
     {
