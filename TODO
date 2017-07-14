@@ -1,4 +1,4 @@
-DONE Fix crash at undefined variables in watches 
+DONE Fix crash at undefined variables in watches
 -> Get line from gdb on debugger start
 -> Allow fullscreen editor
 -> Persistent breakpoints and watches + memory
