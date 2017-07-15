@@ -1,0 +1,80 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+#by_subscription, #by_rating {
+	display: inline-block;
+	padding: 10px;
+	font-family: 'Open Sans', sans-serif;
+	margin: 10px;
+}
+
+#by_subscription {
+}
+
+#by_rating {
+	vertical-align: top;
+	margin-left: 20px;
+}
+
+ul {
+	padding: 0;
+}
+
+li {
+	list-style-type: none;
+}
+
+.lesson {
+	padding: 15px;
+	border-radius: 3px;
+	margin: 10px;
+
+	box-sizing: border-box;
+	border-radius: 2px;
+	overflow: hidden;
+
+	border-top: 1px solid darkgray;
+}
+
+.lesson:first-child {
+	border-top: 0px;
+}
+
+.lesson-title {
+	font-size: 30px;
+}
+
+.lesson-author {
+	font-weight: bold;
+	padding: 5px;
+}
+.lesson-author::before {
+	content: 'by ';
+}
+
+.lesson-language {
+	padding: 5px;
+}
+
+.language-icon {
+	width: 30px;
+	float:right;
+}
+
+.lesson-description{
+	padding: 5px;
+}
+
+.lesson-date {
+	margin-top: 20px;
+	font-style: italic;
+}
+.lesson-date span {
+	float: right;
+}
+
+.lesson-rating img {
+	width: 20px;
+}
