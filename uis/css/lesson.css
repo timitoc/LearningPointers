@@ -27,6 +27,7 @@
 
 .lesson-title {
 	font-size: 30px;
+	padding-left: 5px;
 }
 
 .lesson-author {
@@ -43,16 +44,22 @@
 
 .language-icon {
 	width: 30px;
-	float:right;
+	vertical-align: middle;
+	padding: 5px;
 }
 
 .lesson-description{
 	padding: 5px;
+	font-size:20px;
 }
 
 .lesson-date {
 	margin-top: 20px;
 	font-style: italic;
+	font-size:20px;
+	display: inline-block;
+	float:right;
+	vertical-align: top;
 }
 .lesson-date span {
 	float: right;

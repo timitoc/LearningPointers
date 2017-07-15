@@ -52,12 +52,6 @@
 		text-align: left;
 	}
 
-	#toggle-image {
-		padding-top:10px;
-		width: 15px;
-		float: right;
-	}
-
 	#navbar li:first-child {
 		float:none;
 	}
@@ -66,7 +60,6 @@
 	}
 
 	#toggle_label {
-		width: 100%;
 		display: block;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 25px;
@@ -76,7 +69,6 @@
 		-moz-user-select: none; /* Firefox */
 		-ms-user-select: none; /* IE10+ */
 
-		/* Rules below not implemented in browsers yet */
 		-o-user-select: none;
 		user-select: none;
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="css/course_page.css">
+	<link rel="stylesheet" href="css/navbar.css">
+	<link rel="stylesheet" href="css/lesson.css">
+</head>
+<body>
+	<div id="navbar">
+		<input type="checkbox" name="toggle" id="toggle">
+		<label for="toggle" id="toggle_label">Menu</label>
+		<ul>
+			<li class="active"><a href="subscribed.html">Your courses</a></li>
+			<li><a href="find_courses.html">Find courses</a></li>
+			<li><a href="find_lessons.html">Find lessons</a></li>
+		</ul>
+	</div>
+
+	<div class="course">
+		<div class="course-header">
+			<div class="course-title">Pointeri - introducere</div>
+			<div class="course-rating" rating="4/5"></div>
+			<div class="course-language">
+				Language:
+				<img class="language-icon" src="img/usa.svg"/>
+			</div>
+		</div>
+		<div class="course-progress">
+			<span class="progressbar"style="width:66%"></span>
+		</div>
+		<div class="container">
+			<div class="course-lessons">
+				<ul>
+					<li class="course-lesson completed">
+						<div class="lesson">
+							<div class="lesson-title">
+								Module1
+							</div>
+							<div class="lesson-description">
+								Basics about memory and variables
+							</div>
+						</div>
+					</li>
+					<li class="course-lesson completed">
+						<div class="lesson">
+							<div class="lesson-title">
+								Module2
+							</div>
+							<div class="lesson-description">
+								Pointer basics
+							</div>
+						</div>
+					</li>
+
+					<li class="course-lesson uncompleted">
+						<div class="lesson">
+							<div class="lesson-title">
+								Module3
+							</div>
+							<div class="lesson-description">
+								Pointers in depth
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="course-creator">
+				<div>Author:</div>
+				<br>
+				<img src="img/rms.jpg" alt="">
+				<h2>Richard Stallman</h2>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/course.js"></script>
+	<script src="js/lesson_list.js"></script>
+</body>
+</html>
