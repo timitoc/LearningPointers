@@ -44,6 +44,12 @@ function setGutterInteractions() {
         }
     });
 
+
+    /// breakpoint_options interactions
+    $("#cond_br").on('change keyup paste mouseup', function() {
+        if (Global.breakpointsMap[BROShown+1])
+            Global.breakpointsMap[BROShown+1].setCondition($("#cond_br").val());
+    });
 }
 
 
@@ -77,7 +83,9 @@ function moveInRegion(e) {
 
     $("#"+divid).css('left',left); 
     $("#"+divid).css('top',top); 
-    
+    console.log("This breakpoint: " + JSON.stringify(Global.breakpointsMap[BROShown+1]));
+    if (Global.breakpointsMap[BROShown+1])
+        Global.breakpointsMap[BROShown+1].populate();
     $("#"+divid).show();
 }
 
@@ -85,7 +93,6 @@ function hideBreakpointOptions() {
     BROShown = -1;
     $("#"+divid).hide();
 }
-
 
 /// Breakpoint class
 var BreakpointData = function(row, temp, cond) {
@@ -96,10 +103,31 @@ var BreakpointData = function(row, temp, cond) {
 
 BreakpointData.prototype.populate = function() {
     //$("#temp_br").toggle();
-    $("#cond_br").value = this.condition;
+    if (this.condition == "true")
+        $("#cond_br").val("");
+    else
+        $("#cond_br").val(this.condition);
 }
 
 BreakpointData.prototype.generateSimple = function() {
     var toR = {line: this.row, temporary: this.isTemporary, condition: this.condition};
     return toR;
+}
+
+BreakpointData.prototype.setCondition = function(newCondition) {
+    if (!newCondition || newCondition.replace(/\s+/g, '') == "")
+        this.condition = "true";
+    else {
+        this.condition = newCondition;
+    }
+}   
+
+var normalizeBreakpointMap = function() {
+    var array = [];
+     for (var key in Global.breakpointsMap) {
+        if (Global.breakpointsMap.hasOwnProperty(key)) {
+            array.push(Global.breakpointsMap[key].generateSimple());
+        }
+    }
+    return array;
 }

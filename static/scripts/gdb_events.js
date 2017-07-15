@@ -39,11 +39,8 @@ socket.on("compile_result",function(data){
 
 	if(data == "Successfully compiled!"){
 		console.log("Sucessfully compiled!");
-		var brArray = [];
-		if (Global.status == "debugging")
-			brArray = Global.breakpointsArray;
 		socket.emit("run", {
-			br: brArray,
+			br: normalizeBreakpointMap(),
 			we: expresionList,
 			input: $("#input").val()
 		});

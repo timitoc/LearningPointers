@@ -18,4 +18,5 @@ DONE Fix crash at undefined variables in watches
 -> 1* Completat README						MAI INCOLO
 -> 2* Set variable value at runtime                        	MIERCUREA VIITOARE
 -> ERROR HANDLING: watch no found field
+-> 3* Map next, step commands to keystrokes
 
