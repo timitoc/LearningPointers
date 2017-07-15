@@ -1,0 +1,3 @@
+run using: http-server .
+
+(Install http-server by running sudo npm install -g http-server)

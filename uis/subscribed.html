@@ -2,80 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Lessons</title>
-	<link rel="stylesheet" href="css/lesson_list.css">
+	<title></title>
 	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="css/subscribed.css">
+	<link rel="stylesheet" href="css/navbar.css" media="">
+	<link rel="stylesheet" href="css/lesson.css">
 </head>
 <body>
-	<div id="by_subscription">
-		<h2>Lessons from subscribed courses</h2>
+	<div id="navbar">
+		<input type="checkbox" name="toggle" id="toggle" onchange="dropdown(this)">
+		<label for="toggle" id="toggle_label">Menu <img id="toggle-image" src="img/down.svg"/></label>
 		<ul>
-			<li>
-				<div class="lesson">
-					<div class="lesson-title">
-						Despre pointeri
-					</div>
-					<div class="lesson-description">
-						Introducere în studiul pointerilor
-					</div>
-					<div class="lesson-author">
-						Albert Einstein
-					</div>
-					<div class="lesson-language">
-						Language: <img class="language-icon" src="img/romania.svg" alt="">
-					</div>
-					<div class="lesson-date">
-						<span>07.05.2017</span>
-					</div>
-					<div class="lesson-rating" rating="3/5">
-					</div>
-				</div>
-
-				<div class="lesson">
-					<div class="lesson-title">
-						Despre pointeri
-					</div>
-					<div class="lesson-description">
-						Introducere în studiul pointerilor
-					</div>
-					<div class="lesson-author">
-						Albert Einstein
-					</div>
-					<div class="lesson-language">
-						Language: <img class="language-icon" src="img/romania.svg" alt="">
-					</div>
-					<div class="lesson-date">
-						<span>07.05.2017</span>
-					</div>
-					<div class="lesson-rating" rating="2/5">
-					</div>
-				</div>
-
-				<div class="lesson">
-					<div class="lesson-title">
-						Despre pointeri
-					</div>
-					<div class="lesson-description">
-						Introducere în studiul pointerilor
-					</div>
-					<div class="lesson-author">
-						Albert Einstein
-					</div>
-					<div class="lesson-language">
-						Language: <img class="language-icon" src="img/romania.svg" alt="">
-					</div>
-					<div class="lesson-date">
-						<span>07.05.2017</span>
-					</div>
-					<div class="lesson-rating" rating="2/5">
-					</div>
-				</div>
-			</li>
+			<li class="active"><a href="subscribed.html">Your courses</a></li>
+			<li><a href="find_courses.html">Find courses</a></li>
+			<li><a href="find_lessons.html">Find lessons</a></li>
 		</ul>
 	</div>
-	<div id="by_rating">
-		<h2>Lessons by rating</h2>
-		<ul>
+
+	<div id="main">
+		<ul id="list">
 			<li>
 				<div class="lesson">
 					<div class="lesson-title">
@@ -93,23 +38,44 @@
 					<div class="lesson-date">
 						<span>07.05.2017</span>
 					</div>
-					<div class="lesson-rating" rating="5/5">
+					<div class="lesson-rating" rating="4/5">
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="lesson">
 					<div class="lesson-title">
-						Double-linked lists
+						Liste simplu-înlănţuite
 					</div>
 					<div class="lesson-description">
-						Operations
+						Inserare şi parcurgere
 					</div>
 					<div class="lesson-author">
 						Albert Einstein
 					</div>
 					<div class="lesson-language">
-						Language: <img class="language-icon" src="img/usa.svg" alt="">
+						Language: <img class="language-icon" src="img/romania.svg" alt="">
+					</div>
+					<div class="lesson-date">
+						<span>07.05.2017</span>
+					</div>
+					<div class="lesson-rating" rating="4/5">
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="lesson">
+					<div class="lesson-title">
+						Liste simplu-înlănţuite
+					</div>
+					<div class="lesson-description">
+						Inserare şi parcurgere
+					</div>
+					<div class="lesson-author">
+						Albert Einstein
+					</div>
+					<div class="lesson-language">
+						Language: <img class="language-icon" src="img/romania.svg" alt="">
 					</div>
 					<div class="lesson-date">
 						<span>07.05.2017</span>
@@ -120,9 +86,8 @@
 			</li>
 		</ul>
 	</div>
-
 	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/masonry.pkgd.min.js"></script>
 	<script src="js/lesson_list.js"></script>
+	<script src="js/navbar.js"></script>
 </body>
 </html>

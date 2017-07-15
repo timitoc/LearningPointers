@@ -1,0 +1,28 @@
+#search {
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+}
+
+@keyframes entry {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0px);
+	}
+}
+
+#search input[type="text"] {
+	font-family: 'Open Sans', sans-serif;
+	margin: 20px;
+	width: 500px;
+	padding: 15px;
+	font-size: 20px;
+	border: 1px solid darkgray;
+	outline: none;
+	box-sizing: border-box;
+	animation: entry 0.5s;
+}
