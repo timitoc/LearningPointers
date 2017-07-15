@@ -1,0 +1,52 @@
+.course {
+	margin: 10px;
+	padding: 10px;
+	font-family: 'Open Sans', sans-serif;
+	width: 400px;
+}
+
+.course-title {
+	font-size: 25px;
+	padding:10px;
+	background-color: #8797b2;
+	color: white;
+	font-weight: bold;
+}
+
+.course-progress {
+	background-color: darkgray;
+	height: 5px;
+
+	position: relative;
+	box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+
+.course-progress .progressbar{
+	background-color: #00cc66;
+	height: 100%;
+	display: block;
+}
+
+.course-modules {
+	padding:10px;
+}
+
+.course-category {
+	padding:10px;
+	font-size: 15px;
+}
+
+.course-details {
+	background-color: #c57b57;
+}
+
+/*04724d*/
+.course-goto {
+	background-color: #29274c;
+	text-align: center;
+	padding: 10px;
+}
+.course-goto a{
+	text-decoration: none;
+	color: white;
+}
