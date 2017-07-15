@@ -50,6 +50,12 @@ function setGutterInteractions() {
         if (Global.breakpointsMap[BROShown+1])
             Global.breakpointsMap[BROShown+1].setCondition($("#cond_br").val());
     });
+    $("#temp_br").on('change', function() {
+        if (Global.breakpointsMap[BROShown+1]) {
+            if (Global.breakpointsMap[BROShown+1].isTemporary != $("#temp_br").prop('checked'))
+                Global.breakpointsMap[BROShown+1].toggleTemporary();
+        }
+    })
 }
 
 
@@ -102,7 +108,7 @@ var BreakpointData = function(row, temp, cond) {
 }
 
 BreakpointData.prototype.populate = function() {
-    //$("#temp_br").toggle();
+    $("#temp_br").bootstrapToggle(this.isTemporary ? 'on' : 'off');
     if (this.condition == "true")
         $("#cond_br").val("");
     else
@@ -121,6 +127,10 @@ BreakpointData.prototype.setCondition = function(newCondition) {
         this.condition = newCondition;
     }
 }   
+
+BreakpointData.prototype.toggleTemporary = function() {
+    this.isTemporary = !this.isTemporary;
+}
 
 var normalizeBreakpointMap = function() {
     var array = [];
