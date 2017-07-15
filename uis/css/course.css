@@ -41,15 +41,35 @@
 }
 
 /*04724d*/
-.course-goto {
-	background-color: #29274c;
-	text-align: center;
-	padding: 15px;
+.course-actions {
+	padding: 0;
+	margin: 0;
 }
-.course-goto a{
+.course-actions div {
+	position: relative;
+    margin: 0;
+    padding: 20px;
+    border: none;
+	cursor:pointer;
+}
+.course-actions div a {
 	text-decoration: none;
 	color: white;
 }
+
+.course-goto{
+	background-color: #29274c;
+}
+
+.course-unsubscribe{
+	background-color: #da2c38;
+	transition: background-color 0.5s;
+}
+
+.course-unsubscribe:hover{
+	background-color: red;
+}
+
 
 @media screen and (max-width: 1000px) {
 	#main {
