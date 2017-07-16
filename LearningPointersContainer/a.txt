@@ -1,1 +1,0 @@
-{"stdout":"x = 4\n(gdb) ","stderr":""}
