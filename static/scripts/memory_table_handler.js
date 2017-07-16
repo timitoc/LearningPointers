@@ -30,6 +30,7 @@ MemoryHandler.prototype.addRow = function() {
         td.style.border = '1px solid black';
         td.style.width = '30px';
     }
+    this.colorRange(Math.max(this.select.st, i*this.m), this.selected.dr);
     this.rowCount++;
     return tr;
 }
@@ -37,6 +38,7 @@ MemoryHandler.prototype.addRow = function() {
 MemoryHandler.prototype.invalidate = function() {
     this.JUIElement.empty();
     //this.UIElement.style.width  = '210px';
+    this.rowCount = 0;
     this.UIElement.style.border = '1px solid black';
     this.selected = {st:0, dr:-1};
     for(var i = 0; i < this.n; i++){
@@ -91,12 +93,15 @@ MemoryHandler.prototype.gatherVarData = function() {
     console.log("gatherVarData adresses " + this.adresses);
 }
 
-MemoryHandler.prototype.reColor = function() {
-    this.highlight(3, 7);
-}
+
+// Not used, to be removed
+
+// MemoryHandler.prototype.reColor = function() {
+//     this.highlight(3, 7);
+// }
 
 MemoryHandler.prototype.highlight = function(lo, hi) {
-    this.colorRange(this.selected.st, this.selected.dr);
+    this.clearRange(this.selected.st, this.selected.dr);
     this.selected = {st: lo, dr: hi};
     this.colorRange(lo, hi);
 }
@@ -108,14 +113,26 @@ MemoryHandler.prototype.colorRange = function(lo, hi) {
     //     return num >= lo && num <= hi;
     // });
     var cells = $('.memory_cell');
+    if (lo > hi) return;
     for (var index = 0; index < cells.length; index++){
         var num = parseInt($(cells[index]).text(), 10);
         if (num >= lo && num <= hi) {
-            $(cells[index]).toggleClass("colored_cell");
+            $(cells[index]).addClass("colored_cell");
         }
     };
     //console.log(filteredCells);
     //filteredCells.css('color', 'red');
+}
+
+MemoryHandler.prototype.clearRange = function(lo, hi) {
+    var cells = $('.memory_cell');
+    if (lo > hi) return;
+    for (var index = 0; index < cells.length; index++){
+        var num = parseInt($(cells[index]).text(), 10);
+        if (num >= lo && num <= hi) {
+            $(cells[index]).removeClass("colored_cell");
+        }
+    };
 }
 
 /* Old version, to be removed
