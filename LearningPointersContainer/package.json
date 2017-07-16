@@ -17,6 +17,11 @@
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
-    "assert": "^1.4.1"
+    "assert": "^1.4.1",
+    "chai": "^4.1.0",
+    "mocha": "^3.4.2"
+  },
+  "scripts": {
+	  "test": "./node_modules/mocha/bin/mocha -R spec"
   }
 }
