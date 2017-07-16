@@ -82,6 +82,36 @@ describe('GDB interface', () => {
 		//	assert.equal(-1, [1,2,3].indexOf(4));
 		//});
 	});
+	describe('Locals', () => {
+		it('Verify local variable value', () => {
+			return new Promise((resolve, reject) => {
+				writeCppFile(`int f(int n) {
+						if(!n) return 1;
+						return n * f(n-1);
+					}
+					int main() {
+						int x = 4;
+						f(4);
+					return 0;}`);
+
+				compileCppFile();
+
+				let gdb = new GDB('./test_exec');
+
+				gdb.write_input('').then(data => {
+					gdb.add_breakpoint(7).then(data => {
+						gdb.run().then(data => {
+							gdb.locals().then(data1 => {
+								resolve(data1);
+							});
+						});
+					});
+				});
+			}).then((data) => {
+				chai.expect(data.x).to.equal('4');
+			});
+		});
+	});
 });
 
 process.on('exit', () => {
