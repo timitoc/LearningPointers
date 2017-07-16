@@ -24,7 +24,6 @@ class GDB{
 		this.stdout = new EventEmitter();
 		this.stderr = new EventEmitter();
 
-
 		this.breakpoints = [];
 
 		this.process.stdout.on('data', (data) => {
@@ -450,6 +449,33 @@ class GDB{
 					});
 				}
 			});
+		});
+	}
+
+	parse_locals(stdout) {
+		return stdout
+			.split('\n')
+			.map(function(item) {
+				return item.split('=').map(function(item) {
+					return item.trim();
+				});
+			})
+			.reduce(function(obj, item) {
+				obj[item[0]] = item[1];
+				return obj;
+			},{});
+	}
+
+	locals() {
+		return new Promise((resolve, reject) => {
+			// TODO: find a better way to do this
+			setTimeout(() => {
+				this.clear();
+				this.send_command('info locals').then(data => {
+					fs.writeFileSync('a.txt',JSON.stringify(data));
+					resolve(this.parse_locals(data.stdout));
+				});
+			}, 400);
 		});
 	}
 }
