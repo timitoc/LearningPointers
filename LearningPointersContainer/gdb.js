@@ -30,7 +30,6 @@ class GDB{
 		this.process.stdout.on('data', (data) => {
 
 			data = data.toString();
-			console.log('Got on stdout: ', data);
 
 			this.stdout.emit('data', data);
 
@@ -112,6 +111,9 @@ class GDB{
 	 * @param {number} line
 	 */
 	add_breakpoint(line){
+		this.breakpoints.push({
+			line: line
+		});
 		return this.send_command(util.format('b %d', line));
 	}
 
@@ -194,7 +196,6 @@ class GDB{
 	 * @param {string} buffer The stdout buffer
 	 */
 	get_stdout(buffer){
-		console.log(buffer.split('\n'));
 
 	}
 
@@ -289,10 +290,9 @@ class GDB{
 	}
 
 	get_line(output){
-		console.log(output);
 		let stdout = output.stdout;
 		let lines = stdout.split('\n');
-		console.log(lines);
+
 		let result;
 		if(lines.length == 1){
 			result = lines[0].split('\t')[0];
