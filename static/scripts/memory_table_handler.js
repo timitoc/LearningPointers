@@ -1,7 +1,8 @@
 var MemoryHandler = function() {
     this.UIElement=null;
     this.JUIElement=null;
-    this.n = 10;
+    this.rowCount = 0;
+    this.n = 20;
     this.m = 10;
     this.selected = {st:0, dr:-1};
     this.adresses = [];
@@ -19,23 +20,58 @@ MemoryHandler.prototype.resize = function(height, width) {
     this.invalidate();
 }
 
+MemoryHandler.prototype.addRow = function() {
+    var i = this.rowCount;
+    var tr = this.UIElement.insertRow();
+    for(var j = 0; j < this.m; j++){
+        var td = tr.insertCell();
+        $(td).addClass("memory_cell");
+        td.appendChild(document.createTextNode(i*this.m + j));
+        td.style.border = '1px solid black';
+        td.style.width = '30px';
+    }
+    this.rowCount++;
+    return tr;
+}
+
 MemoryHandler.prototype.invalidate = function() {
     this.JUIElement.empty();
-    this.UIElement.style.width  = '210px';
+    //this.UIElement.style.width  = '210px';
     this.UIElement.style.border = '1px solid black';
     this.selected = {st:0, dr:-1};
     for(var i = 0; i < this.n; i++){
-        var tr = this.UIElement.insertRow();
-        for(var j = 0; j < this.m; j++){
-            var td = tr.insertCell();
-            $(td).addClass("memory_cell");
-            td.appendChild(document.createTextNode(i*this.m + j));
-            td.style.border = '1px solid black';
-            td.style.width = '30px';
-        }
+        this.addRow();
     }
+    var self = this;
+    // this.JUIElement.endlessScroll({
+    //     pagesToKeep: 10,
+    //     fireOnce: false,
+    //     insertBefore: ".memory_table_class div:first",
+    //     insertAfter: ".memory_table_class div:last",
+    //     content: function(i, p) {
+    //         //alert(i + " si " + p);
+    //         return self.addRow(i);
+    //     },
+    //     ceaseFire: function(i) {
+    //       if (i >= 10) {
+    //         return true;
+    //       }
+    //     },
+    //     intervalFrequency: 5
+    // });
+    this.JUIElement.on('scroll', function() {
+        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+            self.JUIElement.stop(true);
+            self.addRow();
+            /// smooth debounce :)
+            var offTop = $(this).scrollTop() - 1;
+            $(this).scrollTop(offTop);
+        }
+    })
     this.gatherVarData();
 }
+
+
 
 function uniq(a) {
     return a.sort().filter(function(item, pos, ary) {

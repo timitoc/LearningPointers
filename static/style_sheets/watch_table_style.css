@@ -22,11 +22,20 @@
 
 .memory_table_class {
 	user-select: none;
+	display: block;
+	width: 300px;
+	height: 210px;      
+    overflow-y: auto;  
+    overflow-x: hidden;
 	-moz-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	-o-user-select: none;
 
+}
+
+.memory_table_class thead tbody{
+	display: block;
 }
 
 .memory_table_class td {
