@@ -30,7 +30,7 @@ MemoryHandler.prototype.addRow = function() {
         td.style.border = '1px solid black';
         td.style.width = '30px';
     }
-    this.colorRange(Math.max(this.select.st, i*this.m), this.selected.dr);
+    this.colorRange(Math.max(this.selected.st, i*this.m), this.selected.dr);
     this.rowCount++;
     return tr;
 }
@@ -77,7 +77,7 @@ MemoryHandler.prototype.invalidate = function() {
 
 function uniq(a) {
     return a.sort().filter(function(item, pos, ary) {
-        return !pos || item != ary[pos - 1];
+        return item != "" && (!pos || item != ary[pos - 1]);
     })
 }
 
@@ -100,9 +100,20 @@ MemoryHandler.prototype.gatherVarData = function() {
 //     this.highlight(3, 7);
 // }
 
+Math.clamp = function(nr, minim, maxim) {
+    if (nr < minim) return minim;
+    if (nr > maxim) return maxim;
+    return nr;
+}
+
 MemoryHandler.prototype.highlight = function(lo, hi) {
     this.clearRange(this.selected.st, this.selected.dr);
     this.selected = {st: lo, dr: hi};
+
+    var focusedRow = Math.clamp(Math.floor(lo/10)-2, 0, this.rowCount-10);
+    var newScrollTop = Math.floor(focusedRow * (this.JUIElement[0].scrollHeight - this.JUIElement.innerHeight()) / (this.rowCount-10));
+    
+    this.JUIElement.scrollTop(newScrollTop);
     this.colorRange(lo, hi);
 }
 
@@ -161,7 +172,8 @@ MemoryHandler.prototype.select = function(str, size) {
         ++ind;
     }
     console.log("Selected index is " + ind);
-    this.highlight(ind, ind+size-1);
+    if (!isNaN(ind))
+        this.highlight(ind, ind+size-1);
 }
 
 function findIndex(array, elem) {
