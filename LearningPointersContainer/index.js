@@ -136,6 +136,12 @@ io.on('connection', (socket)=>{
 		});
 	});
 
+	socket.on('set_var', (data) => {
+		procs[socket.id].set_var(data.expr, data.value).then(result => {
+			socket.emit('set_var', result);
+		});
+	});
+
 	socket.on('gdb_command',(data) => {
 		data = data.toString();
 		if(procs[socket.id]){

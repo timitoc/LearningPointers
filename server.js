@@ -147,6 +147,10 @@ io.on('connection', (socket) => {
 				socket.emit('print_expressions', data);
 			});
 
+			CONTAINERS[socket.id].on('set_var', (data)=>{
+				socket.emit('set_var', data);
+			});
+
 			socket.on('code',(data)=>{
 				CONTAINERS[socket.id].emit('code',data);
 			});
@@ -159,6 +163,9 @@ io.on('connection', (socket) => {
 				CONTAINERS[socket.id].emit('print_expressions', data);
 			});
 
+			socket.on('set_var', data => {
+				CONTAINERS[socket.id].emit('set_var', data);
+			});
 
 			socket.on('run',(data)=>{
 				CONTAINERS[socket.id].emit('run',data);

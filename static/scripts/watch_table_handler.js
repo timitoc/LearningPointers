@@ -102,7 +102,8 @@ function addJstreeData(element) {
         $('.jstree_class').bind(
             "update_cell.jstree-table", function(evt, data){
                 if (data.col == "value" && data.node.parent == "#") {
-                    alert("set " + data.node.text + " to " + data.value);
+                    console.log("set " + data.node.text + " to " + data.value);
+                    setVariable(data.node.text, data.value);
                 }
             }
         );

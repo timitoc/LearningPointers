@@ -284,6 +284,17 @@ class GDB{
 		});
 	}
 
+
+	/**
+	 * Sets variable value at runtime
+	 * @param {string} expression Variable to be changed
+	 * @param {string} value New value for the variable
+	 */
+
+	set_var(expression, value){
+		return this.send_command(util.format('set var %s=%s', expression, value));
+	}
+
 	is_int(str){
 		return /^\d+$/.test(str);
 	}
