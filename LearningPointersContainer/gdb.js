@@ -469,13 +469,13 @@ class GDB{
 	locals() {
 		return new Promise((resolve, reject) => {
 			// TODO: find a better way to do this
-			setTimeout(() => {
+			//setTimeout(() => {
 				this.clear();
 				this.send_command('info locals').then(data => {
 					fs.writeFileSync('a.txt',JSON.stringify(data));
 					resolve(this.parse_locals(data.stdout));
 				});
-			}, 400);
+				//}, 400);
 		});
 	}
 }

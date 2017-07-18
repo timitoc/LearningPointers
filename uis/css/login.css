@@ -1,0 +1,28 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #F0F0F0;
+}
+
+#login-form {
+	width: 300px;
+	margin: 50px auto;
+
+	border: 1px solid;
+
+	padding: 20px;
+}
+
+#login-form input {
+	border: 1px solid darkgray;
+	padding: 10px;
+	font-size: 20px;
+
+	outline: none;
+
+	font-family: 'Open Sans', sans-serif;
+
+	margin: 10px;
+
+
+}

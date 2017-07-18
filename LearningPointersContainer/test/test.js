@@ -12,6 +12,8 @@ function writeCppFile(content) {
 function removeCppFile() {
 	fs.unlink("test.cpp");
 	fs.unlink("test_exec");
+	fs.unlink("input.txt");
+	fs.unlink("output.txt");
 }
 
 function compileCppFile() {
