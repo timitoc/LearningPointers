@@ -13,6 +13,10 @@ function sendCommand(comand) {
 	socket.emit("gdb_command", comand);
 }
 
+function setVariable(expr, value) {
+	socket.emit("set_var", {expr: expr, value: value});
+}
+
 $("#send_command").click(function(){
 	var cmd = $("#gdb_command").val();
 	sendCommand(cmd);
@@ -92,6 +96,10 @@ socket.on("continue", function(data){
 socket.on("print_expressions", function(data){
 	console.log("print expressions " + JSON.stringify(data));
 	recievedData(data);
+});
+
+socket.on("set_var", function(data){
+	console.log("set var event " + JSON.stringify(data));
 });
 
 function recievedData(dataWatches) {
