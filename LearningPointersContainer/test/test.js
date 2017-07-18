@@ -99,9 +99,13 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
+					console.log("1: " + JSON.stringify(data));
 					gdb.add_breakpoint(7).then(data => {
+						console.log("2: " + JSON.stringify(data));
 						gdb.run().then(data => {
+							console.log("3: " + JSON.stringify(data));
 							gdb.locals().then(data1 => {
+								console.log("4: " + JSON.stringify(data1));
 								resolve(data1);
 							});
 						});

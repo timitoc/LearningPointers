@@ -39,8 +39,7 @@ class GDB{
 			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
 				this.done$.next(this.buffer_stdout);
 			}
-
-			if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
+			else if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
 				this.done$.next(this.buffer_stdout);
 			}
 		});
@@ -63,10 +62,13 @@ class GDB{
 
 	write_input(input){
 		return new Promise((resolve, reject) => {
-			fs.writeFile('input.txt', input + '\n', err =>{
-				if(err) throw err;
-				resolve();
+			this.send_command("").then(data => {
+				fs.writeFile('input.txt', input + '\n', err =>{
+					if(err) throw err;
+					resolve();
+				});
 			});
+			
 		});
 	}
 
@@ -480,13 +482,13 @@ class GDB{
 	locals() {
 		return new Promise((resolve, reject) => {
 			// TODO: find a better way to do this
-			setTimeout(() => {
+			//setTimeout(() => {
 				this.clear();
 				this.send_command('info locals').then(data => {
 					fs.writeFileSync('a.txt',JSON.stringify(data));
 					resolve(this.parse_locals(data.stdout));
 				});
-			}, 400);
+			//}, 400);
 		});
 	}
 }
