@@ -3,9 +3,13 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<style>
+		#breakpoint_options {
+			display: none;
+		}
+		</style>
 
-		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
-		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
@@ -20,25 +24,13 @@
 		</style>
 
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-		<script async src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-		<script async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="/style_sheets/editor_style.css"/>
 		<link rel="stylesheet" href="/style_sheets/watch_table_style.css"/>
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" rel="stylesheet">
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet">
 
-		<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-		<script type="text/javascript" src="/treetable/jstreetable.js"></script>
-
-		<script async src="/scripts/bootstrap-waitingfor.min.js"></script>
-
-		<script src="/scripts/js.cookie.js"></script>
-
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
 		<link rel="stylesheet" href="/style_sheets/jquery.dropdown.min.css"/>
 
@@ -144,14 +136,6 @@
 					<center id="running_state">Stopped</center>
 				</div>
 				</center>
-				<script>
-					$(function() {
-						$("#breakpoint_options").hide();
-						$("#enable_vim").bootstrapToggle("off");
-						toggle_vim();
-						$('.selectpicker').selectpicker({width: '80px'});
-					});
-				</script>
 			</div>
 			<div class="pure-u-1-4">
 				<button id="pls" class="pure-button" disabled>
@@ -178,21 +162,51 @@
 			</div>
 		</div>
 
+		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+		<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+		<script type="text/javascript" src="/treetable/jstreetable.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+		<script src="/scripts/bootstrap-waitingfor.min.js"></script>
+
+		<script src="/scripts/js.cookie.js"></script>
+
+
+		<script>
+			$(function() {
+				$("#breakpoint_options").hide();
+				$("#enable_vim").bootstrapToggle("off");
+				toggle_vim();
+				$('.selectpicker').selectpicker({width: '80px'});
+			});
+		</script>
 		<script src="/scripts/jquery.dropdown.min.js"></script>
 		<script src="/scripts/jquery.endless-scroll.js"></script>
 		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
+		<script src="/socket.io/socket.io.js"></script>
+
+
 		<script src="/scripts/converter.js"></script>
 		<script src="/scripts/button_mapping.js"></script>
 		<script src="/scripts/editor_gutter_setup.js"></script>
 		<script src="/scripts/editor_setup.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
 		<script src="/scripts/gdb_events.js"></script>
+
+		<script src="/scripts/path.min.js"></script>
+		<script src="/scripts/manage_code.js"></script>
+
 		<script src="/scripts/watch_table_handler.js"></script>
 		<script src="/scripts/memory_table_handler.js"></script>
 		<script src="/scripts/memory_var_x.js"></script>
 		<script src="/scripts/main_logic.js"></script>
+
 	</body>
 </html>

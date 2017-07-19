@@ -48,16 +48,6 @@ io.on('connection', (socket) => {
 	console.log('A user connected with id ',socket.id);
 	let port = get_available_port();
 
-	if(pathId != -1){
-
-		DbApi.get_code(pathId).then(code => {
-			code = code.code;
-			if(code){
-				socket.emit('editor_source', code);
-			}
-			else socket.emit('editor_source', 'There is no source code saved with this id');
-		});
-	}
 
 	docker.createContainer({
 		Image: 'learning-pointers',
@@ -226,6 +216,21 @@ io.on('connection', (socket) => {
 				});
 			});
 
+			socket.on('get_code', data => {
+				console.log(data);
+				let code;
+				DbApi.get_code(data.id).then(db_data => {
+					if(db_data) {
+						code = db_data.code;
+						if(code){
+							socket.emit('editor_source', code);
+						}
+						else socket.emit('editor_source', 'There is no source code saved with this id');
+					}
+					else socket.emit('editor_source', 'There is no source code saved with this id');
+				});
+			});
+
 			socket.on('disconnect',(data)=>{
 				USED_PORTS[port.toString()] = false;
 
@@ -250,8 +255,8 @@ app.get('/code',(req,res)=>{
 });
 
 app.get('/code/:id', (req, res)=>{
-	pathId = req.params.id;
-	res.render("editor");
+	let pathId = req.params.id;
+	res.redirect("/code/#!/saved/"+pathId);
 });
 
 app.get('/lessons', (req, res) =>{

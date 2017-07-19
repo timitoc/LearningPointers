@@ -137,8 +137,8 @@ socket.on('code_saved', function(data) {
 });
 
 socket.on('editor_source', function(data){
-	console.log('Recieved' + data);
 	editor.setValue(data, 1);
+	waitingDialog.hide();
 });
 
 socket.on('add_breakpoints_result', function(data){

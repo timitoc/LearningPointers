@@ -26,6 +26,10 @@ editor.setOptions({
     fontSize: "10pt"
 });
 
+editor.on('change', function() {
+	Cookies.set('code', editor.getValue());
+});
+
 $(".selectpicker").change(function (e) {
     if (this.value == "dark") {
         editor.setTheme("ace/theme/monokai");
