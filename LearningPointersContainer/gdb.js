@@ -39,8 +39,7 @@ class GDB{
 			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
 				this.done$.next(this.buffer_stdout);
 			}
-
-			if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
+			else if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
 				this.done$.next(this.buffer_stdout);
 			}
 		});
@@ -63,10 +62,13 @@ class GDB{
 
 	write_input(input){
 		return new Promise((resolve, reject) => {
-			fs.writeFile('input.txt', input + '\n', err =>{
-				if(err) throw err;
-				resolve();
+			this.send_command("").then(data => {
+				fs.writeFile('input.txt', input + '\n', err =>{
+					if(err) throw err;
+					resolve();
+				});
 			});
+			
 		});
 	}
 
@@ -466,12 +468,12 @@ class GDB{
 	parse_locals(stdout) {
 		return stdout
 			.split('\n')
-			.map(function(item) {
-				return item.split('=').map(function(item) {
+			.map((item) => {
+				return item.split('=').map((item) => {
 					return item.trim();
 				});
 			})
-			.reduce(function(obj, item) {
+			.reduce((obj, item) => {
 				obj[item[0]] = item[1];
 				return obj;
 			},{});
