@@ -26,7 +26,7 @@
 	width: 300px;
 	height: 210px;      
     overflow-y: auto;  
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 	-moz-user-select: none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
