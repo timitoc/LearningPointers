@@ -231,6 +231,21 @@ io.on('connection', (socket) => {
 				});
 			});
 
+			socket.on('locals', data => {
+				CONTAINERS[socket.id].emit('locals', data);
+			});
+			CONTAINERS[socket.id].on('locals', data => {
+				socket.emit('locals', data);
+			});
+
+			socket.on('args', data => {
+				CONTAINERS[socket.id].emit('args', data);
+			});
+			CONTAINERS[socket.id].on('args', data => {
+				socket.emit('args', data);
+			});
+
+
 			socket.on('disconnect',(data)=>{
 				USED_PORTS[port.toString()] = false;
 

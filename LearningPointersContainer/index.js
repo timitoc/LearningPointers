@@ -210,6 +210,20 @@ io.on('connection', (socket)=>{
 		});
 	});
 
+	socket.on('locals', (data) => {
+		procs[socket.id].locals().then(data => {
+			socket.emit('locals', data);
+		});
+	});
+
+	socket.on('args', (data) => {
+		procs[socket.id].args().then(data => {
+			socket.emit('args', data);
+		});
+	});
+
+
+
 	socket.on('disconnect',() => {
 		if(procs[socket.id]){
 			procs[socket.id].quit().then(()=>{
