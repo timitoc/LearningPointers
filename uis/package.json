@@ -1,0 +1,16 @@
+{
+  "name": "uis",
+  "version": "1.0.0",
+  "description": "run using: http-server .",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node_modules/http-server/bin/http-server ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  }
+}

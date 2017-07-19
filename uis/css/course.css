@@ -45,25 +45,27 @@
 	padding: 0;
 	margin: 0;
 }
-.course-actions div {
-	position: relative;
-    margin: 0;
-    padding: 20px;
-    border: none;
-	cursor:pointer;
+.course-actions li{
+	display: inline-block;
+	list-style-type: none;
+	padding: 10px;
 }
-.course-actions div a {
+
+.course-actions a {
 	text-decoration: none;
 	color: white;
 }
 
 .course-goto{
 	background-color: #29274c;
+	width:65%;
 }
 
 .course-unsubscribe{
 	background-color: #da2c38;
 	transition: background-color 0.5s;
+	width:25%;
+	text-align: center;
 }
 
 .course-unsubscribe:hover{
