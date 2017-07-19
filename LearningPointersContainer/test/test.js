@@ -22,7 +22,7 @@ function compileCppFile() {
 
 describe('GDB interface', () => {
 	describe('Starting debugger', () => {
-		it('Check line sent 1', function() {
+		/*it('Check line sent 1', function() {
 			return new Promise((resolve, reject) => {
 
 				writeCppFile(` int main() {
@@ -49,9 +49,9 @@ describe('GDB interface', () => {
 			}).then(data => {
 				chai.expect(data.line).to.equal(3);
 			});
-		});
+		});*/
 
-		it('Check line sent 2', function() {
+		/*it('Check line sent 2', function() {
 			return new Promise((resolve, reject) => {
 
 				writeCppFile(` int main() {
@@ -78,11 +78,7 @@ describe('GDB interface', () => {
 			}).then(data => {
 				chai.expect(data.line).to.equal(5);
 			});
-		});
-
-		//it('Should return',() => {
-		//	assert.equal(-1, [1,2,3].indexOf(4));
-		//});
+		});*/
 	});
 	describe('Locals', () => {
 		it('Verify local variable value', () => {
@@ -92,7 +88,7 @@ describe('GDB interface', () => {
 						return n * f(n-1);
 					}
 					int main() {
-						int x = 4;
+						int x = 5;
 						f(4);
 					return 0;}`);
 
@@ -101,7 +97,7 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
-					gdb.add_breakpoint(7).then(data => {
+					gdb.add_breakpoint(8).then(data => {
 						gdb.run().then(data => {
 							gdb.locals().then(data1 => {
 								resolve(data1);
@@ -110,7 +106,7 @@ describe('GDB interface', () => {
 					});
 				});
 			}).then((data) => {
-				chai.expect(data.x).to.equal('4');
+				chai.expect(data.x).to.equal('5');
 			});
 		});
 	});
