@@ -20,3 +20,5 @@ DONE Fix crash at undefined variables in watches
 -> ERROR HANDLING: watch no found field
 -> 3* Map next, step commands to keystrokes
 -> 2* Beautify (clang-format)
+-> Callstack
+-> Time betweeen two execution states
