@@ -479,10 +479,21 @@ class GDB{
 			},{});
 	}
 
+	// Get local variables
 	locals() {
 		return new Promise((resolve, reject) => {
 			this.clear();
 			this.send_command('info locals').then(data => {
+				resolve(this.parse_locals(data.stdout));
+			});
+		});
+	}
+
+	// Get function arguments
+	args() {
+		return new Promise((resolve, reject) => {
+			this.clear();
+			this.send_command('info args').then(data => {
 				resolve(this.parse_locals(data.stdout));
 			});
 		});

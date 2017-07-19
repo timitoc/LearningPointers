@@ -8,8 +8,10 @@ class PrintParser{
 			}
 	}
 	get_value(){
-		if(this.raw.includes('No Symbol'))
+		if(this.raw.indexOf('$') != 0)
 			return 'Invalid';
+//		if(this.raw.includes('No Symbol'))
+//			return 'Invalid';
 		return this.raw.substr(this.raw.indexOf('=') + 2);
 	}
 }
