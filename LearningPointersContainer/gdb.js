@@ -498,6 +498,50 @@ class GDB{
 			});
 		});
 	}
+
+	parse_arguments(arg) {
+		let first = arg.indexOf('(')+1;
+		let last = arg.lastIndexOf(')')-1;
+		let sub = arg.substr(first, last-first+1).replace(/,\s/g, '\n');
+		return this.parse_locals(sub);
+	}
+
+
+	parse_backtrace(stdout) {
+		let arr = stdout.split('\n').map(item => {
+			let tokens = item.split(' ');
+			if(tokens[0] == '#0') {
+				return {
+					'function' : tokens[2],
+					'arguments' : this.parse_arguments(item)
+				};
+			}
+			if(tokens[4]) {
+				if(tokens[4] != 'main')
+					return {
+						'function': tokens[4],
+						'arguments' : this.parse_arguments(item)
+					};
+				else
+					return {
+						'function': 'main'
+					};
+			}
+			return undefined;
+		});
+		arr.pop();
+		return arr;
+	}
+
+	// Get call stack
+	backtrace() {
+		return new Promise((resolve, reject) => {
+			this.clear();
+			this.send_command('backtrace').then(data => {
+				resolve(this.parse_backtrace(data.stdout));
+			});
+		});
+	}
 }
 
 module.exports = GDB;

@@ -142,6 +142,44 @@ describe('GDB interface', () => {
 
 		});
 	});
+	describe('Backtrace (call stack)', () => {
+		it('Verify call stack', () => {
+			return new Promise((resolve, reject) => {
+				writeCppFile(`int f(int n) {
+						if(!n) return 1;
+						return n * f(n-1);
+					}
+					int main() {
+						int x = 5;
+						f(4);
+					return 0;}`);
+
+				compileCppFile();
+
+				let gdb = new GDB('./test_exec');
+
+				gdb.write_input('').then(data => {
+					gdb.add_breakpoint(2).then(data => {
+						gdb.run().then(data => {
+							gdb.cont([]).then(data => {
+								gdb.backtrace().then(data1 => {
+									resolve(data1);
+								});
+							});
+						});
+					});
+				});
+
+			}).then(data => {
+				chai.expect(data).to.have.lengthOf(3);
+				chai.expect(data[0]).to.have.property('function');
+				chai.expect(data[0]['function']).to.equal('f');
+				chai.expect(data[0]).to.have.property('arguments');
+				chai.expect(data[0]['arguments']).to.have.property('n');
+				chai.expect(data[0]['arguments']['n']).to.equal('3');
+			});
+		});
+	});
 });
 
 process.on('exit', () => {
