@@ -4,6 +4,8 @@ var MemoryHandler = function() {
     this.rowCount = 0;
     this.n = 20;
     this.m = 10;
+    this.fixedJUIWidth = 300;
+    this.cellWidth = 30;
     this.selected = {st:0, dr:-1};
     this.adresses = [];
 }
@@ -17,19 +19,21 @@ MemoryHandler.prototype.init = function(UIElement) {
 MemoryHandler.prototype.resize = function(height, width) {
     this.n = height;
     this.m = width;
+    this.cellWidth = Math.max(30, 300 / this.m);
     this.invalidate();
 }
 
 MemoryHandler.prototype.addRow = function() {
     var i = this.rowCount;
-    var tr = this.UIElement.insertRow();
+    var tr = this.UIElement.insertRow(), td;
     for(var j = 0; j < this.m; j++){
-        var td = tr.insertCell();
+        td = tr.insertCell();
         $(td).addClass("memory_cell");
         td.appendChild(document.createTextNode(i*this.m + j));
         td.style.border = '1px solid black';
-        td.style.width = '30px';
+        td.style.width = this.cellWidth + 'px';
     }
+    //this.JUIElement.width(Math.max(290, 28 + this.m * $(td).width()));
     this.colorRange(Math.max(this.selected.st, i*this.m), this.selected.dr);
     this.rowCount++;
     return tr;
@@ -110,7 +114,7 @@ MemoryHandler.prototype.highlight = function(lo, hi) {
     this.clearRange(this.selected.st, this.selected.dr);
     this.selected = {st: lo, dr: hi};
 
-    var focusedRow = Math.clamp(Math.floor(lo/10)-2, 0, this.rowCount-10);
+    var focusedRow = Math.clamp(Math.floor(lo / this.m)-2, 0, this.rowCount-10);
     var newScrollTop = Math.floor(focusedRow * (this.JUIElement[0].scrollHeight - this.JUIElement.innerHeight()) / (this.rowCount-10));
     
     this.JUIElement.scrollTop(newScrollTop);
@@ -186,7 +190,7 @@ function findIndex(array, elem) {
 var memoryHandler = new MemoryHandler();
 
 function refresh() {
-    var height = parseInt($('#htext').val(), 10);
+    var height = 20;
     var width = parseInt($('#wtext').val(), 10);
     memoryHandler.resize(height, width);
 }
@@ -200,7 +204,7 @@ function initLeftPart() {
         memoryHandler.init(tbl);
         body.appendChild(tbl);
     }
-    var x = $("<div class='pure-form pure-form-stacked'><table cellpadding='10'><tr><td>Height:&nbsp;</td><td><input type='text' id='htext'></td></tr><tr><td>Width:</td><td><input type='text' id='wtext'></td></tr></div>");
+    var x = $("<div class='pure-form pure-form-stacked'><table cellpadding='10'><tr><td>Width:</td><td><input type='text' id='wtext'></td></tr></div>");
     $(body).append(x);
 	x = $("<button  onclick='refresh()' class='pure-button'> Refresh </button><br><br>");
     $(body).append(x);
