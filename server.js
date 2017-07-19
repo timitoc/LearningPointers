@@ -256,7 +256,7 @@ app.get('/code',(req,res)=>{
 
 app.get('/code/:id', (req, res)=>{
 	let pathId = req.params.id;
-	res.redirect("/code/#!/saved/"+pathId);
+	res.redirect("/code/#/saved/"+pathId);
 });
 
 app.get('/lessons', (req, res) =>{
