@@ -18,10 +18,15 @@
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "sudo node server.js"
+    "start": "sudo node server.js",
+    "build": "node node_modules/gulp/bin/gulp.js"
   },
   "repository": {
     "type": "git",

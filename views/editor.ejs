@@ -6,6 +6,16 @@
 		<style>
 		#breakpoint_options {
 			display: none;
+			padding: 0;
+			border-radius: 3px;
+		}
+
+		#breakpoint_options li {
+			padding: 10px;
+		}
+
+		#breakpoint_options input[type=text] {
+			font-size: 15px;
 		}
 		</style>
 
@@ -88,7 +98,7 @@
 						</span>
 					</div>
 					<span id="editor_parent">
-						<div id="editor">//Write your code here</div>
+						<div id="editor"></div>
 					</span>
 				</center>
 				<br/>
@@ -120,14 +130,12 @@
 					<ul id="breakpoint_options">
 						<li>
 							<label class="checkbox-inline">
-								<input  data-toggle="toggle" type="checkbox" id="temp_br"/>
-									<span style="color: white">&nbsp;Temporary</span>
+								<input data-toggle="toggle" type="checkbox" id="temp_br"/>
+								<span style="color: white">&nbsp;Temporary</span>
 							</label>
-
 						</li>
 						<li>
-							<span style="color: white">Condition</span>
-							<input type="text" id="cond_br"/>
+							<input type="text" id="cond_br" placeholder="Condition"/>
 						</li>
 					</ul>
 				</span>
@@ -178,10 +186,36 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
-		<script src="/scripts/bootstrap-waitingfor.min.js"></script>
+
+
+		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="/socket.io/socket.io.js"></script>
+
 
 		<script src="/scripts/js.cookie.js"></script>
 
+		<!-- Libs -->
+		<script src="/scripts/jquery.dropdown.min.js"></script>
+		<script src="/scripts/jquery.endless-scroll.js"></script>
+		<script src="/scripts/bootstrap-waitingfor.min.js"></script>
+		<script src="/scripts/path.min.js"></script>
+
+		<!-- Scripts -->
+		<script src="/scripts/converter.js"></script>
+		<script src="/scripts/button_mapping.js"></script>
+		<script src="/scripts/editor_gutter_setup.js"></script>
+		<script src="/scripts/editor_setup.js"></script>
+		<script src="/scripts/gdb_events.js"></script>
+		<script src="/scripts/manage_code.js"></script>
+		<script src="/scripts/watch_table_handler.js"></script>
+		<script src="/scripts/memory_table_handler.js"></script>
+		<script src="/scripts/memory_var_x.js"></script>
+		<script src="/scripts/main_logic.js"></script>
+
+		<!-- Load minified (just in production) -->
+		<!--<script src="/dist/all.js"></script> -->
 
 		<script>
 			$(function() {
@@ -191,27 +225,6 @@
 				$('.selectpicker').selectpicker({width: '80px'});
 			});
 		</script>
-		<script src="/scripts/jquery.dropdown.min.js"></script>
-		<script src="/scripts/jquery.endless-scroll.js"></script>
-		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
-
-		<script src="/socket.io/socket.io.js"></script>
-
-
-		<script src="/scripts/converter.js"></script>
-		<script src="/scripts/button_mapping.js"></script>
-		<script src="/scripts/editor_gutter_setup.js"></script>
-		<script src="/scripts/editor_setup.js"></script>
-		<script src="/scripts/gdb_events.js"></script>
-
-		<script src="/scripts/path.min.js"></script>
-		<script src="/scripts/manage_code.js"></script>
-
-		<script src="/scripts/watch_table_handler.js"></script>
-		<script src="/scripts/memory_table_handler.js"></script>
-		<script src="/scripts/memory_var_x.js"></script>
-		<script src="/scripts/main_logic.js"></script>
 
 	</body>
 </html>
