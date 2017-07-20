@@ -1,28 +1,41 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	background-color: #F0F0F0;
 }
 
 #login-form {
-	width: 300px;
+	width: 350px;
 	margin: 50px auto;
 
-	border: 1px solid;
-
 	padding: 20px;
+	font-family: 'Open Sans', sans-serif;
+	background-color: seagreen;
+}
+
+#login-form label {
+	color: white;
+}
+
+.group {
+	padding: 10px;
 }
 
 #login-form input {
+	margin-top: 10px;
 	border: 1px solid darkgray;
 	padding: 10px;
 	font-size: 20px;
 
 	outline: none;
 
-	font-family: 'Open Sans', sans-serif;
+}
 
-	margin: 10px;
-
-
+#login-form button {
+	border: 0;
+	padding: 10px;
+	background-color: #253c78;
+	color: white;
+	font-size: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
 }

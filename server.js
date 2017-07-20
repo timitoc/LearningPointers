@@ -279,6 +279,14 @@ app.get('/code',(req,res)=>{
 	res.render("editor");
 });
 
+app.get('/login', (req,res) => {
+	res.render("login");
+});
+
+app.get('/signup', (req, res) => {
+	res.render("signup");
+});
+
 app.get('/code/:id', (req, res)=>{
 	let pathId = req.params.id;
 	res.redirect("/code/#/saved/"+pathId);
