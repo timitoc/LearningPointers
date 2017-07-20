@@ -164,3 +164,7 @@ function download(filename, text) {
 $("#download_code").click(function() {
 	download('code'+'.cpp', editor.getValue());
 });
+
+shortcut.add("Ctrl+S",function() {
+	download('code'+'.cpp', editor.getValue());
+});
