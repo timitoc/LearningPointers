@@ -22,3 +22,12 @@ DONE Fix crash at undefined variables in watches
 -> 2* Beautify (clang-format)
 -> Callstack
 -> Time betweeen two execution states
+
+-> 0* Upload code from file and url
+-> Run to cursor
+-> Functii cu numar variabil de parametri
+-> Parametri linie de comanda
+-> Project support(file explorer, makefile)
+-> Timer
+-> Cautare regex
+-> Baza de date: Adaugat autori ( bio + poza )
