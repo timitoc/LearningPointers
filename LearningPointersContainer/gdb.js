@@ -5,6 +5,7 @@ const Promise = require('bluebird');
 const fs = require('fs');
 const Subject = require('rxjs/Subject').Subject;
 const EventEmitter = require('events');
+const chokidar = require('chokidar');
 
 const PrintParser = require('./PrintParser.js');
 
@@ -23,6 +24,17 @@ class GDB{
 
 		this.stdout = new EventEmitter();
 		this.stderr = new EventEmitter();
+
+		this.program_stdout = new EventEmitter();
+
+		var watcher = chokidar.watch('output.txt');
+		watcher
+		.on('add', data => {
+			this.program_stdout.emit('data', fs.readFileSync('output.txt').toString());
+		})
+		.on('change', data => {
+			this.program_stdout.emit('data', fs.readFileSync('output.txt').toString());
+		});
 
 		this.breakpoints = [];
 
@@ -68,7 +80,6 @@ class GDB{
 					resolve();
 				});
 			});
-			
 		});
 	}
 

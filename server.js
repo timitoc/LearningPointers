@@ -11,6 +11,7 @@ const async = require('async');
 const Docker = require('dockerode');
 const Chance = require('chance');
 const basicAuth = require('express-basic-auth')
+const fs = require('fs');
 
 require('./sequelize');
 
@@ -243,6 +244,15 @@ io.on('connection', (socket) => {
 			});
 			CONTAINERS[socket.id].on('args', data => {
 				socket.emit('args', data);
+			});
+
+			socket.on('beautify', data => {
+				let filename = chance.string({pool: 'abcdef0123456789',length: 10})+'.cpp';
+				fs.writeFileSync(filename, data);
+				child_process.exec('clang-format -style=LLVM '+filename, (err, stdout, stderr) => {
+					socket.emit('beautify', stdout);
+					fs.unlinkSync(filename);
+				});
 			});
 
 

@@ -97,9 +97,9 @@ io.on('connection', (socket)=>{
 					socket.emit('gdb_stderr', data);
 				});
 
-				//procs[socket.id].program_stdout.on('data', (data) => {
-				//	socket.emit('program_stdout', data);
-				//});
+				procs[socket.id].program_stdout.on('data', (data) => {
+					socket.emit('program_stdout', data);
+				});
 
 				//procs[socket.id].running_state.on('data', (data) => {
 				//	socket.emit('running_state', data);

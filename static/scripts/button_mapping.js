@@ -123,3 +123,8 @@ function moveHighlight(row) {
 function highLine(row) {
     marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
 }
+
+$("#beautify_code").click(function() {
+	socket.emit('beautify', editor.getValue());
+});
+
