@@ -67,6 +67,15 @@ function startDebugging() {
     socket.emit("code",code);
 }
 
+shortcut.add("F9",function() {
+    Global.status = "debugging";
+    startDebugging();
+});
+
+shortcut.add("F5",function() {
+    Global.status = "running";
+    startDebugging();
+});
 $("#step_debugger").click(function() {
     stepDebugger();
 });
