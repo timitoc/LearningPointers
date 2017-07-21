@@ -12,6 +12,7 @@ const Docker = require('dockerode');
 const Chance = require('chance');
 const basicAuth = require('express-basic-auth')
 const fs = require('fs');
+const session = require('express-session');
 
 require('./sequelize');
 
@@ -31,6 +32,12 @@ app.use(body_parser.urlencoded({ extended: false }));
 app.use(body_parser.json());
 
 app.set('view engine', 'ejs');
+
+app.use(session({
+	secret: process.env.SESSION_SECRET,
+	resave: true,
+	saveUninitialized: true
+}));
 
 let CONTAINERS = {};
 let USED_PORTS = {};
@@ -271,27 +278,10 @@ io.on('connection', (socket) => {
 	});
 });
 
-app.get('/', (req, res) => {
-	res.render("home");
-});
+// Load routes
+require('./routes')(app);
 
-app.get('/code',(req,res)=>{
-	res.render("editor");
-});
-
-app.get('/login', (req,res) => {
-	res.render("login");
-});
-
-app.get('/signup', (req, res) => {
-	res.render("signup");
-});
-
-app.get('/code/:id', (req, res)=>{
-	let pathId = req.params.id;
-	res.redirect("/code/#/saved/"+pathId);
-});
-
+/*
 app.get('/lessons', (req, res) =>{
 	DbApi.get_lessons().then(data => {
 		res.render("lessons", {
@@ -335,6 +325,7 @@ app.get('/admin', basicAuth({
 }), (req, res) => {
     res.render("admin/index");
 });
+*/
 
 http_server.listen(3000,()=>{
 	console.log('Server started on port %s',3000);

@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title></title>
+	<title>Signup</title>
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="/style_sheets/signup.css">
 </head>
 <body>
-	
+	<div id="signup-form">
+		<% if(messages.error) { %>
+			<div id="errors">
+				<b>Error:</b> <%= messages.error %>
+			</div>
+		<% } %>
+		<form action="/signup" method="post">
+			<input type="hidden" name="_csrf" value="<%=csrfToken%>">
+			<div class="login-wrap">
+				<h2 align="left">Create a new account</h2>
+				<div class="form">
+					<input type="email" placeholder="Email" name="email" />
+					<input type="password" placeholder="Password" name="password" />
+					<input type="password" placeholder="Confirm password" name="password_confirm" />
+					<input type="text" placeholder="Name" name="name"><br>
+					<center><label for="avatar" id="avatar_label">Choose your avatar: </label></center>
+					<input type="file" id="avatar" placeholder="Avatar" name="avatar"><br>
+					<button>Sign up</button>
+					<a href="/login"> <p> Already have an account? Log in</p></a>
+				</div>
+			</div>
+		</form>
+	</div>
 </body>
 </html>
