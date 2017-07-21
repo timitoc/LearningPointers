@@ -1,4 +1,5 @@
 var body;
+var localsTable;
 var watchTable = function() {
     var parent = $('.watch_table_class');
     var header = createHeader();
@@ -7,7 +8,9 @@ var watchTable = function() {
     header.appendTo(parent);
     body.appendTo(parent);
     header.click(function() {toggleView();});
-
+    localsTable = new LocalsTable();
+    localsTable.init();
+    localsTable.toggleView();
     var isBodyVisible = 1;
 }
 
