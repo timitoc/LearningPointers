@@ -2,6 +2,7 @@ var LocalsTable = function() {
     this.parent = $('.watch_table_class');
     this.body = null;
     this.JUIElement = null;
+    this.visible = 0;
 }
 
 LocalsTable.prototype.init = function() {
@@ -14,6 +15,7 @@ LocalsTable.prototype.init = function() {
     });
     this.JUIElement.appendTo(this.body);
     this.body.appendTo(this.parent);
+    this.body.toggle();
 }
 
 LocalsTable.prototype.initTable = function() {
@@ -47,4 +49,17 @@ LocalsTable.prototype.initTable = function() {
 
 LocalsTable.prototype.toggleView = function() {
     this.body.toggle();
+    this.visible ^= 1;
+    if (this.visible == 1) {
+        this.fetchLocalsFromGdb();
+    }
+}
+
+LocalsTable.prototype.fetchLocalsFromGdb = function() {
+    socket.emit('locals', expresionList);
+}
+
+/// populates table with data received from gdb
+LocalsTable.prototype.consume = function(data) {
+    console.log("consume " + JSON.stringify(data));
 }

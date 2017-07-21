@@ -149,3 +149,7 @@ socket.on('beautify', function(data) {
 	console.log('123');
 	editor.setValue(data, 1);
 });
+
+socket.on('locals', function(data) {
+	localsTable.consume(data);
+});

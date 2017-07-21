@@ -1,5 +1,6 @@
 var body;
 var localsTable;
+var isBodyVisible = 1;
 var watchTable = function() {
     var parent = $('.watch_table_class');
     var header = createHeader();
@@ -7,20 +8,30 @@ var watchTable = function() {
     body = createBody();
     header.appendTo(parent);
     body.appendTo(parent);
-    header.click(function() {toggleView();});
     localsTable = new LocalsTable();
     localsTable.init();
-    localsTable.toggleView();
-    var isBodyVisible = 1;
 }
 
 var expresionList = [];
 
 function createHeader() {
-    var header = jQuery('<div/>', {
+    var h1 = jQuery('<div/>', {
         class: 'watches_header btn btn-default',
-        text: 'Toggle watches'
+        text: 'Custom'
     });
+    h1.click(function() {
+        toggleView(1);
+    });
+    var h2 = jQuery('<div/>', {
+        class: 'watches_header btn btn-default',
+        text: 'Locals'
+    });
+    h2.click(function() {
+        toggleView(2);
+    });
+    var header = jQuery('<div/>');
+    h1.appendTo(header);
+    h2.appendTo(header);
     return header;
 }
 
@@ -128,8 +139,13 @@ function addExpressionToDiplayList(exprName) {
     }
 }
 
-function toggleView() {
-    body.toggle();
+function toggleView(who) {
+    if (who == 1 && !isBodyVisible || 
+        who == 2 && isBodyVisible) 
+    {    
+        body.toggle();
+        localsTable.toggleView();
+    }
     isBodyVisible ^= 1;
 }
 
