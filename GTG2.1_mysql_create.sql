@@ -1,7 +1,14 @@
+DROP DATABASE IF EXISTS learning_pointers;
+CREATE DATABASE learning_pointers;
+USE learning_pointers;
+
 CREATE TABLE `users` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
-	`username` varchar(50) NOT NULL UNIQUE,
-	`password` varchar(50) NOT NULL,
+	`email` varchar(50) NOT NULL UNIQUE,
+	`name` varchar(50) NOT NULL,
+	`avatar` text NOT NULL,
+	`password` varchar(100) NOT NULL,
+	`bio` text NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -69,4 +76,3 @@ ALTER TABLE `comments` ADD CONSTRAINT `comments_fk1` FOREIGN KEY (`module_id`) R
 ALTER TABLE `finished` ADD CONSTRAINT `finished_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
 
 ALTER TABLE `finished` ADD CONSTRAINT `finished_fk1` FOREIGN KEY (`module_id`) REFERENCES `modules`(`id`);
-
