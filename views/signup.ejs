@@ -18,21 +18,30 @@
 			<div class="login-wrap">
 				<p id="title">Create a new account</p>
 				<div class="form">
-					<input type="email" placeholder="Email" name="email" />
+					<input type="email" id="email" placeholder="Email" name="email" />
 					<input type="password" placeholder="Password" name="password" />
 					<!--<input type="password" placeholder="Confirm password" name="password_confirm" />-->
-					<input type="text" placeholder="Name" name="name"><br>
-					<center>
-						<label for="avatar" id="avatar_label">
-							Choose your avatar: <img src="/upload.svg" alt="" width="30">
-						</label>
-					</center>
-					<input type="file" id="avatar" placeholder="Avatar" name="avatar"><br>
+					<input type="text" id="name" placeholder="Name" name="name"><br>
 					<button>Sign up</button>
 					<a href="/login"> <p> Already have an account? Log in</p></a>
 				</div>
 			</div>
 		</form>
+		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="/scripts/js.cookie.js"></script>
+		<script>
+		$(function() {
+			$("#email").val(Cookies.get('signup_email'));
+			$("#name").val(Cookies.get('signup_name'));
+		});
+		$("#email").change(function() {
+			Cookies.set('signup_email', $("#email").val() ,{expires: 0.5});
+		});
+		$("#name").change(function() {
+			Cookies.set('signup_name', $("#name").val() ,{expires: 0.5});
+		});
+
+		</script>
 	</div>
 </body>
 </html>

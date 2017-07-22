@@ -22,12 +22,28 @@
 			<div class="login-wrap">
 				<p>Please enter your credentials bellow:</p>
 				<div class="form">
-					<input type="email" placeholder="Email" name="email" required autofocus/>
-					<input type="password" placeholder="Password" name="password" required/>
+					<input type="email" id="email" placeholder="Email" name="email" value="<%=messages.email%>"/>
+					<input type="password" id="password" placeholder="Password" name="password" />
 					<button>Log in</button>
 					<a href="/signup"> <p> Don't have an account? Sign up </p></a>
 				</div>
 			</div>
 		</form>
+
+		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="/scripts/js.cookie.js"></script>
+		<script>
+			$(function() {
+			//	if(!$("#email").val()) {
+			//		$("#email").val(Cookies.get('login_email'));
+			//	}
+				if($("#email").val())
+					$("#password").focus();
+				else $("#email").focus();
+			});
+		//	$("#email").change(function() {
+		//		Cookies.set('login_email', $("#email").val() ,{expires: 0.5});
+		//	});
+		</script>
 	</body>
 </html>

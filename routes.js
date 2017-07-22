@@ -1,7 +1,7 @@
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
-let csrfProtection = csrf({ cookie: true });
+const mime = require('mime');
 
 let connection = require('./DatabaseApi/src/db_connection.js');
 connection.connect();
@@ -32,9 +32,16 @@ module.exports = (app) => {
 	});
 
 	app.get('/login', (req, res) => {
-		res.render("login", {
-			csrfToken: req.csrfToken()
-		});
+		if(req.session.login_attempts > 3) {
+			res.render("login", {
+				csrfToken: req.csrfToken()
+			});
+		} else {
+			//TODO: Add CAPTCHA
+			res.render("login", {
+				csrfToken: req.csrfToken()
+			});
+		}
 	});
 
 	app.post('/login', (req, res) => {
@@ -47,16 +54,25 @@ module.exports = (app) => {
 			req.flash('error', 'Password is required!');
 			return res.redirect('/login');
 		}
+
 		dbApi.loginUser(
 			req.body.email,
 			req.body.password
 		).then(result => {
 			req.session.user = req.body.email;
 			req.flash('success', 'Successfully logged in!');
+
+			// Clean all login attempts
+			req.session.login_attempts = undefined;
+
 			return res.redirect('/');
 		})
 		.catch(err => {
 			req.flash('error', 'Incorrect email or password!');
+
+			// Increase login attempts
+			req.session.login_attempts = req.session.login_attempts ? req.session.login_attempts + 1 : 1;
+
 			return res.redirect('/login');
 		});
 	});
@@ -66,6 +82,17 @@ module.exports = (app) => {
 			csrfToken: req.csrfToken()
 		});
 	});
+
+	// A list of mime types allowed at upload
+	//const allowedMimeTypes = [
+	//	'image/bmp',
+	//	'image/x-windows-bmp',
+	//	'image/gif',
+	//	'image/jpeg',
+	//	'image/png',
+	//	'image/tiff',
+	//	'image/x-tiff'
+	//];
 
 	app.post('/signup', (req, res) => {
 
@@ -79,30 +106,45 @@ module.exports = (app) => {
 			return res.redirect('/signup');
 		}
 
+		if(req.body.password.length < 7) {
+			req.flash('error', 'Password should be minimum 7 characters long');
+			return res.redirect('/signup');
+		}
+
+		if(!req.body.name) {
+			req.flash('error', 'Name is required!');
+			return res.redirect('/signup');
+		}
+
+		//if(!req.files)
+		//	avatarFileName = 'default.svg';
+		//else {
+
+		//	if(req.files.avatar) {
+		//		if(allowedMimeTypes.includes(mime.lookup(req.files.avatar.name))) {
+		//			avatarFileName = randomstring.generate(10) + '.' + mime.extension(mime.lookup(req.files.avatar.name));
+		//		} else {
+		//			req.flash('error', 'Please upload an image!');
+		//			return res.redirect('/signup');
+		//		}
+		//	}
+		//	else avatarFileName = 'default.svg';
+		//}
+
 		dbApi.signupUser(
 			req.body.email,
 			req.body.password,
 			req.body.name,
-			req.body.avatar,
-			req.body.bio
+			'default.svg', //default avatar
+			'' // default bio
 		).then(result => {
 			req.flash('success', 'Account successfully created!');
+			req.flash('email', req.body.email);
 			return res.redirect('/login');
 		}).catch((err) => {
 			req.flash('error', 'Email address already taken!');
 			res.redirect('/signup');
 		});
-	});
-
-	app.get('/signup/success', (req, res) => {
-		if(req.session.suceess) {
-			req.session.suceess = undefined;
-			res.render("signup_success", {
-				"suceess" : req.flash().suceess
-			});
-		} else {
-			res.redirect('/signup');
-		}
 	});
 
 	app.get('/logout', (req, res) => {
