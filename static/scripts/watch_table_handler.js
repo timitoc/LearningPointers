@@ -166,6 +166,8 @@ function requestUpdateWatches() {
 var pure = [];
 
 function updateWatchesData(jsonObject) {
+        if (!isBodyVisible)
+            localsTable.fetchLocalsFromGdb();
         var v = jstreeElement.jstree(true).get_json('#', {flat:true});
         var newData = [];
         for (var i = 0; i < v.length; i++) {

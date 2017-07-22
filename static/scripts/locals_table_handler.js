@@ -62,4 +62,19 @@ LocalsTable.prototype.fetchLocalsFromGdb = function() {
 /// populates table with data received from gdb
 LocalsTable.prototype.consume = function(data) {
     console.log("consume " + JSON.stringify(data));
+    var newData = [];
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            console.log(key + " -> " + data[key]);
+            var nou = convertGDBToJSON(key + " = " + Global.htmlDecode(data[key]));
+            newData.push(nou);
+        }
+    }
+    this.JUIElement.jstree(true).settings.core.data = newData;
+    this.JUIElement.jstree(true).refresh();
+    this.doMagic();
+}
+
+LocalsTable.prototype.doMagic = function() {
+    this.JUIElement.trigger("resize_column.jstree-table");
 }
