@@ -1,0 +1,21 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background: #07594e;
+	box-sizing: border-box;
+}
+#success {
+	text-align: center;
+	color: white;
+	background: #2ECC40;
+	padding: 10px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+#errors {
+	text-align: center;
+	color: white;
+	background: #FF4136;
+	padding: 10px;
+	font-family: 'Open Sans', sans-serif;
+}

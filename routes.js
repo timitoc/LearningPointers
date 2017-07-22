@@ -18,7 +18,9 @@ module.exports = (app) => {
 	app.use(flash());
 
 	app.get('/', (req, res) => {
-		res.render("home");
+		if(req.session.user)
+			res.render("dashboard");
+		else res.render("home");
 	});
 
 	app.get('/code',(req,res)=>{
@@ -36,7 +38,27 @@ module.exports = (app) => {
 	});
 
 	app.post('/login', (req, res) => {
-		res.render("login");
+		if(!req.body.email) {
+			req.flash('error', 'Email is required!');
+			return res.redirect('/login');
+		}
+
+		if(!req.body.password) {
+			req.flash('error', 'Password is required!');
+			return res.redirect('/login');
+		}
+		dbApi.loginUser(
+			req.body.email,
+			req.body.password
+		).then(result => {
+			req.session.user = req.body.email;
+			req.flash('success', 'Successfully logged in!');
+			return res.redirect('/');
+		})
+		.catch(err => {
+			req.flash('error', 'Incorrect email or password!');
+			return res.redirect('/login');
+		});
 	});
 
 	app.get('/signup', (req, res) => {
@@ -52,6 +74,11 @@ module.exports = (app) => {
 			return res.redirect('/signup');
 		}
 
+		if(!req.body.password) {
+			req.flash('error', 'Password is required!');
+			return res.redirect('/signup');
+		}
+
 		dbApi.signupUser(
 			req.body.email,
 			req.body.password,
@@ -59,10 +86,27 @@ module.exports = (app) => {
 			req.body.avatar,
 			req.body.bio
 		).then(result => {
-			res.send(""+result.insertId);
-		}).catch(() => {
+			req.flash('success', 'Account successfully created!');
+			return res.redirect('/login');
+		}).catch((err) => {
 			req.flash('error', 'Email address already taken!');
 			res.redirect('/signup');
 		});
+	});
+
+	app.get('/signup/success', (req, res) => {
+		if(req.session.suceess) {
+			req.session.suceess = undefined;
+			res.render("signup_success", {
+				"suceess" : req.flash().suceess
+			});
+		} else {
+			res.redirect('/signup');
+		}
+	});
+
+	app.get('/logout', (req, res) => {
+		req.session.user = undefined;
+		res.redirect('/');
 	});
 };

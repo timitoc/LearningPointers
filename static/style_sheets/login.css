@@ -21,6 +21,7 @@ html, body {
 html .login-wrap {
 	position: relative;
 	margin: 80px auto;
+	margin-bottom: 0;
 	background: #ecf0f1;
 	width: 350px;
 	box-shadow: 3px 3px 10px #333;
@@ -43,7 +44,7 @@ html .login-wrap .form input[type="password"],
 html .login-wrap .form button {
 	width: 80%;
 	margin-left: 10%;
-	margin-bottom: 25px;
+	margin-bottom: 10px;
 	height: 40px;
 	outline: 0;
 	-moz-outline-style: none;
@@ -81,4 +82,40 @@ html .login-wrap .form button:hover {
 }
 html .login-wrap .form button:active {
 	box-shadow: 1px 1px 7px #222;
+}
+html .login-wrap p {
+	text-align: center;
+}
+
+#errors {
+	text-align: center;
+	color: white;
+	background: #FF4136;
+	padding: 10px;
+	animation: shake 0.5s;
+}
+
+#success {
+	text-align: center;
+	color: white;
+	background: #2ECC40;
+	padding: 10px;
+	animation: shake 0.5s;
+}
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }

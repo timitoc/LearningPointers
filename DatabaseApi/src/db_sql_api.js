@@ -12,6 +12,9 @@ class DbApi {
 				'SELECT 1 from `users` where `email` = ?',
 				[email],
 				(err, results, fields) => {
+					if(err) {
+						return reject(err);
+					}
 					if(!results.length) {
 						this.connection.query(
 							'INSERT INTO `users`(email, password, name, avatar, bio) VALUES( ?, ?, ?, ?, ?)',
@@ -30,13 +33,19 @@ class DbApi {
 
 	loginUser(email, password) {
 		return new Promise((resolve, reject) => {
-			// Prepared statement :))
 			this.connection.query(
 				'SELECT password FROM `users` WHERE `email` = ?',
 				[email],
 				(err, results, fields) => {
 					if(err) reject(err);
-					resolve(results);
+					if(!results.length)
+						return reject('No such email!');
+
+					if(bcrypt.compareSync(password,results[0]['password'])) {
+						resolve(true);
+					} else {
+						reject('Wrong password');
+					}
 				});
 		});
 	}

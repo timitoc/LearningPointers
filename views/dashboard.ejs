@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="/style_sheets/dashboard.css">
+	<title>Dashboard</title>
+</head>
+<body>
+	<% if(messages.error) { %>
+		<div id="errors">
+			<b>Error:</b> <%= messages.error %>
+		</div>
+	<% } %>
+	<% if(messages.success) { %>
+		<div id="success">
+			<b>Success:</b> <%= messages.success %>
+		</div>
+	<% } %>
+</body>
+</html>

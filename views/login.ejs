@@ -7,13 +7,23 @@
 		<link rel="stylesheet" href="/style_sheets/login.css">
 	</head>
 	<body>
-		<form action="/login" method="post" id="form">
+		<form action="/login" method="post" id="form" data-persist="garlic">
 			<input type="hidden" name="_csrf" value="<%=csrfToken%>">
+			<% if(messages.error) { %>
+				<div id="errors">
+					<b>Error:</b> <%= messages.error %>
+				</div>
+			<% } %>
+			<% if(messages.success) { %>
+				<div id="success">
+					<b>Success:</b> <%= messages.success %>
+				</div>
+			<% } %>
 			<div class="login-wrap">
-				<h2 align="left">Log in</h2>
+				<p>Please enter your credentials bellow:</p>
 				<div class="form">
-					<input type="email" placeholder="Email" name="email" />
-					<input type="password" placeholder="Password" name="password" />
+					<input type="email" placeholder="Email" name="email" required autofocus/>
+					<input type="password" placeholder="Password" name="password" required/>
 					<button>Log in</button>
 					<a href="/signup"> <p> Don't have an account? Sign up </p></a>
 				</div>

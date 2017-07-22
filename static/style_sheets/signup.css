@@ -20,11 +20,12 @@ html, body {
 
 html .login-wrap {
 	position: relative;
-	margin: 30px auto;
+	margin: 50px auto;
 	background: #ecf0f1;
 	width: 350px;
 	box-shadow: 3px 3px 10px #333;
 	padding: 15px;
+	padding-bottom: 5px;
 	/*animation: entry 0.5s;*/
 }
 html .login-wrap h2 {
@@ -84,4 +85,70 @@ html .login-wrap .form button:active {
 
 center {
 	padding: 10px;
+	padding-top:0px;
+}
+html .login-wrap #title {
+	text-align: center;
+	font-size: 20px;
+}
+
+
+#errors {
+	text-align: center;
+	color: white;
+	background: #FF4136;
+	padding: 10px;
+	animation: shake 0.5s;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+input[type="file"] {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#avatar_label {
+	display: block;
+	background: #85144b;
+	background-size: 100% 200%;
+	background-image: linear-gradient(to bottom, #85144b 50%, #70d09f 50%);
+	-webkit-transition: background-position 0.5s;
+	-moz-transition: background-position 0.5s;
+	transition: background-position 0.5s;
+	color: #FFFFFF;
+	width: 60%;
+	padding: 15px;
+	cursor: pointer;
+	transition: background 0.5s;
+}
+#avatar_label:hover {
+	background-position: 0 -100%;
+}
+
+img {
+	vertical-align: middle;
+	float:right;
+	padding-left: 5px;
+	transform: translateY(-3px);
 }

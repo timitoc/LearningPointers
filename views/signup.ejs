@@ -16,13 +16,17 @@
 		<form action="/signup" method="post">
 			<input type="hidden" name="_csrf" value="<%=csrfToken%>">
 			<div class="login-wrap">
-				<h2 align="left">Create a new account</h2>
+				<p id="title">Create a new account</p>
 				<div class="form">
 					<input type="email" placeholder="Email" name="email" />
 					<input type="password" placeholder="Password" name="password" />
-					<input type="password" placeholder="Confirm password" name="password_confirm" />
+					<!--<input type="password" placeholder="Confirm password" name="password_confirm" />-->
 					<input type="text" placeholder="Name" name="name"><br>
-					<center><label for="avatar" id="avatar_label">Choose your avatar: </label></center>
+					<center>
+						<label for="avatar" id="avatar_label">
+							Choose your avatar: <img src="/upload.svg" alt="" width="30">
+						</label>
+					</center>
 					<input type="file" id="avatar" placeholder="Avatar" name="avatar"><br>
 					<button>Sign up</button>
 					<a href="/login"> <p> Already have an account? Log in</p></a>
