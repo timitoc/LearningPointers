@@ -44,7 +44,7 @@ socket.on("compile_result",function(data){
 	if(data == "Successfully compiled!"){
 		console.log("Sucessfully compiled!");
 		socket.emit("run", {
-			br: normalizeBreakpointMap(),
+			br: (Global.status == "debugging" ? normalizeBreakpointMap() : []),
 			we: expresionList,
 			input: $("#input").val()
 		});
