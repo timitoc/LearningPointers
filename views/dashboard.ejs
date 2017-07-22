@@ -4,6 +4,9 @@
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="/style_sheets/dashboard.css">
+	<link rel="stylesheet" href="/style_sheets/subscribed.css">
+	<link rel="stylesheet" href="/style_sheets/course.css">
+	<link rel="stylesheet" href="/style_sheets/navbar.css">
 	<title>Dashboard</title>
 </head>
 <body>
@@ -17,5 +20,59 @@
 			<b>Success:</b> <%= messages.success %>
 		</div>
 	<% } %>
+	<!--<img src="/avatars/<%=avatar%>" alt="">-->
+	<div id="navbar">
+		<input type="checkbox" name="toggle" id="toggle">
+		<label for="toggle" id="toggle_label">Menu</label>
+		<ul>
+			<li class="active"><a href="/">Your courses</a></li>
+			<li><a href="/courses/find">Find courses</a></li>
+			<li><a href="/modules/find">Find modules</a></li>
+		</ul>
+	</div>
+
+
+	<div class="section">
+		<h2>My Courses</h2>
+		<div class="courses">
+			<div class="course">
+				<div class="course-title">Introduction to pointers</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+			<div class="course">
+				<div class="course-title">Linked lists</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+
+			<div class="course">
+				<div class="course-title">Linked lists</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+			<div class="course">
+				<div class="course-title">Linked lists</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+			<div class="course">
+				<div class="course-title">Linked lists</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+			<div class="course">
+				<div class="course-title">Linked lists</div>
+				<div class="course-progress">
+					<span class="progressbar"style="width:90%"></span>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

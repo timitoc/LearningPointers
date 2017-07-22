@@ -1,83 +1,38 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="/style_sheets/index.css" rel="stylesheet">
-        <link href="/style_sheets/arrow.css" rel="stylesheet">
-        <link href="/style_sheets/jquery.fullPage.css" rel="stylesheet">
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="/style_sheets/home.css" rel="stylesheet">
+		<link href="/style_sheets/index.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
+		<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
 		<title>LearningPointers</title>
-    </head>
-    <body>
-        <div id="fullpage">
-            <div class="section" >
-                <div class="container">
-                    <header>
-                        <center>
-                            <h1>LearningPointers</h1>
-                            <h3>
-                                <div id="type1"></div>
-                                <div id="type2"></div>
-                            </h3>
+	</head>
+	<body>
+		<header>
+			<center>
+				<h1>LearningPointers</h1>
+				<h3>
+					<div id="type1"></div>
+					<div id="type2"></div>
+				</h3>
 
-                            <div class="user-actions">
-                                <a href="#" class="login-goto">Log in</a>
-                                <a href="#" class="register-goto">Register</a>
-                                <a href="/code">Online debugger</a>
-								<a href="/lessons">Lessons</a>
-                            </div>
-                        </center>
-                    </header>
-                </div>
-            </div>
-            <div class="section" >
-                 <div class="container">
-                    <form id="login-form">
-                        <div>
-                            <h3>Log in to your account:</h3>
-                        </div>
-                        <div>
-                            <input type="email" id="login-email" placeholder="E-mail address"/>
-                            <input type="password" id="login-password" placeholder="Password"/>
-                        </div>
-                        <button id="login-button">
-                            Login
-                        </button>
-                        <div id="register-link">
-                            Don't have an account? <a href="#" class="register-goto">Register now!</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="section">
-                <div class="container">
-                    <form id="register-form">
-                        <div>
-                            <h3>Create a new account:</h3>
-                        </div>
-                        <div>
-                            <input type="text" id="first-name" placeholder="First name"/>
-                            <input type="text" id="last-name" placeholder="Last name"/>
-                            <input type="email" id="register-email" placeholder="E-mail address"/>
-                            <input type="password" id="register-password" placeholder="Password"/>
-                            <input type="password" id="password-confirm" placeholder="Confirm password"/>
-                        </div>
-                        <button id="register-button">
-                            Register
-                        </button>
-                        <div id="login-link">
-                            Already have an account? <a class="login-goto" href="#">Login now!</a>
-                        </div>
-                    </form>
-            </div>
-        </div>
+				<div class="user-actions">
+					<a href="/login" class="login-goto">Log in</a>
+					<a href="/register" class="register-goto">Register</a>
+					<a href="/code">Online debugger</a>
+					<a href="/lessons">Lessons</a>
+				</div>
+			</center>
+		</header>
+	</div>
 
-        <script src="/scripts/jquery-3.2.1.min.js"></script>
-        <script src="/scripts/jquery.fullPage.min.js"></script>
-        <script src="/scripts/typed.min.js"></script>
-        <script src="/scripts/index.js"></script>
-    </body>
+	<script src="/scripts/jquery-3.2.1.min.js"></script>
+	<script src="/scripts/jquery.fullPage.min.js"></script>
+	<script src="/scripts/typed.min.js"></script>
+	<script src="/scripts/index.js"></script>
+</body>
 </html>

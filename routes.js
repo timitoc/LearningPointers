@@ -18,8 +18,12 @@ module.exports = (app) => {
 	app.use(flash());
 
 	app.get('/', (req, res) => {
-		if(req.session.user)
-			res.render("dashboard");
+		if(req.session.user) {
+			res.render("dashboard", {
+				user: req.session.user,
+				avatar: req.session.avatar
+			});
+		}
 		else res.render("home");
 	});
 
@@ -60,14 +64,19 @@ module.exports = (app) => {
 			req.body.password
 		).then(result => {
 			req.session.user = req.body.email;
-			req.flash('success', 'Successfully logged in!');
 
-			// Clean all login attempts
-			req.session.login_attempts = undefined;
+			dbApi.getAvatarByEmail(req.body.email).then(data => {
+				req.session.avatar = data[0]['avatar'];
+				req.flash('success', 'Successfully logged in!');
+				// Clean all login attempts
+				req.session.login_attempts = undefined;
 
-			return res.redirect('/');
+				return res.redirect('/');
+			});
+
 		})
 		.catch(err => {
+			console.log(err);
 			req.flash('error', 'Incorrect email or password!');
 
 			// Increase login attempts

@@ -49,6 +49,18 @@ class DbApi {
 				});
 		});
 	}
+
+	getAvatarByEmail(email) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				'SELECT avatar FROM users WHERE email = ?',
+				[email],
+				(err, results, fields) => {
+					if(err) reject(err);
+					resolve(results);
+				});
+			});
+	}
 }
 
 module.exports = DbApi;

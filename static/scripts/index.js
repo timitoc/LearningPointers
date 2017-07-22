@@ -17,15 +17,4 @@ $(function(){
 		});
 	}
 
-    $('#fullpage').fullpage({});
-
-	$(".login-goto").click(function(e){
-		e.preventDefault();
-		$.fn.fullpage.moveTo(2);
-	});
-
-	$(".register-goto").click(function(e){
-		e.preventDefault();
-		$.fn.fullpage.moveTo(3);
-	});
 });
