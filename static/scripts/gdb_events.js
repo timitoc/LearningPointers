@@ -4,10 +4,7 @@ var socket = io();
 $("#step_debugger").prop('disabled', true);
 $("#next_debugger").prop('disabled', true);
 $("#continue_debugger").prop('disabled', true);
-$("#pls").prop('disabled', true);
 */
-
-toggle_running_state(false);
 
 function sendCommand(comand) {
 	socket.emit("gdb_command", comand);
@@ -127,7 +124,6 @@ socket.on('run', function(data){
 		$("#next_debugger").prop('disabled', false);
 		$("#continue_debugger").prop('disabled', false);
 		$("#stop_button").prop('disabled', false);
-		$("#pls").prop('disabled', false);
 	}
 });
 

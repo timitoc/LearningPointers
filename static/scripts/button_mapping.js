@@ -30,6 +30,7 @@ function toggle_running_state(x) { // true or false
 		$("#running_state").css({
 			'background-color' : '#D8000C'
 		});
+		Global.status = "off";
 		editor.setReadOnly(false);
 		editor.renderer.$cursorLayer.element.style.display="";
 
