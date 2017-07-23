@@ -95,7 +95,8 @@ class DbApi {
 	}
 
 	/**
-	 * Get my top courses with title matching the regex with respective offset.
+	 * Get user courses with pagination
+	 * @param userId // user for whom to retrieve courses
 	 * @param offset // number of courses to omit
 	 * @param count // number of courses to be retrieved
 	 */
