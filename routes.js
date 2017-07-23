@@ -160,4 +160,13 @@ module.exports = (app) => {
 		req.session.user = undefined;
 		res.redirect('/');
 	});
+
+
+	app.get('/profile', (req, res) => {
+		if(req.session.user) {
+			res.render("profile");
+		} else {
+			res.redirect('/login');
+		}
+	});
 };

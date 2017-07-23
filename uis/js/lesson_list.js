@@ -9,13 +9,13 @@ $(function() {
 
 		for(; j < ratingValue; j++ ) {
 			var starImage = document.createElement("img");
-			starImage.src = "img/star.svg";
+			starImage.src = "star.svg";
 			ratings[i].appendChild(starImage);
 		}
 
 		for(; j < ratingTotal; j++) {
 			var starImage = document.createElement("img");
-			starImage.src = "img/stargray.svg";
+			starImage.src = "stargray.svg";
 			ratings[i].appendChild(starImage);
 		}
 	}

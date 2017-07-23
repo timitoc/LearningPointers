@@ -4,35 +4,177 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link href="/style_sheets/home.css" rel="stylesheet">
 		<link href="/style_sheets/index.css" rel="stylesheet">
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
 		<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Roboto" rel="stylesheet">
+		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.css">
+
+		<link rel="stylesheet" href="/style_sheets/jquery.dropdown.min.css">
+
 		<title>LearningPointers</title>
 	</head>
 	<body>
-		<header>
-			<center>
-				<h1>LearningPointers</h1>
-				<h3>
-					<div id="type1"></div>
-					<div id="type2"></div>
-				</h3>
 
-				<div class="user-actions">
-					<a href="/login" class="login-goto">Log in</a>
-					<a href="/register" class="register-goto">Register</a>
-					<a href="/code">Online debugger</a>
-					<a href="/lessons">Lessons</a>
+		<div id="fullpage">
+			<div class="section">
+				<div id="navbar">
+					<div class="btn-group">
+						<a href="/login" class="btn btn-lg">Log in</a>
+						<a href="/signup" class="btn  btn-lg">Sign up</a>
+					</div>
 				</div>
-			</center>
-		</header>
-	</div>
+				<header>
+					<center>
+						<h1>LearningPointers</h1>
+						<h3>
+							<div id="type1"></div>
+							<div id="type2"></div>
+							<!--The only platform you will ever need for mastering C++ pointers!-->
+						</h3>
+					</center>
+				</header>
+				<br><br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="card">
+								<div class="card-block">
+									<h4 class="card-title">
+											Online C++ editor and full-featured debugger
+									</h4>
+									<div class="card-text">
+										You can write and debug C++ code right here, without installing any software
+										on your computer
+									</div>
+									<br>
+									<a href="/code" class="btn btn-primary">Start right now!</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="card">
+								<div class="card-block">
+									<h4 class="card-title">
+											High quality educational resources
+									</h4>
+									<div class="card-text">
+										You will have access to courses, practical examples and tests
+										for verifying what you have learned.
+									</div>
+									<br>
+									<a href="/courses/find" class="btn btn-primary">Search courses</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="card">
+								<div class="card-block">
+									<h4 class="card-title">
+											Posibility to ask a teacher and get help
+									</h4>
+									<div class="card-text">
+										You will be able to communicate with a teacher in order to help
+										you solve your problems.
+									</div>
+									<br>
+									<a href="/login" class="btn btn-primary">Join now!</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="section">
+					<div class="container">
+						<center><h3>Top-rated courses:</h3></center>
+						<div class="row" data-aos="fade-up">
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="row" data-aos="fade-up">
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="card" style="width: 20rem;">
+									<div class="card-block">
+										<h4 class="card-title">Introduction to pointers</h4>
+										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<p class="card-text rating" rating="3/5"></p>
+										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-	<script src="/scripts/jquery-3.2.1.min.js"></script>
-	<script src="/scripts/jquery.fullPage.min.js"></script>
-	<script src="/scripts/typed.min.js"></script>
-	<script src="/scripts/index.js"></script>
-</body>
-</html>
+				<script src="/scripts/jquery-3.2.1.min.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+				<script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.4/jquery.fullpage.min.js"></script>
+				<script src="/scripts/typed.min.js"></script>
+				<script src="/scripts/index.js"></script>
+				<script type="text/javascript" src="/scripts/jquery.dropdown.min.js"></script>
+				<script>
+					AOS.init();
+					$(document).ready(function() {
+						$('#fullpage').fullpage({
+							scrollBar: true
+						});
+					});
+				</script>
+			</body>
+		</html>
