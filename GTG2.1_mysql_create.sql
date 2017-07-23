@@ -4,11 +4,11 @@ USE learning_pointers;
 
 CREATE TABLE `users` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`password` varchar(100) NOT NULL,
 	`email` varchar(50) NOT NULL UNIQUE,
 	`name` varchar(50) NOT NULL,
-	`avatar` text NOT NULL,
-	`password` varchar(100) NOT NULL,
-	`bio` text NULL,
+	`bio` TEXT,
+	`avatar` varchar(20) NOT NULL DEFAULT 'default.svg',
 	PRIMARY KEY (`id`)
 );
 
@@ -17,6 +17,7 @@ CREATE TABLE `modules` (
 	`title` varchar(50) NOT NULL,
 	`text_md` TEXT(8000) NOT NULL,
 	`parent_course_id` INT(8) NOT NULL,
+	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
 );
 
@@ -28,6 +29,7 @@ CREATE TABLE `favorites` (
 CREATE TABLE `courses` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` varchar(50) NOT NULL,
+	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`)
 );
 
@@ -55,6 +57,11 @@ CREATE TABLE `finished` (
 	`module_id` INT(8) NOT NULL
 );
 
+CREATE TABLE `authors` (
+	`user_id` INT(8) NOT NULL,
+	`course_id` INT(8) NOT NULL
+);
+
 ALTER TABLE `modules` ADD CONSTRAINT `modules_fk0` FOREIGN KEY (`parent_course_id`) REFERENCES `courses`(`id`);
 
 ALTER TABLE `favorites` ADD CONSTRAINT `favorites_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
@@ -76,3 +83,7 @@ ALTER TABLE `comments` ADD CONSTRAINT `comments_fk1` FOREIGN KEY (`module_id`) R
 ALTER TABLE `finished` ADD CONSTRAINT `finished_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
 
 ALTER TABLE `finished` ADD CONSTRAINT `finished_fk1` FOREIGN KEY (`module_id`) REFERENCES `modules`(`id`);
+
+ALTER TABLE `authors` ADD CONSTRAINT `authors_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
+
+ALTER TABLE `authors` ADD CONSTRAINT `authors_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`);

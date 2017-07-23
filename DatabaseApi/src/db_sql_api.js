@@ -61,6 +61,59 @@ class DbApi {
 				});
 			});
 	}
+
+	getAvatarById(id) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				'SELECT avatar FROM users WHERE id = ?',
+				[id],
+				(err, results, fields) => {
+					if(err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Get Top courses with title matching the regex with respective offset.
+	 * @param regex // title matching criteria
+	 * @param offset // number of courses to omit
+	 * @param count // number of courses to be retrieved
+	 */
+	getCourses(regex, offset, count) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				'SELECT * FROM courses WHERE name LIKE ? ORDER BY avg_rating DESC LIMIT ? OFFSET ?',
+				['%' + regex + '%', count, offset],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Get my top courses with title matching the regex with respective offset.
+	 * @param offset // number of courses to omit
+	 * @param count // number of courses to be retrieved
+	 */
+	getMyCourses(userID, offset, count) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT user_id, course_id, courses.name as course_name, avg_rating 
+				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id 
+				WHERE users.id=? 
+				ORDER BY avg_rating DESC LIMIT ? OFFSET ?;`,
+				[userID, count, offset],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
 }
 
 module.exports = DbApi;
