@@ -39,7 +39,7 @@ socket.on("compile_result",function(data){
 	waitingDialog.hide();
 
 	if(data == "Successfully compiled!"){
-		console.log("Sucessfully compiled!");
+		console.log("Sucessfully compiled! My status is " + Global.status);
 		socket.emit("run", {
 			br: (Global.status == "debugging" ? normalizeBreakpointMap() : []),
 			we: expresionList,
@@ -97,6 +97,10 @@ socket.on("print_expressions", function(data){
 
 socket.on("set_var", function(data){
 	console.log("set var event " + JSON.stringify(data));
+});
+
+socket.on("edit_breakpoint", function(data){
+	console.log("edit breakpoint event " + JSON.stringify(data));
 });
 
 function recievedData(dataWatches) {
