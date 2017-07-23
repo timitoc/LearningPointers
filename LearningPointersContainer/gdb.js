@@ -182,6 +182,23 @@ class GDB{
 	 * }
 	 */
 	add_breakpoints(breaks) {
+		console.log("-9 " + JSON.stringify(breaks));
+		this.breakpoints = this.breakpoints.concat(breaks);
+		let added = [];
+		return Promise.each(breaks, (item, index, length) => {
+			return new Promise((resolve, reject) => {
+				this.clear();
+				let breakpoint = item;
+				this.add_full_breakpoint(breakpoint.line, breakpoint.temporary, breakpoint.condition).then(data =>{
+					added.push(breakpoint.line); /// maybe check if everything is ok in the future
+					resolve();
+				});
+			});
+		});
+	}
+
+
+	/* add_breakpoints(breaks) {
 		console.log("186 " + JSON.stringify(breaks));
 		return new Promise((resolve, reject) => {
 			let added = [];
@@ -197,7 +214,7 @@ class GDB{
 				resolve(added);
 			});
 		});
-	}
+	}*/
 
 	// old version, to be removed
 	/*add_breakpoints(breaks){

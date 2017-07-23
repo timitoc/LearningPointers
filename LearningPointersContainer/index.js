@@ -117,8 +117,11 @@ io.on('connection', (socket)=>{
 	});
 
 	socket.on('run', (data) => {
+		console.log("run " + JSON.stringify(data));
 		procs[socket.id].write_input(data.input).then(() => {
+			console.log("input " + JSON.stringify(data.input));
 			procs[socket.id].add_breakpoints(data.br).then(result => {
+				console.log("br " + JSON.stringify(result));
 				socket.emit('add_breakpoints', result);
 				procs[socket.id].run().then(result => {
 					socket.emit('run', result);
