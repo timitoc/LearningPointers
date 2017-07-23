@@ -4,20 +4,20 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<style>
-		#breakpoint_options {
-			display: none;
-			padding: 0;
-			border-radius: 3px;
-		}
+			#breakpoint_options {
+				display: none;
+				padding: 0;
+				border-radius: 3px;
+			}
 
-		#breakpoint_options li {
-			padding: 10px;
-		}
+			#breakpoint_options li {
+				padding: 10px;
+			}
 
-		#breakpoint_options input[type=text] {
-			font-size: 15px;
-			padding: 5px;
-		}
+			#breakpoint_options input[type=text] {
+				font-size: 15px;
+				padding: 5px;
+			}
 		</style>
 
 		<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous"/>
@@ -28,13 +28,13 @@
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
 		<style>
-		body{
-			font-family: 'Roboto', sans-serif !important;
-			background: #F0F0F0;
-		}
-		#running_state {
-			border-radius: 3px;
-		}
+			body{
+				font-family: 'Roboto', sans-serif !important;
+				background: #F0F0F0;
+			}
+			#running_state {
+				border-radius: 3px;
+			}
 		</style>
 
 		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -53,60 +53,68 @@
 	<body>
 		<!-- Fake iframe. Used for downloading. -->
 		<iframe id="my_iframe" style="display:none;"></iframe>
-		<div class="pure-g">
-			<div class="pure-u-1-4">
+
+		<div class="row">
+			<div class="col-lg-3">
 				<center>
 					<div id="left_content">
 						left
 					</div>
 				</center>
 			</div>
-			<div class="pure-u-1-2">
+			<div class="col-lg-6">
 				<center>
-					<div role="group" id="toolbar">
-						<button id="debug_code_button" class="pure-button">
+					<div role="group" id="toolbar" class="btn-group">
+						<button id="debug_code_button" class="btn btn-default">
 							Debug
 						</button>
-						<button id="run_code_button" class="pure-button">
+						<button id="run_code_button" class="btn btn-default">
 							Run
 						</button>
-						<button id="stop_button" class="pure-button" disabled>
+						<button id="stop_button" class="btn btn-default" disabled>
 							Stop
 						</button>
-						<button id="save_code" class="pure-button">
+						<button id="save_code" class="btn btn-default">
 							Save
 						</button>
-						<button id="download_code" class="pure-button">
+						<button id="download_code" class="btn btn-default">
 							Download
 						</button>
-						<button id="beautify_code" class="pure-button">
+						<button id="beautify_code" class="btn btn-default">
 							Beautify
 						</button>
-						<button data-jq-dropdown="#jq-dropdown-1" class="pure-button">Options </button>
+						<!--<button data-jq-dropdown="#jq-dropdown-1" class="btn btn-default">Options </button>-->
+						<div class="btn-group show" role="group">
+							<button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					      Dropdown
+					    </button>
+					    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+					      <a class="dropdown-item" href="#">Dropdown link</a>
+					      <a class="dropdown-item" href="#">Dropdown link</a>
+					    </div>
+						</div>
 					</div>
 					<div role="group" id="toolbar">
 						<span class="toolbar-group">
-							<button id="step_debugger" class="pure-button" disabled>
+							<button id="step_debugger" class="btn btn-default" disabled>
 								Step
 							</button>
 							<input type="number" min="1" max="99" value="1" id="stepnr">
 						</span>
 						<span class="toolbar-group">
-							<button id="next_debugger" class="pure-button" disabled>
+							<button id="next_debugger" class="btn btn-default" disabled>
 								Next
 							</button>
 							<input type="number" min="1" max="99" value="1" id="nextnr">
 						</span>
 						<span class="toolbar-group">
-							<button id="continue_debugger" class="pure-button" disabled>
+							<button id="continue_debugger" class="btn btn-default" disabled>
 								Continue
 							</button>
 							<input type="number" min="1" max="99" value="1" id="continuenr">
 						</span>
 					</div>
-					<span id="editor_parent">
-						<div id="editor"></div>
-					</span>
+					<div id="editor"></div>
 				</center>
 				<br/>
 				<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
@@ -116,7 +124,6 @@
 								<label class="checkbox-inline">
 									<input data-toggle="toggle" type="checkbox" id="enable_vim"/>&nbsp;Enable VIM
 								</label>
-
 							</li>
 							<li>
 								Choose theme
@@ -126,7 +133,7 @@
 								</select>
 							</li>
 							<li>
-								<button id="full_screen" class="pure-button">
+								<button id="full_screen" class="btn btn-default">
 									Full Screen
 								</button>
 							</li>
@@ -147,18 +154,17 @@
 					</ul>
 				</span>
 				<center>
-				<div class="pure-form">
-
-					<textarea rows=3 cols=27 id="input" placeholder="Enter program input"></textarea>
-					<textarea rows=3 cols=27 id="output" placeholder="Program output" ></textarea>
-				</div>
-				<div class="pure-form">
-					<center id="running_state">Stopped</center>
-				</div>
+					<div class="pure-form">
+						<textarea rows=3 cols=27 id="input" placeholder="Enter program input"></textarea>
+						<textarea rows=3 cols=27 id="output" placeholder="Program output" ></textarea>
+					</div>
+					<div class="pure-form">
+						<center id="running_state">Stopped</center>
+					</div>
 				</center>
 			</div>
-			<div class="pure-u-1-4">
-				<button id="pls" class="pure-button">
+			<div class="col-lg-3">
+				<button id="pls" class="btn btn-primary">
 					Add expression
 				</button>
 
@@ -185,7 +191,9 @@
 		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="/scripts/shortcut.js"></script>
 
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
 		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 		<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -193,7 +201,6 @@
 		<script type="text/javascript" src="/treetable/jstreetable.js"></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
-
 
 
 		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
