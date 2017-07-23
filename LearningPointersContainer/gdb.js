@@ -47,7 +47,6 @@ class GDB{
 			if(!/^\s+$/.test(data.toString())){
 				this.buffer_stdout += data.toString();
 			}
-
 			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
 				this.done$.next(this.buffer_stdout);
 			}
@@ -77,7 +76,7 @@ class GDB{
 			this.send_command("").then(data => {
 				fs.writeFile('input.txt', input + '\n', err =>{
 					if(err) throw err;
-					resolve();
+					resolve(data);
 				});
 			});
 		});
@@ -121,6 +120,7 @@ class GDB{
 	/**
 	 * Adds a regular breakpoint to the specified line
 	 * @param {number} line
+	 * @deprecated
 	 */
 	add_breakpoint(line){
 		this.breakpoints.push({
@@ -132,6 +132,7 @@ class GDB{
 	/**
 	 * Adds a temporary breakpoint to the specified line
 	 * @param {number} line
+	 * @deprecated
 	 */
 	add_temporary_breakpoint(line){
 		return this.send_command(util.format('tbreak %d', line));
@@ -141,9 +142,33 @@ class GDB{
 	 * Adds a conditional breakpoint to the specified line
 	 * @param {number} line
 	 * @param {string} condition
+	 * @deprecated
 	 */
 	add_breakpoint_conditional(line, condition){
 		return this.send_command(util.format('b %d if %s', line, condition));
+	}
+
+	/**
+	 * Adds full fledged breakpoint
+	 * @param {number} line
+	 * @param {boolean} temporary // considered flase if not existent
+	 * @param {string} condition // considered true if not existent/null/empty
+	 */
+	add_full_breakpoint(line, temporary, condition) {
+		var pureCommand;
+		if (temporary)
+			pureCommand = "tbreak";
+		else
+			pureCommand = "b";
+		if (!condition)
+			condition = "true";
+		var command = util.format("%s %d if %s", pureCommand, line, condition);
+		this.breakpoints.push({
+			line,
+			temporary,
+			condition
+		});
+		return this.send_command(command);
 	}
 
 	/**
@@ -152,12 +177,30 @@ class GDB{
 	 * Breakpoint format:
 	 * {
 	 *		line: ..., (number)
-	 *		condition: ...., (boolean expression)
 	 *		temporary: true/false
+	 *		condition: ...., (boolean expression)
 	 * }
 	 */
+	add_breakpoints(breaks) {
+		console.log("186 " + JSON.stringify(breaks));
+		return new Promise((resolve, reject) => {
+			let added = [];
+			this.breakpoints = this.breakpoints.concat(breaks);
+			Async.eachOfSeries(breaks, (key, value, callback) => {
+				this.clear();
+				let breakpoint = key;
+				this.add_full_breakpoint(breakpoint.line, breakpoint.temporary, breakpoint.condition).then(data =>{
+					added.push(breakpoint.line); /// maybe check if everything is ok in the future
+					callback();
+				});
+			}, () => {
+				resolve(added);
+			});
+		});
+	}
 
-	add_breakpoints(breaks){
+	// old version, to be removed
+	/*add_breakpoints(breaks){
 		return new Promise((resolve, reject) => {
 			let added = [];
 			this.breakpoints = breaks;
@@ -193,13 +236,33 @@ class GDB{
 				resolve(added);
 			});
 		});
+	}*/
+
+	/**
+	 * Clears line and sets new breakpoint
+	 * @param {break} // the new breakpoint
+	 * Breakpoint format:
+	 * {
+	 *		line: ..., (number)
+	 *		temporary: true/false
+	 *		condition: ...., (boolean expression)
+	 * }
+	 */
+	edit_breakpoint(breakpoint) {
+		return new Promise((resolve, reject) => {
+			this.remove_breakpoint(breakpoint.line).then(output => {
+				this.add_full_breakpoint(breakpoint.line, breakpoint.temporary, breakpoint.condition).then(data => {
+					resolve("success");
+				});
+			});
+		});
 	}
 
 	/**
 	 * Removes a breakpoint from a specified line
 	 * @param {number} line
 	 */
-	remove_breakpoint(where){
+	remove_breakpoint(line){
 		return this.send_command(util.format('clear %d', line));
 	}
 

@@ -14,6 +14,7 @@ var simpleVar = new MemoryVarHandler("Simple");
 var pointerVar = new MemoryVarHandler("Pointer");
 
 $( document ).ready(function() {
+    toggle_running_state(false);
     wrapper1 = jQuery('<div/>');
     wrapper2 = jQuery('<div/>');
 

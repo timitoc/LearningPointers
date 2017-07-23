@@ -262,6 +262,13 @@ io.on('connection', (socket) => {
 				});
 			});
 
+			socket.on('edit_breakpoint', data => {
+				CONTAINERS[socket.id].emit('edit_breakpoint', data);
+			});
+
+			CONTAINERS[socket.id].on('edit_breakpoint', data => {
+				socket.emit('edit_breakpoint', data);
+			});
 
 			socket.on('disconnect',(data)=>{
 				USED_PORTS[port.toString()] = false;

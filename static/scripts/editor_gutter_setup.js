@@ -96,6 +96,8 @@ function moveInRegion(e) {
 }
 
 function hideBreakpointOptions() {
+    if (BROShown != -1 && Global.status == "debugging" && Global.breakpointsMap[BROShown+1])
+        Global.breakpointsMap[BROShown+1].sendEditToServer();
     BROShown = -1;
     $("#"+divid).hide();
 }
@@ -130,6 +132,11 @@ BreakpointData.prototype.setCondition = function(newCondition) {
 
 BreakpointData.prototype.toggleTemporary = function() {
     this.isTemporary = !this.isTemporary;
+}
+
+BreakpointData.prototype.sendEditToServer = function() {
+    console.log("sending edit for " + this.row);
+    socket.emit("edit_breakpoint", this.generateSimple());   
 }
 
 var normalizeBreakpointMap = function() {

@@ -55,6 +55,15 @@ let procs = {};
 					temporary: true/false
 				}
 			@returns An array of lines where breakpoints where correctly added
+		
+		edit_breakpoint
+			Remove current breakpoint and set another one
+			@breakpoint format:
+				{
+					line: ..., (number)
+					condition: ...., (boolean expression)
+					temporary: true/false
+				}
 
 		print_expressions
 			@array expressions
@@ -86,9 +95,8 @@ io.on('connection', (socket)=>{
 				if(stderr){
 					return socket.emit("compile_error",stderr.toString());
 				}
-				socket.emit("compile_success","Successfully compiled!");
-
 				procs[socket.id] = new GDB('./programs/'+file_name);
+				socket.emit("compile_success","Successfully compiled!");
 
 				procs[socket.id].stdout.on('data', (data) => {
 					socket.emit('gdb_stdout', data);
@@ -126,6 +134,12 @@ io.on('connection', (socket)=>{
 			socket.emit('add_breakpoints', result);
 		});
 	});
+
+	socket.on('edit_breakpoint', (data) => {
+		procs[socket.id].edit_breakpoint(data).then(result => {
+			socket.emit('edit_breakpoint', result);
+		})
+	})
 
 	socket.on('print_expressions', (data) => {
 		socket.emit('debug', "epa " + JSON.stringify(data));

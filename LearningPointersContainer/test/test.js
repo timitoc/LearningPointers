@@ -38,8 +38,7 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
-
-					gdb.add_breakpoint(3).then((data) => {
+					gdb.add_breakpoints([{line:3, temporary:false, condition: "true"}]).then((data) => {
 						gdb.run().then(data => {
 							resolve(data);
 						});
@@ -67,8 +66,7 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
-
-					gdb.add_breakpoint(5).then((data) => {
+					gdb.add_breakpoints([{line:5, temporary:false, condition: "true"}]).then((data) => {
 						gdb.run().then(data => {
 							resolve(data);
 						});

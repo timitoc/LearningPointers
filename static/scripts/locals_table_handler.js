@@ -23,7 +23,7 @@ LocalsTable.prototype.initTable = function() {
     var self = this;
     $(document).ready(function(){
         // tree data
-        var data = [convertGDBToJSON("s = {a = {fi = 12, se = 23}, b = {fi = -5, se = 23}}")];
+        var data = [];
 
         element = self.JUIElement.jstree({
             plugins: ["table", "contextmenu", "types"],
@@ -56,7 +56,8 @@ LocalsTable.prototype.toggleView = function() {
 }
 
 LocalsTable.prototype.fetchLocalsFromGdb = function() {
-    socket.emit('locals', expresionList);
+    if (Global.status == "debugging")
+        socket.emit('locals', expresionList);
 }
 
 /// populates table with data received from gdb
