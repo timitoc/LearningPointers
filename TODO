@@ -24,7 +24,7 @@ DONE Fix crash at undefined variables in watches
 -> Time betweeen two execution states
 
 -> 0* Upload code from file and url
--> Run to cursor
+//-> Run to cursor
 -> Functii cu numar variabil de parametri
 -> Parametri linie de comanda
 -> Project support(file explorer, makefile)

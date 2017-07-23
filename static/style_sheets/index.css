@@ -1,7 +1,7 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	background: #07594e;
+	background: #07594e !important;
 	box-sizing: border-box;
 }
 
@@ -9,24 +9,16 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-
-/* Global */
-.container{
-    width: 80%;
-    margin: auto;
-	margin-top: 200px;
-    /*overflow: hidden;*/
-}
-
 header {
-	margin-top: 150px;
 }
 
 header h1{
 	color: white;
+	font-size: 70px !important;
 }
 header h3{
 	color: white;
+	font-size: 30px !important;
 }
 
 
@@ -193,4 +185,59 @@ header h3{
 
 #type1, #type2{
     display: inline;
+}
+
+.btn-green {
+	background-color: seagreen !important;
+	text-decoration: none;
+	color: white !important;
+}
+.rating img{
+	width: 20px !important;
+}
+.card {
+	display: inline-block !important;
+	margin: 10px;
+}
+
+h3 {
+	padding: 10px;
+	color: #FFFFFF !important;
+}
+
+#navbar li {
+	list-style-type: none;
+	display: inline-block;
+}
+#navbar{
+	padding: 0;
+	position: absolute;
+	top:0px;
+	right:0px;
+	z-index: 5;
+}
+#navbar-search{
+
+}
+#navbar-search a{
+	/*border-radius: 0px !important;
+	color: white !important;
+	text-decoration: none;
+  display: inline-block;
+	padding:10px;
+	margin: 10px;*/
+}
+#navbar a {
+	border-radius: 0px !important;
+	color: white !important;
+	text-decoration: none;
+  display: inline-block;
+  border-bottom: 0px solid transparent;
+  transition: 0.5s ease;
+  height: 50px;
+	padding:10px;
+	margin: 10px;
+}
+#navbar a:hover {
+	border-bottom: 3px solid #FFFFFF;
 }

@@ -1,7 +1,7 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	background: #07594e;
+	background: #07594e !important;
 	box-sizing: border-box;
 }
 
@@ -9,89 +9,25 @@ html, body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-@keyframes entry {
-	from {
-		transform: scale(0.9);
-	}
-	to {
-		transform: scale(1);
-	}
-}
-
-html .login-wrap {
-	position: relative;
-	margin: 50px auto;
-	background: #ecf0f1;
+#form {
 	width: 350px;
-	box-shadow: 3px 3px 10px #333;
-	padding: 15px;
-	padding-bottom: 5px;
-	/*animation: entry 0.5s;*/
-}
-html .login-wrap h2 {
-	text-align: center;
-	font-weight: 200;
-	font-size: 2em;
-	margin-top: 10px;
-	color: #34495e;
+	margin: 100px auto;
 }
 
-html .login-wrap .form input[type="text"],
-html .login-wrap .form input[type="file"],
-html .login-wrap .form input[type="email"],
-html .login-wrap .form input[type="password"],
-html .login-wrap .form button {
-	width: 80%;
-	margin-left: 10%;
-	margin-bottom: 25px;
-	height: 40px;
-	outline: 0;
-	-moz-outline-style: none;
-}
-html .login-wrap .form input[type="text"],
-html .login-wrap .form input[type="email"],
-html .login-wrap .form input[type="password"] {
-	border: 1px solid #bbb;
-	padding: 0 0 0 10px;
-	font-size: 14px;
-}
-html .login-wrap .form input[type="text"]:focus,
-html .login-wrap .form input[type="email"]:focus,
-html .login-wrap .form input[type="password"]:focus {
-	border: 1px solid #3498db;
-}
-html .login-wrap .form a {
-	text-align: center;
-	color: #3498db;
-}
-html .login-wrap .form a p {
-	padding-bottom: 10px;
-}
-html .login-wrap .form button {
-	background: #e74c3c;
-	border: none;
-	color: white;
-	font-size: 18px;
-	font-weight: 200;
-	cursor: pointer;
-	transition: box-shadow .4s ease;
-}
-html .login-wrap .form button:hover {
-	box-shadow: 1px 1px 5px #555;
-}
-html .login-wrap .form button:active {
-	box-shadow: 1px 1px 7px #222;
-}
-
-center {
-	padding: 10px;
-	padding-top:0px;
-}
-html .login-wrap #title {
-	text-align: center;
+#form p{
 	font-size: 20px;
 }
+#form a {
+	text-decoration: none;
+	font-size: 15px !important;
+}
 
+.btn-green {
+	background-color: seagreen !important;
+	text-decoration: none;
+	color: white !important;
+	cursor: pointer;
+}
 
 #errors {
 	text-align: center;
@@ -117,38 +53,4 @@ html .login-wrap #title {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
-}
-
-input[type="file"] {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-
-#avatar_label {
-	display: block;
-	background: #85144b;
-	background-size: 100% 200%;
-	background-image: linear-gradient(to bottom, #85144b 50%, #70d09f 50%);
-	-webkit-transition: background-position 0.5s;
-	-moz-transition: background-position 0.5s;
-	transition: background-position 0.5s;
-	color: #FFFFFF;
-	width: 60%;
-	padding: 15px;
-	cursor: pointer;
-	transition: background 0.5s;
-}
-#avatar_label:hover {
-	background-position: 0 -100%;
-}
-
-img {
-	vertical-align: middle;
-	float:right;
-	padding-left: 5px;
-	transform: translateY(-3px);
 }
