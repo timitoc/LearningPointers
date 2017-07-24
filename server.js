@@ -256,7 +256,8 @@ io.on('connection', (socket) => {
 			socket.on('beautify', data => {
 				let filename = chance.string({pool: 'abcdef0123456789',length: 10})+'.cpp';
 				fs.writeFileSync(filename, data);
-				child_process.exec('clang-format -style=LLVM '+filename, (err, stdout, stderr) => {
+				child_process.exec('clang-format -style=file '+filename, (err, stdout, stderr) => {
+					console.log(stdout);
 					socket.emit('beautify', stdout);
 					fs.unlinkSync(filename);
 				});
