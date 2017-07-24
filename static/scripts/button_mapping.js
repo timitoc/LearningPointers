@@ -1,10 +1,3 @@
-$("#running_state").css({
-	'padding' : '10px',
-	'margin' : '10px',
-	'font-size': '20px',
-	'background-color' : '#D8000C',
-	'color': 'white'
-});
 function toggle_running_state(x) { // true or false
 	if(x) {
 		$("#running_state").text("Running");
