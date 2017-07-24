@@ -35,8 +35,8 @@ body, html{
 	/** Setting height is also important, otherwise editor wont showup**/
 	height: 300px;
 	margin-top: 10px;
-	margin-left: 90px;
-	margin-right: 90px;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 .myMarker {
 	position:absolute;
