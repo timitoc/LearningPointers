@@ -58,5 +58,27 @@ describe('Database api', () => {
 				//console.log(data);
 			});
 		});
+
+		it ('Add new module', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addModule(8, {title: 'smen', text_md: '##f_smen'}).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+			});
+		});
+
+		it ('Get Modules from Course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getModulesFromCourse(1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data[0].title).to.equal("lore1");
+				chai.expect(data[1].title).to.equal("lore2");
+			});
+		});
 	});
 });

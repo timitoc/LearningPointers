@@ -153,22 +153,61 @@ class DbApi {
 
 	/**
 	 * Adds a new course
-	 * @param {number} userID /// id of the author 
+	 * @param {number} userId /// id of the author 
 	 * @param {course} course
 	 * course format
 	 *	name: title of the course
 	 *	description: short course description
 	 */
-	addCourse(userID, course) {
+	addCourse(userId, course) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				`INSERT INTO courses (name) VALUES (?)`,
 				[course.name],
 				(err, results, fields) => {
 					if (err) reject(err);
-					this.bindAuthorToCourse(userID, results.insertId).then(data => {
+					this.bindAuthorToCourse(userId, results.insertId).then(data => {
 						resolve(data);
 					}); 
+				}
+			);
+		});
+	}
+
+	/**
+	 * 
+	 * @param {number} courseId 
+	 * @param {module} mod
+	 * module format
+	 * 	title, text_md 
+	 */
+	addModule(courseId, mod) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO modules (title, text_md, parent_course_id) VALUES (?, ?, ?)`,
+				[mod.title, mod.text_md, courseId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Get's all modules of the course with courseId
+	 * OBS: doesn't retrieve the content of the module as well, just
+	 * id, title, avg_rating
+	 * @param {number} courseId 
+	 */
+	getModulesFromCourse(courseId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT id, title, avg_rating FROM modules WHERE parent_course_id = ?`,
+				[courseId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
 				}
 			);
 		});
