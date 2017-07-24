@@ -115,6 +115,64 @@ class DbApi {
 			);
 		});
 	}
+
+	/**
+	 * Add user as author of course
+	 * @param {number} userID // id of the author
+	 * @param {number} courseID // id of the course 
+	 */
+	bindAuthorToCourse(userID, courseID) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO authors VALUES(?, ?)`,
+				[userID, courseID],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Get a list of the authors of a course
+	 * @param {number} courseID 
+	 */
+	getCourseAuthors(courseID) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM authors JOIN users ON course_id=? AND user_id=users.id`,
+				[courseID],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds a new course
+	 * @param {number} userID /// id of the author 
+	 * @param {course} course
+	 * course format
+	 *	name: title of the course
+	 *	description: short course description
+	 */
+	addCourse(userID, course) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO courses (name) VALUES (?)`,
+				[course.name],
+				(err, results, fields) => {
+					if (err) reject(err);
+					this.bindAuthorToCourse(userID, results.insertId).then(data => {
+						resolve(data);
+					}); 
+				}
+			);
+		});
+	}
 }
 
 module.exports = DbApi;

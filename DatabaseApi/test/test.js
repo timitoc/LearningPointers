@@ -37,6 +37,26 @@ describe('Database api', () => {
 				chai.expect(data[1].course_name).to.equal("ipsum");
 			});
 		});
-	});
 
+		it('Bind and get Author of Course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.bindAuthorToCourse(3, 1).then(dbApi.getCourseAuthors(1).then((data) => {
+					resolve(data);
+				}));
+			}).then(data => {
+				//console.log(data[0].user_id);
+				chai.expect(data[0].user_id).to.equal(3);
+			});
+		});
+
+		it ('Add new course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addCourse(3, {name: 'proba'}).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+			});
+		});
+	});
 });
