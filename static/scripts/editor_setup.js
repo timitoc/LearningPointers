@@ -18,12 +18,12 @@ editor.getSession().setMode("ace/mode/c_cpp");
 
 editor.setAutoScrollEditorIntoView(true);
 editor.setOption("maxLines", 30);
-editor.setOption("minLines", 25);
+editor.setOption("minLines", 20);
 editor.setOptions({
 	enableBasicAutocompletion: true,
 	enableSnippets: true,
 	enableLiveAutocompletion: true,
-	fontSize: "10pt"
+	fontSize: "12pt"
 });
 
 editor.on('change', function() {

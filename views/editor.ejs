@@ -63,42 +63,42 @@
 			</div>
 			<div class="pure-u-1-2">
 				<center>
-					<div role="group" id="toolbar">
-						<button id="debug_code_button" class="pure-button">
+					<div role="group" id="toolbar" class="btn-group">
+						<button id="debug_code_button" class="btn btn-default">
 							Debug
 						</button>
-						<button id="run_code_button" class="pure-button">
+						<button id="run_code_button" class="btn btn-default">
 							Run
 						</button>
-						<button id="stop_button" class="pure-button" disabled>
+						<button id="stop_button" class="btn btn-default" disabled>
 							Stop
 						</button>
-						<button id="save_code" class="pure-button">
+						<button id="save_code" class="btn btn-default">
 							Save
 						</button>
-						<button id="download_code" class="pure-button">
+						<button id="download_code" class="btn btn-default">
 							Download
 						</button>
-						<button id="beautify_code" class="pure-button">
+						<button id="beautify_code" class="btn btn-default">
 							Beautify
 						</button>
-						<button data-jq-dropdown="#jq-dropdown-1" class="pure-button">Options </button>
+						<button data-jq-dropdown="#jq-dropdown-1" class="btn btn-default">Options </button>
 					</div>
 					<div role="group" id="toolbar">
 						<span class="toolbar-group">
-							<button id="step_debugger" class="pure-button" disabled>
+							<button id="step_debugger" class="btn btn-default" disabled>
 								Step
 							</button>
 							<input type="number" min="1" max="99" value="1" id="stepnr">
 						</span>
 						<span class="toolbar-group">
-							<button id="next_debugger" class="pure-button" disabled>
+							<button id="next_debugger" class="btn btn-default" disabled>
 								Next
 							</button>
 							<input type="number" min="1" max="99" value="1" id="nextnr">
 						</span>
 						<span class="toolbar-group">
-							<button id="continue_debugger" class="pure-button" disabled>
+							<button id="continue_debugger" class="btn btn-default" disabled>
 								Continue
 							</button>
 							<input type="number" min="1" max="99" value="1" id="continuenr">
@@ -126,7 +126,7 @@
 								</select>
 							</li>
 							<li>
-								<button id="full_screen" class="pure-button">
+								<button id="full_screen" class="btn btn-default">
 									Full Screen
 								</button>
 							</li>
@@ -147,40 +147,20 @@
 					</ul>
 				</span>
 				<center>
-				<div class="pure-form">
-
-					<textarea rows=3 cols=27 id="input" placeholder="Enter program input"></textarea>
-					<textarea rows=3 cols=27 id="output" placeholder="Program output" ></textarea>
-				</div>
-				<div class="pure-form">
-					<center id="running_state">Stopped</center>
-				</div>
+					<div class="pure-form">
+						<textarea rows=3 cols=27 id="input" placeholder="Enter program input"></textarea>
+						<textarea rows=3 cols=27 id="output" placeholder="Program output" ></textarea>
+					</div>
 				</center>
 			</div>
 			<div class="pure-u-1-4">
-				<button id="pls" class="pure-button">
+				<button id="pls" class="btn btn-primary">
 					Add expression
 				</button>
-
 				<div class="watch_table_class"></div>
 			</div>
 		</div>
-		<div id="compilation_error_modal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Compilation message</h4>
-					</div>
-					<div class="modal-body">
-						<h4><p id="errors"></p></h4>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
+
 
 		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="/scripts/shortcut.js"></script>
@@ -209,6 +189,26 @@
 		<script src="/scripts/jquery.endless-scroll.js"></script>
 		<script src="/scripts/bootstrap-waitingfor.min.js"></script>
 		<script src="/scripts/path.min.js"></script>
+
+		<div id="compilation_error_modal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Compilation message</h4>
+					</div>
+					<div class="modal-body">
+						<h4><p id="errors"></p></h4>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<center id="running_state">Stopped</center>
 
 		<!-- Scripts -->
 		<script src="/scripts/converter.js"></script>

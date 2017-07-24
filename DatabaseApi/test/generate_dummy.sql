@@ -1,3 +1,4 @@
+USE learning_pointers;
 INSERT INTO users (password, email, name) VALUES ('nu', 'imi', 'pasa');
 INSERT INTO users (password, email, name) VALUES ('si', 'totusi', 'nu');
 INSERT INTO users (password, email, name) VALUES ('desi', 'poate', 'ar trebui');
