@@ -62,6 +62,28 @@ CREATE TABLE `authors` (
 	`course_id` INT(8) NOT NULL
 );
 
+CREATE TABLE `code_sharing` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`code` TEXT NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `breakpoints` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`parent_id` INT(8) NOT NULL,
+	`line` INT(8) NOT NULL,
+	`temporary` INT(8) NOT NULL,
+	`condition` varchar(100) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `watches` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`parent_id` INT(8) NOT NULL,
+	`expr` varchar(100) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
 ALTER TABLE `modules` ADD CONSTRAINT `modules_fk0` FOREIGN KEY (`parent_course_id`) REFERENCES `courses`(`id`);
 
 ALTER TABLE `favorites` ADD CONSTRAINT `favorites_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
@@ -87,3 +109,7 @@ ALTER TABLE `finished` ADD CONSTRAINT `finished_fk1` FOREIGN KEY (`module_id`) R
 ALTER TABLE `authors` ADD CONSTRAINT `authors_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
 
 ALTER TABLE `authors` ADD CONSTRAINT `authors_fk1` FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`);
+
+ALTER TABLE `breakpoints` ADD CONSTRAINT `breakpoints_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
+
+ALTER TABLE `watches` ADD CONSTRAINT `watches_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
