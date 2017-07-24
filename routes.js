@@ -169,4 +169,12 @@ module.exports = (app) => {
 			res.redirect('/login');
 		}
 	});
+
+	app.get('/contribute', (req, res) => {
+		if(req.session.user) {
+			res.render("contribute");
+		} else {
+			res.redirect('/login');
+		}
+	});
 };

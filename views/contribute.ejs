@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Contribute</title>
+		<link rel="stylesheet" href="/style_sheets/dashboard.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" href="/">LearningPointers</a>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item ">
+					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/profile">My profile</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/courses/find">Find courses</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="/contribute">Contribute</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="text" placeholder="Search courses">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
+	<br>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4">
+				<div class="card">
+					<div class="card-block">
+						<h4 class="card-title">How courses are structured?</h4>
+						<p class="card-text">
+							Tempor, lorem dolor mollis turpis, a
+							consectetuer nunc justo ac nisl.
+							Nam vitae purus. Cum sociis natoque penatibus et magnis dis
+							parturient.  Mi quis turpis pellentesque consequat. Suspendisse
+							nulla erat, lacinia nec, pretium vitae, feugiat ac, quam. Etiam
+							sed tellus vel est ultrices condimentum. Vestibulum euismod.
+							Vivamus blandit. Pellentesque eu urna. Vestibulum consequat sem
+							vitae dui. In dictum feugiat quam. Phasellus placerat. In sem
+							nisl, elementum vitae, venenatis nec, lacinia ac, arcu.
+							Pellentesque.
+						</p>
+						<a href="#" class="btn btn-green">Learn more</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<div class="card" style="width:100%">
+					<div class="card-block">
+						<h2 class="card-title">Add a a course</h2>
+						<p class="card-text">
+							<form>
+								<div class="form-group">
+									<label for="">Course title: </label>
+									<input type="text" class="form-control" placeholder="Title">
+								</div>
+								<div class="form-group">
+									<label for="">Level of difficulty:</label>
+									<select class="custom-select" style="display: block">
+										<option selected>Beginner</option>
+										<option value="1">Intermediate</option>
+										<option value="2">Advanced</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="">Course description:</label>
+									<textarea class="form-control" placeholder="Description"></textarea>
+								</div>
+								<div class="form-group">
+									<label class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input">
+										<span class="custom-control-indicator"></span>
+										<span class="custom-control-description">
+											I agree with the <a href="#">terms and conditions.</a>
+										</span>
+									</label>
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary">Create course</button>
+								</div>
+							</form>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
