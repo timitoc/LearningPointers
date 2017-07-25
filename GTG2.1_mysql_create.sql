@@ -30,6 +30,8 @@ CREATE TABLE `courses` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` varchar(50) NOT NULL,
 	`avg_rating` FLOAT NOT NULL DEFAULT '0',
+	`description` TEXT(8000) NOT NULL,
+	`difficulty` varchar(20) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

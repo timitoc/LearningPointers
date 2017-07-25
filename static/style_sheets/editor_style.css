@@ -12,6 +12,14 @@ body, html{
 	padding: 10px;
 }
 
+.btn-group button {
+	font-size: 16px !important;
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+	padding-left: 13px !important;
+	padding-right: 13px !important;
+}
+
 #options{
 	padding: 0;
 }
@@ -39,6 +47,8 @@ body, html{
 	margin-top: 10px;
 	margin-left: 30px;
 	margin-right: 30px;
+	border-radius: 3px;
+	border: 0;
 }
 .myMarker {
 	position:absolute;
@@ -97,3 +107,8 @@ input[type=number] {
 	color: white;
 	padding: 5px;
 }
+
+.ace_gutter-cell.ace_breakpoint {
+	background-position: 2px 5px !important;
+}
+

@@ -34,7 +34,7 @@ class DbApi {
 	loginUser(email, password) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				'SELECT password FROM `users` WHERE `email` = ?',
+				'SELECT id, password FROM `users` WHERE `email` = ?',
 				[email],
 				(err, results, fields) => {
 					if(err) reject(err);
@@ -42,7 +42,7 @@ class DbApi {
 						return reject('No such email!');
 
 					if(bcrypt.compareSync(password,results[0]['password'])) {
-						resolve(true);
+						resolve(results[0]);
 					} else {
 						reject('Wrong password');
 					}
@@ -103,9 +103,9 @@ class DbApi {
 	getMyCourses(userID, offset, count) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				`SELECT user_id, course_id, courses.name as course_name, avg_rating 
-				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id 
-				WHERE users.id=? 
+				`SELECT user_id, course_id, courses.name as course_name, avg_rating
+				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id
+				WHERE users.id=?
 				ORDER BY avg_rating DESC LIMIT ? OFFSET ?;`,
 				[userID, count, offset],
 				(err, results, fields) => {
@@ -119,7 +119,7 @@ class DbApi {
 	/**
 	 * Add user as author of course
 	 * @param {number} userID // id of the author
-	 * @param {number} courseID // id of the course 
+	 * @param {number} courseID // id of the course
 	 */
 	bindAuthorToCourse(userID, courseID) {
 		return new Promise((resolve, reject) => {
@@ -136,7 +136,7 @@ class DbApi {
 
 	/**
 	 * Get a list of the authors of a course
-	 * @param {number} courseID 
+	 * @param {number} courseID
 	 */
 	getCourseAuthors(courseID) {
 		return new Promise((resolve, reject) => {
@@ -153,33 +153,36 @@ class DbApi {
 
 	/**
 	 * Adds a new course
-	 * @param {number} userId /// id of the author 
+	 * @param {number} userId /// id of the author
 	 * @param {course} course
 	 * course format
 	 *	name: title of the course
 	 *	description: short course description
+	 *	difficulty: difficulty of the course(beginner, intermediate, advanced)
 	 */
 	addCourse(userId, course) {
+		console.log(course);
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				`INSERT INTO courses (name) VALUES (?)`,
-				[course.name],
+				`INSERT INTO courses (name, description, difficulty) VALUES (?, ?, ?)`,
+				[course.name, course.description, course.difficulty],
 				(err, results, fields) => {
 					if (err) reject(err);
+					console.log(results);
 					this.bindAuthorToCourse(userId, results.insertId).then(data => {
 						resolve(data);
-					}); 
+					});
 				}
 			);
 		});
 	}
 
 	/**
-	 * 
-	 * @param {number} courseId 
+	 *
+	 * @param {number} courseId
 	 * @param {module} mod
 	 * module format
-	 * 	title, text_md 
+	 * 	title, text_md
 	 */
 	addModule(courseId, mod) {
 		return new Promise((resolve, reject) => {
@@ -198,7 +201,7 @@ class DbApi {
 	 * Get's all modules of the course with courseId
 	 * OBS: doesn't retrieve the content of the module as well, just
 	 * id, title, avg_rating
-	 * @param {number} courseId 
+	 * @param {number} courseId
 	 */
 	getModulesFromCourse(courseId) {
 		return new Promise((resolve, reject) => {

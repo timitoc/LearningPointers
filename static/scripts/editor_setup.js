@@ -17,7 +17,7 @@ ace.require("ace/ext/language_tools");
 editor.getSession().setMode("ace/mode/c_cpp");
 
 editor.setAutoScrollEditorIntoView(true);
-editor.setOption("maxLines", 30);
+editor.setOption("maxLines", 20);
 editor.setOption("minLines", 20);
 editor.setOptions({
 	enableBasicAutocompletion: true,
@@ -117,6 +117,11 @@ function toggleFullScreen() {
 	editor.resize();
 }
 
+// Clear stdout when page loads
+$(function() {
+	$("#output").val("");
+});
+
 document.addEventListener("mozfullscreenchange", function (event) {
 	if (document.mozFullScreen);
 	else {
@@ -168,3 +173,4 @@ $("#download_code").click(function() {
 shortcut.add("Ctrl+S",function() {
 	download('code'+'.cpp', editor.getValue());
 });
+

@@ -12,19 +12,19 @@ function setGutterInteractions() {
                 var session = editor.session;
                 range = session.getParentFoldRangeData(row).range || session.getFoldWidgetRange(row);
             }
-        } 
+        }
         else if (gutterRegion == "markers") {
             moveInRegion(e);
-            range = null;       
+            range = null;
         }
         else
             range = null;
-        if (bracketMarker) { editor.session.removeMarker(bracketMarker); }    
+        if (bracketMarker) { editor.session.removeMarker(bracketMarker); }
         bracketMarker = range && editor.session.addMarker(range, "ace_bracket", "fullLine");
     });
 
     editor.renderer.$gutter.addEventListener("mouseout", function() {
-        editor.session.removeMarker(bracketMarker); 
+        editor.session.removeMarker(bracketMarker);
         bracketMarker = null
     });
 
@@ -76,19 +76,19 @@ function moveInRegion(e) {
         return;
     }
     BROShown = position.row;
-    //var left = (e.clientX+2) + "px"; 
-    //var top = (e.clientY+2) + "px"; 
+    //var left = (e.clientX+2) + "px";
+    //var top = (e.clientY+2) + "px";
     //console.log(JSON.stringify( $('#editor_parent').offset()));
 
     /// NOT COMPATIBLE WITH CHROME
-    var left = editor.renderer.$cursorLayer.getPixelPosition(position, 1).left + 
+    var left = editor.renderer.$cursorLayer.getPixelPosition(position, 1).left +
         $('#editor_parent').offset().left + 5;
-    var top = editor.renderer.$cursorLayer.getPixelPosition(position, 1).top + 
+    var top = editor.renderer.$cursorLayer.getPixelPosition(position, 1).top +
         $('#editor_parent').offset().top + 10;
 
 
-    $("#"+divid).css('left',left); 
-    $("#"+divid).css('top',top); 
+    $("#"+divid).css('left',left);
+    $("#"+divid).css('top',top);
     console.log("This breakpoint: " + JSON.stringify(Global.breakpointsMap[BROShown+1]));
     if (Global.breakpointsMap[BROShown+1])
         Global.breakpointsMap[BROShown+1].populate();
@@ -128,7 +128,7 @@ BreakpointData.prototype.setCondition = function(newCondition) {
     else {
         this.condition = newCondition;
     }
-}   
+}
 
 BreakpointData.prototype.toggleTemporary = function() {
     this.isTemporary = !this.isTemporary;
@@ -136,7 +136,7 @@ BreakpointData.prototype.toggleTemporary = function() {
 
 BreakpointData.prototype.sendEditToServer = function() {
     console.log("sending edit for " + this.row);
-    socket.emit("edit_breakpoint", this.generateSimple());   
+    socket.emit("edit_breakpoint", this.generateSimple());
 }
 
 var normalizeBreakpointMap = function() {

@@ -63,10 +63,13 @@ module.exports = (app) => {
 			req.body.email,
 			req.body.password
 		).then(result => {
-			req.session.user = req.body.email;
+			req.session.user = {
+				email : req.body.email,
+				id : result.id
+			};
 
 			dbApi.getAvatarByEmail(req.body.email).then(data => {
-				req.session.avatar = data[0]['avatar'];
+				req.session.avatar = data.avatar;
 				req.flash('success', 'Successfully logged in!');
 				// Clean all login attempts
 				req.session.login_attempts = undefined;
@@ -172,9 +175,32 @@ module.exports = (app) => {
 
 	app.get('/contribute', (req, res) => {
 		if(req.session.user) {
-			res.render("contribute");
+			res.render("contribute", {
+				csrfToken: req.csrfToken()
+			});
 		} else {
 			res.redirect('/login');
 		}
+	});
+
+	app.post('/course/add', (req, res) => {
+		if(!req.session.user) { return res.redirect('/login'); }
+
+		console.log(req.session.user.id);
+
+		dbApi.addCourse(req.session.user.id, {
+			name: req.body.course_name,
+			description: req.body.course_description,
+			difficulty:req.body.course_difficulty
+		}).then(data => {
+			req.flash('success', 'Course added!');
+			req.flash('course_name', req.body.course_name);
+			return res.redirect('/course/new');
+		});
+	});
+
+	app.get('/course/new', (req, res) => {
+		if(!req.session.user) { return res.redirect('/login'); }
+		res.render("new_course");
 	});
 };
