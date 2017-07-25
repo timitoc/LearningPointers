@@ -1,26 +1,88 @@
 .course {
-	margin: 10px;
-	padding: 15px;
+	padding: 0;
+	margin: 0;
+	transform: translateY(-25px);
+}
+.course-header {
+	background-color: #253c78;
 	font-family: 'Open Sans', sans-serif;
-	width: 200px;
-	height: 100px;
-	display: inline-block;
-	box-shadow: 2px 2px 5px #333;
-	vertical-align: top;
-	border-radius: 3px;
-    white-space: normal;
+	color: white;
 }
 
 .course-title {
+	font-size: 40px;
+	padding: 30px;
+	padding-top: 50px;
+}
+
+.course-back {
+	padding: 20px;
+	font-size: 20px;
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	background-color: #a40606;
+	color: white;
+}
+
+.course-lessons {
+	display: inline-block;
+	width: 45%;
+}
+
+.course-creator {
+	padding-top: 20px;
+	display: inline-block;
+	width: 45%;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.course-creator img {
+	width: 200px;
+	border-radius: 50%;
+}
+
+.course-lessons {
+	padding-top: 20px;
+	vertical-align: top;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.course-lessons ul{
+	padding: 0;
+}
+
+.course-lessons li {
+	list-style-type: none;
+	color: white;
+	margin: 5px;
+	padding: 10px;
 	font-size: 25px;
-	padding:15px;
-	font-weight: bold;
-	height: 70px;
+	text-align: left;
+}
+
+.completed {
+	background-color: #8ac926;
+}
+.uncompleted {
+	background-color: #002642;
+}
+
+.course-rating {
+	padding: 30px;
+	padding-top: 0px;
+}
+
+.course-language {
+	padding: 30px;
+	padding-top: 0px;
+}
+.course-rating img {
+	width: 20px;
 }
 
 .course-progress {
 	background-color: darkgray;
-	height: 8px;
+	height: 15px;
 
 	position: relative;
 	box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
@@ -32,67 +94,38 @@
 	display: block;
 }
 
-.course-modules {
-	padding:10px;
-}
-
-.course-category {
-	padding:10px;
-	font-size: 15px;
-}
-
-.course-details {
-	background-color: #c57b57;
-}
-
-/*04724d*/
-.course-actions {
-	padding: 0;
-	margin: 0;
-}
-.course-actions li{
-	display: inline-block;
-	list-style-type: none;
-	padding: 10px;
-}
-
-.course-actions a {
-	text-decoration: none;
-	color: white;
-}
-
-.course-goto{
-	background-color: #29274c;
-	width:65%;
-}
-
-.course-unsubscribe{
-	background-color: #da2c38;
-	transition: background-color 0.5s;
-	width:25%;
+.container {
 	text-align: center;
 }
 
-.course-unsubscribe:hover{
-	background-color: red;
-}
-
-.courses {
-	overflow-x: scroll;
-    overflow-y: hidden;
-    height: 170px;
-    white-space:nowrap
-}
 
 @media screen and (max-width: 1000px) {
-	.courses {
+	.course-lessons {
+		display: block;
+		width: 100%;
 		text-align: center;
 	}
-	.course {
-		width: 80%;
-		margin-left: auto;
-		margin-right: auto;
-		margin-top: 5px;
-		margin-bottom: 5px;
+
+	.course-creator {
+		display: block;
+		text-align: center;
+		width: 100%;
+	}
+	.container {
+		text-align: none;
+	}
+	.course-title {
+		padding-top: 20px;
+		font-size: 27px;
+	}
+	.course-progress {
+		height: 10px;
 	}
 }
+
+.language-icon {
+	width: 30px;
+	vertical-align: middle;
+	padding: 5px;
+}
+

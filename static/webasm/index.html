@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<style type="text/css" media="screen">
+			#container{
+				width: 50%;
+				display: inline-block;
+				height: 500px;
+			}
+			#preview {
+				display: inline-block;
+				vertical-align: top;
+				width: 45%;
+				height: 500px;
+				overflow-y: scroll;
+			}
+
+			.course-progress {
+				background-color: darkgray;
+				height: 10px;
+				position: relative;
+				box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+			}
+
+			.course-progress .progressbar{
+				background-color: #00cc66;
+				height: 100%;
+				display: block;
+				width: 0%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="editor"><!--<textarea name="name" rows="20" cols="45" id="area"></textarea>--></div>
+		</div>
+		<div id="preview"></div>
+
+		<script src="ace.js" charset="utf-8"></script>
+		<script src="ext-language_tools.js" charset="utf-8"></script>
+		<script src="progressbar.min.js"></script>
+
+		<script>window.define = ace.define;</script>
+		<script>
+			Array.prototype.last = function() {
+				return this[this.length-1];
+			}
+			var editor = ace.edit("editor");
+			editor.getSession().setMode("ace/mode/markdown");
+			editor.setAutoScrollEditorIntoView(true);
+			editor.setOption("maxLines", 19);
+			editor.setOption("minLines", 17);
+
+			editor.setOptions({
+				fontSize: "12pt"
+			});
+
+			var initialized = false;
+
+			var old;
+
+			function renderMarkdown() {
+
+				if(initialized){
+					if(old != editor.getValue()) {
+						document.getElementById("preview").innerHTML =
+						editor.getValue()
+						.split('\n\n')
+						.map(function(pgf) {
+							try{
+								return pgf ? Module.ccall('parse', 'string', ['string'], [pgf + '\n\0']) : "<br>";
+							}
+							catch(err){
+								return "<small>Can't render. Paragraph too large</small>";
+							}
+						})
+						.reduce(function(result, value) {
+							return result + value;
+						}, "");
+
+						old = editor.getValue();
+					}
+				}
+			}
+
+			setInterval(renderMarkdown, 100);
+		</script>
+
+		<script type='text/javascript'>
+		var Module = {
+			onRuntimeInitialized: function() {
+				initialized = true;
+			}
+		}
+		</script>
+		<script async type="text/javascript" src="hello3.js"></script>
+	</body>
+</html>
