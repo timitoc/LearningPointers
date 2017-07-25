@@ -28,6 +28,7 @@ CREATE TABLE `courses` (
 	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	`description` TEXT(8000) NOT NULL,
 	`difficulty` varchar(20) NOT NULL,
+	`url` varchar(50) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -117,7 +118,7 @@ INSERT INTO users (password, email, name) VALUES ('si', 'totusi', 'nu');
 INSERT INTO users (password, email, name) VALUES ('desi', 'poate', 'ar trebui');
 
 LOCK TABLES `courses` WRITE;
-INSERT INTO `courses` (name, description, difficulty, avg_rating) VALUES ('lorem', 'a', 'beginer', 3.5),('ipsum', 'b', 'beginer', 2);
+INSERT INTO `courses` (name, description, difficulty, avg_rating, url) VALUES ('lorem', 'a', 'beginer', 3.5, 'lorem'),('ipsum', 'b', 'beginer', 2, 'ipsum');
 UNLOCK TABLES;
 
 LOCK TABLES `modules` WRITE;

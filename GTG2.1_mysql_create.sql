@@ -32,7 +32,7 @@ CREATE TABLE `courses` (
 	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	`description` TEXT(8000) NOT NULL,
 	`difficulty` varchar(20) NOT NULL,
-	`url` varchar(50) NOT NULL
+	`url` varchar(50) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
