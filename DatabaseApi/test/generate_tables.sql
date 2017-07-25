@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS learning_pointers;
-CREATE DATABASE learning_pointers;
-USE learning_pointers;
-
 CREATE TABLE `users` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
 	`password` varchar(100) NOT NULL,
@@ -116,3 +112,18 @@ ALTER TABLE `authors` ADD CONSTRAINT `authors_fk1` FOREIGN KEY (`course_id`) REF
 ALTER TABLE `breakpoints` ADD CONSTRAINT `breakpoints_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
 
 ALTER TABLE `watches` ADD CONSTRAINT `watches_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
+
+INSERT INTO users (password, email, name) VALUES ('nu', 'imi', 'pasa');
+INSERT INTO users (password, email, name) VALUES ('si', 'totusi', 'nu');
+INSERT INTO users (password, email, name) VALUES ('desi', 'poate', 'ar trebui');
+
+LOCK TABLES `courses` WRITE;
+INSERT INTO `courses` (name, description, difficulty, avg_rating, url) VALUES ('lorem', 'a', 'beginer', 3.5, 'lorem'),('ipsum', 'b', 'beginer', 2, 'ipsum');
+UNLOCK TABLES;
+
+LOCK TABLES `modules` WRITE;
+INSERT INTO `modules` (title, text_md, parent_course_id, avg_rating) VALUES ('lore1','#LO1',1,3),('lore2','#LO2',1,4),('ipsum1','#IPSSSSSS1',2,2);
+UNLOCK TABLES;
+
+INSERT INTO user_courses (user_id, course_id) VALUES (1, 1);
+INSERT INTO user_courses (user_id, course_id) VALUES (1, 2);

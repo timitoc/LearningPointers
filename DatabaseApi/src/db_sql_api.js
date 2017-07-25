@@ -170,7 +170,6 @@ class DbApi {
 	 *	difficulty: difficulty of the course(beginner, intermediate, advanced)
 	 */
 	addCourse(userId, course) {
-		console.log(course);
 		return new Promise((resolve, reject) => {
 			let course_url = this.createCourseUrl(course.name);
 			this.connection.query(
@@ -232,6 +231,27 @@ class DbApi {
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Save codeBound to database for codesharing
+	 * @param {codeBound} codeBound
+	 * codeBound format: code, breakpoint_array, watch_array
+	 */
+	saveCodeForSharing(codeBound) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO code_sharing (code) VALUES (?)`,
+				[codeBound.code],
+				(err, results, fields) => {
+					if (err) reject(err);
+					console.log(results);
+					/*this.bindAuthorToCourse(userId, results.insertId).then(data => {
+						resolve(data);
+					});*/
 				}
 			);
 		});

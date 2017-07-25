@@ -1,8 +1,14 @@
 const chai = require('chai');
+const path = require('path');
 require('dotenv').config({path: '../.env'});
 
-var connection = require('../src/db_connection.js');
+var connection = require('../src/db_connection.js')(1);
 let DbApi = require('../src/db_sql_api.js');
+
+const childProcess = require('child_process');
+
+const ls = childProcess.execFileSync(path.join(__dirname,'prepare.sh'), 
+	[process.env.DB_PASS, process.env.DB_NAME_TEST, path.join(__dirname,'generate_tables.sql')]);
 
 describe('Database api', () => {
 	describe('Database connection', () => {
@@ -51,7 +57,7 @@ describe('Database api', () => {
 
 		it ('Add new course', function() {
 			return new Promise((resolve, reject) => {
-				dbApi.addCourse(3, {name: 'proba'}).then(data => {
+				dbApi.addCourse(3, {name: 'proba', description: 'merge', difficulty: 'beginer'}).then(data => {
 					resolve(data);
 				});
 			}).then(data => {
@@ -61,7 +67,7 @@ describe('Database api', () => {
 
 		it ('Add new module', function() {
 			return new Promise((resolve, reject) => {
-				dbApi.addModule(8, {title: 'smen', text_md: '##f_smen'}).then(data => {
+				dbApi.addModule(3, {title: 'smen', text_md: '##f_smen'}).then(data => {
 					resolve(data);
 				});
 			}).then(data => {
