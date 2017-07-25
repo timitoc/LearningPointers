@@ -15,11 +15,23 @@
 
 	<body>
 		<div class="container">
+			<form action="/course/<%=course.url%>/add" method="post">
 			<br>
 			<div class="row">
-				<h2>Add new module</h2>
-				<br>
+				<div class="col-lg-4">
+					<h2>Add new module</h2>
+				</div>
+				<div class="col-lg-2"></div>
+				<div class="col-lg-5">
+					<input type="text" name="title" placeholder="Module title" class="form-control">
+				</div>
+				<div class="col-lg-1">
+					<input type="hidden" name="_csrf" value="<%=csrfToken%>">
+					<input type="hidden" id="markdown" name="markdown">
+					<button class="btn btn-primary" id="submit">Submit</button>
+				</div>
 			</div>
+			</form>
 			<div class="row">
 				<div class="col-lg-6"> <div id="editor"></div> </div>
 				<div class="col-lg-6"> <div id="preview"></div> </div>
@@ -53,6 +65,8 @@
 
 				if(initialized){
 					if(old != editor.getValue()) {
+						document.getElementById("markdown").value = editor.getValue();
+
 						document.getElementById("preview").innerHTML =
 						editor.getValue()
 						.split('\n\n')

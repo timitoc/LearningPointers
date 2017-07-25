@@ -193,7 +193,26 @@ module.exports = (app) => {
 	});
 
 	app.get('/course/:name/add', checkAuth, (req, res) => {
-		res.render("module/add");
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) { return res.send("Not found");}
+			let course = data[0];
+			dbApi.getCourseAuthors(data[0].id).then(data => {
+				if(!req.session.user) isAuthor = false;
+				else isAuthor = hasUser(req.session.user.email, data);
+
+				res.render("module/add", {course, isAuthor, csrfToken: req.csrfToken()});
+			});
+		});
+	});
+
+	app.post('/course/:name/add', checkAuth, (req, res) => {
+		let markdownContent = req.body.markdown;
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data.length) return res.send("Not send");
+			dbApi.addModule(data[0].id, {text_md: markdownContent, title: req.body.title}).then(data => {
+				res.send("Added to db");
+			});
+		});
 	});
 
 	// Workaround
