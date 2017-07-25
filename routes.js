@@ -1,3 +1,4 @@
+const path = require('path');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
@@ -17,7 +18,11 @@ module.exports = (app) => {
 
 	app.use(flash());
 
-	app.get('/', (req, res) => {
+	const checkAuth = (req, res, next) => {
+		return !req.session.user ? res.redirect('/login') : next();
+	};
+
+	app.get('/', checkAuth, (req, res) => {
 		if(req.session.user) {
 			res.render("dashboard", {
 				user: req.session.user,
@@ -27,9 +32,7 @@ module.exports = (app) => {
 		else res.render("home");
 	});
 
-	app.get('/code',(req,res)=>{
-		res.render("editor");
-	});
+	app.get('/code',(req,res) => { res.render("editor"); });
 
 	app.get('/code/:id', (req, res)=>{
 		res.redirect("/code/#/saved/"+req.params.id); // redirect to front-end route
@@ -128,21 +131,6 @@ module.exports = (app) => {
 			return res.redirect('/signup');
 		}
 
-		//if(!req.files)
-		//	avatarFileName = 'default.svg';
-		//else {
-
-		//	if(req.files.avatar) {
-		//		if(allowedMimeTypes.includes(mime.lookup(req.files.avatar.name))) {
-		//			avatarFileName = randomstring.generate(10) + '.' + mime.extension(mime.lookup(req.files.avatar.name));
-		//		} else {
-		//			req.flash('error', 'Please upload an image!');
-		//			return res.redirect('/signup');
-		//		}
-		//	}
-		//	else avatarFileName = 'default.svg';
-		//}
-
 		dbApi.signupUser(
 			req.body.email,
 			req.body.password,
@@ -165,42 +153,51 @@ module.exports = (app) => {
 	});
 
 
-	app.get('/profile', (req, res) => {
-		if(req.session.user) {
-			res.render("profile");
-		} else {
-			res.redirect('/login');
-		}
+	app.get('/profile', checkAuth, (req, res) => {
+		res.render("profile");
 	});
 
-	app.get('/contribute', (req, res) => {
-		if(req.session.user) {
-			res.render("contribute", {
-				csrfToken: req.csrfToken()
-			});
-		} else {
-			res.redirect('/login');
-		}
+	app.get('/contribute', checkAuth, (req, res) => {
+		res.render("contribute", {
+			csrfToken: req.csrfToken()
+		});
 	});
 
-	app.post('/course/add', (req, res) => {
-		if(!req.session.user) { return res.redirect('/login'); }
-
-		console.log(req.session.user.id);
-
+	app.post('/course/add', checkAuth, (req, res) => {
 		dbApi.addCourse(req.session.user.id, {
 			name: req.body.course_name,
 			description: req.body.course_description,
 			difficulty:req.body.course_difficulty
 		}).then(data => {
 			req.flash('success', 'Course added!');
-			req.flash('course_name', req.body.course_name);
-			return res.redirect('/course/new');
+			return res.redirect('/course/'+data.toString());
 		});
 	});
 
-	app.get('/course/new', (req, res) => {
-		if(!req.session.user) { return res.redirect('/login'); }
-		res.render("new_course");
+	let hasUser = (user, data) => {
+		return data.filter(item => item.email == user).length;
+	};
+
+	app.get('/course/:name', (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) { return res.send("Not found");}
+			let course = data[0];
+			dbApi.getCourseAuthors(data[0].id).then(data => {
+				dbApi.getModulesFromCourse(course.id).then(modules => {
+					if(!req.session.user) isAuthor = false;
+					else isAuthor = hasUser(req.session.user.email, data);
+					res.render("course", {course, modules, isAuthor});
+				});
+			});
+		});
+	});
+
+	app.get('/course/:name/add', checkAuth, (req, res) => {
+		res.render("module/add");
+	});
+
+	// Workaround
+	app.get('/course/:name/editor.wasm', checkAuth, (req, res) => {
+		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
 	});
 };

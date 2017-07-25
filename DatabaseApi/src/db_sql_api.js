@@ -151,6 +151,15 @@ class DbApi {
 		});
 	}
 
+	createCourseUrl(name) {
+		return name
+			.split(' ')
+			.map(item => {
+				return item.toLowerCase();
+			})
+			.join('-');
+	}
+
 	/**
 	 * Adds a new course
 	 * @param {number} userId /// id of the author
@@ -162,16 +171,29 @@ class DbApi {
 	 */
 	addCourse(userId, course) {
 		return new Promise((resolve, reject) => {
+			let course_url = this.createCourseUrl(course.name);
 			this.connection.query(
-				`INSERT INTO courses (name, description, difficulty) VALUES (?, ?, ?)`,
-				[course.name, course.description, course.difficulty],
+				`INSERT INTO courses (name, description, difficulty, url) VALUES (?, ?, ?, ?)`,
+				[course.name, course.description, course.difficulty, course_url],
 				(err, results, fields) => {
 					if (err) reject(err);
 					this.bindAuthorToCourse(userId, results.insertId).then(data => {
-						resolve(data);
+						resolve(course_url);
 					});
 				}
 			);
+		});
+	}
+
+	/**
+	 *
+	 */
+	getCourseByUrl(url) {
+		return new Promise((resolve, reject) => {
+			this.connection.query('SELECT * FROM courses WHERE url = ?', [url], (err, results, fields) => {
+				if(err) reject(err);
+				resolve(results);
+			});
 		});
 	}
 

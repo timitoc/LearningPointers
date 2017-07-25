@@ -1,0 +1,32 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
+}
+
+body {
+	background: #07594e !important;
+}
+
+#preview {
+	background-color: #FFFFFF;
+	min-height: 100%;
+	max-height: 100px;
+	overflow-y: scroll;
+	border-radius: 3px;
+	padding: 10px;
+	color: black !important;
+}
+#preview * {
+	color: black !important;
+}
+
+#editor {
+	border-radius: 5px;
+}
+
+h2 {
+	color: #FFFFFF;
+	padding-left: 12px;
+}
