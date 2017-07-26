@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
 const mime = require('mime');
 
-let connection = require('./DatabaseApi/src/db_connection.js');
+let connection = require('./DatabaseApi/src/db_connection.js')(false);
 connection.connect();
 
 const DbApi = require('./DatabaseApi/src/db_sql_api.js');
@@ -22,7 +22,7 @@ module.exports = (app) => {
 		return !req.session.user ? res.redirect('/login') : next();
 	};
 
-	app.get('/', checkAuth, (req, res) => {
+	app.get('/', (req, res) => {
 		if(req.session.user) {
 			res.render("dashboard", {
 				user: req.session.user,

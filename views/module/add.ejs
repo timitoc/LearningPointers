@@ -41,6 +41,18 @@
 		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/scripts/js.cookie.js" type="text/javascript" charset="utf-8"></script>
 
+		<script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
+
+		<script>
+			var webAsmSupport = true;
+			var converter;
+			try{ WebAssembly; }
+			catch(e) {
+				webAsmSupport = false;
+				converter = new showdown.Converter();
+			}
+		</script>
+
 		<script>window.define = ace.define;</script>
 		<script>
 			Array.prototype.last = function() {
@@ -72,7 +84,9 @@
 						.split('\n\n')
 						.map(function(pgf) {
 							try{
-								return pgf ? Module.ccall('parse', 'string', ['string'], [pgf + '\n\0']) : "<br>";
+								if(webAsmSupport)
+									return pgf ? Module.ccall('parse', 'string', ['string'], [pgf + '\n\0']) : "<br>";
+								return converter.makeHtml(pgf);
 							}
 							catch(err){
 								return "<small>Error at rendering.</small>";
