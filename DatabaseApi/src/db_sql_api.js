@@ -237,9 +237,15 @@ class DbApi {
 	}
 
 	/**
+	 * @typedef {Object} CodeBound
+	 * @property {string} code The cpp code
+	 * @property {Object[]} breakpoints The breakpoints
+	 * @property {Object[]} watches Expressions to be watched
+	 */
+
+	/**
 	 * Save codeBound to database for codesharing
-	 * @param {codeBound} codeBound
-	 * codeBound format: code, breakpoints, watches
+	 * @param {CodeBound} codeBound
 	 */
 	saveCodeForSharing(codeBound) {
 		return new Promise((resolve, reject) => {
@@ -300,6 +306,70 @@ class DbApi {
 			this.connection.query(
 				"INSERT INTO watches (parent_id, `expr`) VALUES ?",
 				[values],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Retrieves codeBound from database
+	 * @param {number} codeId
+	 * @returns {CodeBound} - The CodeBound with specified id
+	 */
+	getCodeBound(codeId) {
+		var codeBound = {};
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT * FROM code_sharing WHERE id=?",
+				[codeId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					results = results[0];
+					codeBound.id = results.id;
+					codeBound.code = results.code;
+					this.getBreakpoints(codeBound.id).then(data => {
+						codeBound.breakpoints = data;
+						this.getWatches(codeBound.id).then(data => {
+							codeBound.watches = data;
+							resolve(codeBound);
+						});
+					});
+				}
+			);
+		});
+	}
+
+	/**
+	 * Gets array of breakpoints from database
+	 * @param {number} codeId 
+	 */
+	getBreakpoints(codeId) {
+		var codeBound;
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT line, temporary, `condition` FROM breakpoints WHERE parent_id=?",
+				[codeId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Gets array of watches from database
+	 * @param {number} codeId 
+	 */
+	getWatches(codeId) {
+		var codeBound;
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT expr FROM watches WHERE parent_id=?",
+				[codeId],
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);

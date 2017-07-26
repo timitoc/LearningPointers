@@ -105,8 +105,17 @@ describe('Database api', () => {
 			});
 		});
 
-		/*it ('Get codeBound', function() {
-
-		});*/
+		it ('Get codeBound', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getCodeBound(1).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				chai.expect(data.code).to.equal("#include <iostream>");
+				chai.expect(data.breakpoints[0].line).to.equal(7);
+				chai.expect(data.breakpoints[1].condition).to.equal("1==3");
+				chai.expect(data.watches[0].expr).to.equal("x");
+			});
+		});
 	});
 });
