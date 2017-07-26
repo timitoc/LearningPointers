@@ -237,9 +237,15 @@ class DbApi {
 	}
 
 	/**
+	 * @typedef {Object} CodeBound
+	 * @property {string} code The cpp code
+	 * @property {Object[]} breakpoints The breakpoints
+	 * @property {Object[]} watches Expressions to be watched
+	 */
+
+	/**
 	 * Save codeBound to database for codesharing
-	 * @param {codeBound} codeBound
-	 * codeBound format: code, breakpoint_array, watch_array
+	 * @param {CodeBound} codeBound
 	 */
 	saveCodeForSharing(codeBound) {
 		return new Promise((resolve, reject) => {
@@ -248,10 +254,125 @@ class DbApi {
 				[codeBound.code],
 				(err, results, fields) => {
 					if (err) reject(err);
-					console.log(results);
-					/*this.bindAuthorToCourse(userId, results.insertId).then(data => {
-						resolve(data);
-					});*/
+					this.addBreakpointsToCode(results.insertId, codeBound.breakpoints).then(
+						this.addWatchesToCode(results.insertId, codeBound.watches).then(data => {
+							resolve(data);
+						})
+					);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds breakpoints to some codeBound.
+	 * @param {number} - Id of the code to which to add the breakpoints
+	 * @param {Object[]} breakpoints - The breakpoints to be added.
+	 * @param {number} breakpoints[].line - The line of the breakpoint.
+	 * @param {number} breakpoints[].temporary - 1 if the breakpoint should be temporary
+	 * @param {string} breakpoints[].condition - Breakpoint condition
+	 */
+	addBreakpointsToCode(codeId, breakpoints) {
+		return new Promise((resolve, reject) => {
+			var values = [];
+			for (var i = 0; i < breakpoints.length; i++) {
+				var value = [codeId, breakpoints[i].line, breakpoints[i].temporary, breakpoints[i].condition];
+				values.push(value);
+			}
+			this.connection.query(
+				"INSERT INTO breakpoints (parent_id, line, temporary, `condition`) VALUES ?",
+				[values],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds watches to some codeBound.
+	 * @param {number} - Id of the code to which to add the watches
+	 * @param {Object[]} watches - The watch to be added.
+	 * @param {string} watches[].expr - Watch expression
+	 */
+	addWatchesToCode(codeId, watches) {
+		return new Promise((resolve, reject) => {
+			var values = [];
+			for (var i = 0; i < watches.length; i++) {
+				var value = [codeId, watches[i].expr];
+				values.push(value);
+			}
+			this.connection.query(
+				"INSERT INTO watches (parent_id, `expr`) VALUES ?",
+				[values],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Retrieves codeBound from database
+	 * @param {number} codeId
+	 * @returns {CodeBound} - The CodeBound with specified id
+	 */
+	getCodeBound(codeId) {
+		var codeBound = {};
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT * FROM code_sharing WHERE id=?",
+				[codeId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					results = results[0];
+					codeBound.id = results.id;
+					codeBound.code = results.code;
+					this.getBreakpoints(codeBound.id).then(data => {
+						codeBound.breakpoints = data;
+						this.getWatches(codeBound.id).then(data => {
+							codeBound.watches = data;
+							resolve(codeBound);
+						});
+					});
+				}
+			);
+		});
+	}
+
+	/**
+	 * Gets array of breakpoints from database
+	 * @param {number} codeId 
+	 */
+	getBreakpoints(codeId) {
+		var codeBound;
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT line, temporary, `condition` FROM breakpoints WHERE parent_id=?",
+				[codeId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Gets array of watches from database
+	 * @param {number} codeId 
+	 */
+	getWatches(codeId) {
+		var codeBound;
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				"SELECT expr FROM watches WHERE parent_id=?",
+				[codeId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
 				}
 			);
 		});

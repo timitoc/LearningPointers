@@ -62,6 +62,7 @@ describe('Database api', () => {
 				});
 			}).then(data => {
 				//console.log(data);
+				// insert result checked in get query.
 			});
 		});
 
@@ -72,6 +73,7 @@ describe('Database api', () => {
 				});
 			}).then(data => {
 				//console.log(data);
+				// insert result checked in get query.
 			});
 		});
 
@@ -84,6 +86,35 @@ describe('Database api', () => {
 				//console.log(JSON.stringify(data));
 				chai.expect(data[0].title).to.equal("lore1");
 				chai.expect(data[1].title).to.equal("lore2");
+			});
+		});
+	});
+
+	describe('Testing code_sharing queries', () => {
+		it ('Add new codeBound', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.saveCodeForSharing({code: '#include <iostream>', 
+					breakpoints: [{line: 7, temporary: 0, condition: 'true'},
+								  {line:9, temporary: 0, condition: "1==3"}], 
+					watches: [{expr: 'x'}]}).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+				// insert result checked in get query.
+			});
+		});
+
+		it ('Get codeBound', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getCodeBound(1).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				chai.expect(data.code).to.equal("#include <iostream>");
+				chai.expect(data.breakpoints[0].line).to.equal(7);
+				chai.expect(data.breakpoints[1].condition).to.equal("1==3");
+				chai.expect(data.watches[0].expr).to.equal("x");
 			});
 		});
 	});
