@@ -113,6 +113,12 @@ ALTER TABLE `breakpoints` ADD CONSTRAINT `breakpoints_fk0` FOREIGN KEY (`parent_
 
 ALTER TABLE `watches` ADD CONSTRAINT `watches_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
 
+
+ALTER TABLE `ratings` ADD PRIMARY KEY (`user_id`, `module_id`); 
+
+
+
+
 INSERT INTO users (password, email, name) VALUES ('nu', 'imi', 'pasa');
 INSERT INTO users (password, email, name) VALUES ('si', 'totusi', 'nu');
 INSERT INTO users (password, email, name) VALUES ('desi', 'poate', 'ar trebui');
