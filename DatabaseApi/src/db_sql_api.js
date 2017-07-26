@@ -335,6 +335,38 @@ class DbApi {
 		);
 	}
 
+	/**
+	 * Adds comment by user(userId) to module(moduleId)
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 * @param {string} comment 
+	 */
+	addCommentToModule(userId, moduleId, comment) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO comments (user_id, module_id, comment_text) VALUES (?, ?, ?)`,
+				[userId, moduleId, comment],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	getCommentsFromModule(moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM comments WHERE module_id=?`,
+				[moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
 
 	/**
 	 * @typedef {Object} CodeBound
