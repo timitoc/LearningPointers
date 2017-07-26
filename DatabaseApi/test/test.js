@@ -19,7 +19,7 @@ describe('Database api', () => {
 		});
 	});
 
-	describe('Testing find queries', () => {
+	describe('Testing courses queries', () => {
 		dbApi = new DbApi(connection);
 		it('Getting courses', function() {
 			return new Promise((resolve, reject) => {
@@ -88,6 +88,42 @@ describe('Database api', () => {
 				chai.expect(data[1].title).to.equal("lore2");
 			});
 		});
+
+		it ('Get Nth Module from Course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getNthModuleFromCourse(1, 1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data.title).to.equal("lore1");
+			});
+		});
+
+
+
+		it ('Rating a Module', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.rateModule(1, 1, 5).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				// insert result checked in get query.
+			});
+		});
+
+		it ('Checks User rating a Module', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.moduleRatingFromUser(1, 1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data).to.equal(5);
+			});
+		}); 
+
 	});
 
 	describe('Testing code_sharing queries', () => {

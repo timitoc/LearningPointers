@@ -116,3 +116,6 @@ ALTER TABLE `authors` ADD CONSTRAINT `authors_fk1` FOREIGN KEY (`course_id`) REF
 ALTER TABLE `breakpoints` ADD CONSTRAINT `breakpoints_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
 
 ALTER TABLE `watches` ADD CONSTRAINT `watches_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
+
+
+ALTER TABLE `ratings` ADD PRIMARY KEY (`user_id`, `module_id`); 

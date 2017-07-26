@@ -236,6 +236,61 @@ class DbApi {
 		});
 	}
 
+	getNthModuleFromCourse(courseId, n) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM modules WHERE parent_course_id = ? LIMIT ? OFFSET ?`,
+				[courseId, 1, (n-1)],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results[0]);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Rate a module
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 * @param {number} rating - Number from 0 to 5 
+	 */
+	rateModule(userId, moduleId, rating) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`REPLACE INTO ratings (user_id, module_id, rating) VALUES (?, ?, ?)`,
+				[userId, moduleId, rating],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Retrieves the rating given by an user to a module
+	 * @param {number} userId
+	 * @param {number} moduleID
+	 * @returns {(number|-1)} What rating had this user given to this module or -1 if none
+	 */
+	moduleRatingFromUser(userId, moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM ratings WHERE user_id=? AND module_id=?`,
+				[userId, moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					if (results.length > 0)
+						resolve(results[0].rating);
+					else
+						resolve(-1);
+				}
+			);
+		});
+	}
+
+
 	/**
 	 * @typedef {Object} CodeBound
 	 * @property {string} code The cpp code
