@@ -92,38 +92,19 @@
 					<div class="container">
 						<center><h3>Top-rated courses:</h3></center>
 						<div class="row" data-aos="fade-up">
+							<% courses.forEach(function(course) { %>
 							<div class="col-lg-4">
 								<div class="card" style="width: 20rem;">
 									<div class="card-block">
-										<h4 class="card-title">Introduction to pointers</h4>
-										<p class="card-text">Basic concepts about memory and pointers in C++</p>
+										<h4 class="card-title"><%= course.name %></h4>
+										<p class="card-text"><%= course.description %></p>
 										<p class="card-text rating" rating="3/5"></p>
 										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4">
-								<div class="card" style="width: 20rem;">
-									<div class="card-block">
-										<h4 class="card-title">Introduction to pointers</h4>
-										<p class="card-text">Basic concepts about memory and pointers in C++</p>
-										<p class="card-text rating" rating="3/5"></p>
-										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-4">
-								<div class="card" style="width: 20rem;">
-									<div class="card-block">
-										<h4 class="card-title">Introduction to pointers</h4>
-										<p class="card-text">Basic concepts about memory and pointers in C++</p>
-										<p class="card-text rating" rating="3/5"></p>
-										<a href="/course/introduction-to-pointers" class="btn btn-green">Go to course</a>
-									</div>
-								</div>
-							</div>
+							<% }) %>
 						</div>
-						<br>
 						<!--
 						<div class="row" data-aos="fade-up">
 							<div class="col-lg-4">

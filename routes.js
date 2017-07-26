@@ -32,8 +32,8 @@ module.exports = (app) => {
 		else {
 			dbApi.getCourses(
 			'',
-			3,
-			0).then(courses => {
+			0,
+			3).then(courses => {
 				console.log(courses);
 				res.render("home", {
 					courses
