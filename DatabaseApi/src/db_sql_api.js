@@ -239,7 +239,7 @@ class DbApi {
 	/**
 	 * Save codeBound to database for codesharing
 	 * @param {codeBound} codeBound
-	 * codeBound format: code, breakpoint_array, watch_array
+	 * codeBound format: code, breakpoints, watches
 	 */
 	saveCodeForSharing(codeBound) {
 		return new Promise((resolve, reject) => {
@@ -248,10 +248,61 @@ class DbApi {
 				[codeBound.code],
 				(err, results, fields) => {
 					if (err) reject(err);
-					console.log(results);
-					/*this.bindAuthorToCourse(userId, results.insertId).then(data => {
-						resolve(data);
-					});*/
+					this.addBreakpointsToCode(results.insertId, codeBound.breakpoints).then(
+						this.addWatchesToCode(results.insertId, codeBound.watches).then(data => {
+							resolve(data);
+						})
+					);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds breakpoints to some codeBound.
+	 * @param {number} - Id of the code to which to add the breakpoints
+	 * @param {Object[]} breakpoints - The breakpoints to be added.
+	 * @param {number} breakpoints[].line - The line of the breakpoint.
+	 * @param {number} breakpoints[].temporary - 1 if the breakpoint should be temporary
+	 * @param {string} breakpoints[].condition - Breakpoint condition
+	 */
+	addBreakpointsToCode(codeId, breakpoints) {
+		return new Promise((resolve, reject) => {
+			var values = [];
+			for (var i = 0; i < breakpoints.length; i++) {
+				var value = [codeId, breakpoints[i].line, breakpoints[i].temporary, breakpoints[i].condition];
+				values.push(value);
+			}
+			this.connection.query(
+				"INSERT INTO breakpoints (parent_id, line, temporary, `condition`) VALUES ?",
+				[values],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds watches to some codeBound.
+	 * @param {number} - Id of the code to which to add the watches
+	 * @param {Object[]} watches - The watch to be added.
+	 * @param {string} watches[].expr - Watch expression
+	 */
+	addWatchesToCode(codeId, watches) {
+		return new Promise((resolve, reject) => {
+			var values = [];
+			for (var i = 0; i < watches.length; i++) {
+				var value = [codeId, watches[i].expr];
+				values.push(value);
+			}
+			this.connection.query(
+				"INSERT INTO watches (parent_id, `expr`) VALUES ?",
+				[values],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
 				}
 			);
 		});

@@ -62,6 +62,7 @@ describe('Database api', () => {
 				});
 			}).then(data => {
 				//console.log(data);
+				// insert result checked in get query.
 			});
 		});
 
@@ -72,6 +73,7 @@ describe('Database api', () => {
 				});
 			}).then(data => {
 				//console.log(data);
+				// insert result checked in get query.
 			});
 		});
 
@@ -86,5 +88,25 @@ describe('Database api', () => {
 				chai.expect(data[1].title).to.equal("lore2");
 			});
 		});
+	});
+
+	describe('Testing code_sharing queries', () => {
+		it ('Add new codeBound', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.saveCodeForSharing({code: '#include <iostream>', 
+					breakpoints: [{line: 7, temporary: 0, condition: 'true'},
+								  {line:9, temporary: 0, condition: "1==3"}], 
+					watches: [{expr: 'x'}]}).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+				// insert result checked in get query.
+			});
+		});
+
+		/*it ('Get codeBound', function() {
+
+		});*/
 	});
 });
