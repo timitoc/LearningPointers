@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en-us">
 	<head>
+		<title>Add module</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
@@ -11,27 +12,34 @@
 	<link rel="stylesheet" href="/style_sheets/dashboard.css">
 	<link rel="stylesheet" href="/style_sheets/add_module.css">
 
-	</head>
+</head>
 
-	<body>
-		<div class="container">
-			<form action="/course/<%=course.url%>/add" method="post">
-			<br>
-			<div class="row">
-				<div class="col-lg-4">
-					<h2>Add new module</h2>
-				</div>
-				<div class="col-lg-2"></div>
-				<div class="col-lg-5">
-					<input type="text" name="title" placeholder="Module title" class="form-control">
-				</div>
-				<div class="col-lg-1">
+<body>
+	<form action="/course/<%=course.url%>/add" method="post">
+		<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="/">LearningPointers</a>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="#">Back</a>
+					</li>
+				</ul>
+				<style>#title{margin-right: 10px !important;}</style>
+				<div class="form-inline">
+					<input type="text" id="title" name="title" placeholder="Module title" class="form-control" required>
 					<input type="hidden" name="_csrf" value="<%=csrfToken%>">
 					<input type="hidden" id="markdown" name="markdown">
-					<button class="btn btn-primary" id="submit">Submit</button>
+					<button type="submit" class="btn btn-primary my-2 my-sm-0" type="submit">Add module</button>
 				</div>
 			</div>
-			</form>
+
+		</nav>
+		<div class="container">
+			<br>
 			<div class="row">
 				<div class="col-lg-6"> <div id="editor"></div> </div>
 				<div class="col-lg-6"> <div id="preview"></div> </div>
@@ -45,12 +53,12 @@
 
 		<script>
 			var webAsmSupport = true;
-			var converter;
-			try{ WebAssembly; }
-			catch(e) {
-				webAsmSupport = false;
-				converter = new showdown.Converter();
-			}
+var converter;
+try{ WebAssembly; }
+catch(e) {
+	webAsmSupport = false;
+	converter = new showdown.Converter();
+}
 		</script>
 
 		<script>window.define = ace.define;</script>
@@ -58,63 +66,64 @@
 			Array.prototype.last = function() {
 				return this[this.length-1];
 			}
-			var editor = ace.edit("editor");
-			editor.getSession().setMode("ace/mode/markdown");
-			editor.setAutoScrollEditorIntoView(true);
-			editor.setOption("maxLines", 30);
-			editor.setOption("minLines", 30);
-			editor.getSession().setUseWrapMode(true);
+var editor = ace.edit("editor");
+editor.getSession().setMode("ace/mode/markdown");
+editor.setAutoScrollEditorIntoView(true);
+editor.setOption("maxLines", 30);
+editor.setOption("minLines", 30);
+editor.getSession().setUseWrapMode(true);
 
-			editor.setOptions({
-				fontSize: "12pt"
-			});
+editor.setOptions({
+	fontSize: "12pt"
+});
 
-			var initialized = false;
+var initialized = false;
 
-			var old;
+var old;
 
-			function renderMarkdown() {
+function renderMarkdown() {
 
-				if(initialized){
-					if(old != editor.getValue()) {
-						document.getElementById("markdown").value = editor.getValue();
+	if(initialized){
+		if(old != editor.getValue()) {
+			document.getElementById("markdown").value = editor.getValue();
 
-						document.getElementById("preview").innerHTML =
-						editor.getValue()
-						.split('\n\n')
-						.map(function(pgf) {
-							try{
-								if(webAsmSupport)
-									return pgf ? Module.ccall('parse', 'string', ['string'], [pgf + '\n\0']) : "<br>";
-								return converter.makeHtml(pgf);
-							}
-							catch(err){
-								return "<small>Error at rendering.</small>";
-							}
-						})
-						.reduce(function(result, value) {
-							return result + value;
-						}, "");
-
-						old = editor.getValue();
-						Cookies.set('md', editor.getValue());
+			document.getElementById("preview").innerHTML =
+				editor.getValue()
+				.split('\n\n')
+				.map(function(pgf) {
+					try{
+						if(webAsmSupport)
+							return pgf ? Module.ccall('parse', 'string', ['string'], [pgf + '\n\0']) : "<br>";
+						return converter.makeHtml(pgf);
 					}
-				}
-			}
+					catch(err){
+						return "<small>Error at rendering.</small>";
+					}
+				})
+				.reduce(function(result, value) {
+					return result + value;
+				}, "");
 
-			setInterval(renderMarkdown, 100);
+			old = editor.getValue();
+			Cookies.set('md', editor.getValue());
+		}
+	}
+}
+
+setInterval(renderMarkdown, 100);
 		</script>
 
 		<script type='text/javascript'>
-		var Module = {
-			onRuntimeInitialized: function() {
-				initialized = true;
-				if(Cookies.get('md')) {
-					editor.setValue(Cookies.get('md'), 1);
+			var Module = {
+				onRuntimeInitialized: function() {
+					initialized = true;
+					if(Cookies.get('md')) {
+						editor.setValue(Cookies.get('md'), 1);
+					}
 				}
 			}
-		}
 		</script>
 		<script async type="text/javascript" src="/webasm/editor.js"></script>
-	</body>
+	</form>
+</body>
 </html>

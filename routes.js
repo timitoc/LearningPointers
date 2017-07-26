@@ -29,7 +29,17 @@ module.exports = (app) => {
 				avatar: req.session.avatar
 			});
 		}
-		else res.render("home");
+		else {
+			dbApi.getCourses(
+			'',
+			3,
+			0).then(courses => {
+				console.log(courses);
+				res.render("home", {
+					courses
+				});
+			});
+		}
 	});
 
 	app.get('/code',(req,res) => { res.render("editor"); });
@@ -210,7 +220,8 @@ module.exports = (app) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data.length) return res.send("Not send");
 			dbApi.addModule(data[0].id, {text_md: markdownContent, title: req.body.title}).then(data => {
-				res.send("Added to db");
+				req.flash('success', 'Module added');
+				res.redirect('/course/'+req.params.name);
 			});
 		});
 	});
@@ -218,5 +229,9 @@ module.exports = (app) => {
 	// Workaround
 	app.get('/course/:name/editor.wasm', checkAuth, (req, res) => {
 		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
+	});
+
+	app.get('/course/:name/modules/:index', checkAuth, (req, res) => {
+		res.render("module/view");
 	});
 };
