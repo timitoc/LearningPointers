@@ -133,3 +133,7 @@ UNLOCK TABLES;
 
 INSERT INTO user_courses (user_id, course_id) VALUES (1, 1);
 INSERT INTO user_courses (user_id, course_id) VALUES (1, 2);
+
+INSERT INTO ratings (user_id, module_id, rating) VALUES (2, 1, 4);
+INSERT INTO ratings (user_id, module_id, rating) VALUES (3, 1, 1);
+

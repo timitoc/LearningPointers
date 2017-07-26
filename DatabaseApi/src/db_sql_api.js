@@ -263,6 +263,7 @@ class DbApi {
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);
+					this.propagateModuleRating(moduleId);
 				}
 			);
 		});
@@ -288,6 +289,50 @@ class DbApi {
 				}
 			);
 		});
+	}
+
+	propagateModuleRating(moduleId) {
+		this.connection.query(
+			`UPDATE modules SET avg_rating=(SELECT AVG(rating) FROM ratings WHERE module_id=?) WHERE id=?`,
+			[moduleId, moduleId],
+			(err, results, fields) => {
+				if (err) reject(err);
+				//console.log("propagate 1: ");
+				this.getModuleParent(moduleId).then(data => {
+					this.propagateCourseRating(data);
+				});
+			}
+		);
+	}
+
+	/**
+	 * Get course parent of module
+	 * @param {number} moduleId
+	 * @returns id of the course which is parent to this module 
+	 */
+	getModuleParent(moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT parent_course_id FROM modules WHERE id = ?`,
+				[moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results[0].parent_course_id);
+					//propagateCourseRating(getModuleParent(moduleId));
+				}
+			);
+		});
+	}
+
+	propagateCourseRating(courseId) {
+		this.connection.query(
+			`UPDATE courses SET avg_rating=(SELECT AVG(avg_rating) FROM modules WHERE parent_course_id=?) WHERE id=?`,
+			[courseId, courseId],
+			(err, results, fields) => {
+				if (err) reject(err);
+				//console.log("propagate 2: ");
+			}
+		);
 	}
 
 

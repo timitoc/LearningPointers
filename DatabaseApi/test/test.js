@@ -99,9 +99,9 @@ describe('Database api', () => {
 				chai.expect(data.title).to.equal("lore1");
 			});
 		});
+	});
 
-
-
+	describe('Testing rating and comments', () => {
 		it ('Rating a Module', function() {
 			return new Promise((resolve, reject) => {
 				dbApi.rateModule(1, 1, 5).then((data) => {
@@ -123,7 +123,6 @@ describe('Database api', () => {
 				chai.expect(data).to.equal(5);
 			});
 		}); 
-
 	});
 
 	describe('Testing code_sharing queries', () => {
