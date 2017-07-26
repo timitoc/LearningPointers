@@ -87,6 +87,12 @@ CREATE TABLE `watches` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `md_images` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`uri` varchar(30) NOT NULL DEFAULT 'default.svg',
+	PRIMARY KEY (`id`)
+);
+
 ALTER TABLE `modules` ADD CONSTRAINT `modules_fk0` FOREIGN KEY (`parent_course_id`) REFERENCES `courses`(`id`);
 
 ALTER TABLE `favorites` ADD CONSTRAINT `favorites_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);

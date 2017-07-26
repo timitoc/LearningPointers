@@ -99,6 +99,28 @@ describe('Database api', () => {
 				chai.expect(data.title).to.equal("lore1");
 			});
 		});
+
+		it ('User finish course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.saveUserFinishedModule(1, 1).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+				// insert result checked in get query.
+			});
+		});
+
+		it ('retrieve user finished course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.hasUserFinishedModule(1, 1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data).to.equal(true);
+			});
+		});
 	});
 
 	describe('Testing rating and comments', () => {

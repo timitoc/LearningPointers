@@ -354,6 +354,11 @@ class DbApi {
 		});
 	}
 
+	/**
+	 * Retrieves all comments for module(moduleID)
+	 * @param {number} moduleId 
+	 * @returns {object[]} - array of comments
+	 */
 	getCommentsFromModule(moduleId) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
@@ -362,6 +367,45 @@ class DbApi {
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Marks in database that user(userId) finished module(moduleId)
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 */
+	saveUserFinishedModule(userId, moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO finished (user_id, module_id) VALUES (?, ?)`,
+				[userId, moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Returns true / false wether the user finished the module
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 */
+	hasUserFinishedModule(userId, moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM finished WHERE user_id=? AND module_id=?`,
+				[userId, moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					if (results.length > 0)
+						resolve(true);
+					else
+						resolve(false);
 				}
 			);
 		});
