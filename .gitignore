@@ -4,3 +4,4 @@ programs/
 *~
 .env
 *.swp
+static/avatars/*
