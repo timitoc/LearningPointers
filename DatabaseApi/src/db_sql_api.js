@@ -34,7 +34,7 @@ class DbApi {
 	loginUser(email, password) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				'SELECT id, password FROM `users` WHERE `email` = ?',
+				'SELECT name, id, password, avatar FROM `users` WHERE `email` = ?',
 				[email],
 				(err, results, fields) => {
 					if(err) reject(err);
@@ -243,7 +243,7 @@ class DbApi {
 				[courseId, 1, (n-1)],
 				(err, results, fields) => {
 					if (err) reject(err);
-					resolve(results[0]);
+					resolve(results);
 				}
 			);
 		});
@@ -251,9 +251,9 @@ class DbApi {
 
 	/**
 	 * Rate a module
-	 * @param {number} userId 
-	 * @param {number} moduleId 
-	 * @param {number} rating - Number from 0 to 5 
+	 * @param {number} userId
+	 * @param {number} moduleId
+	 * @param {number} rating - Number from 0 to 5
 	 */
 	rateModule(userId, moduleId, rating) {
 		return new Promise((resolve, reject) => {
@@ -399,7 +399,7 @@ class DbApi {
 
 	/**
 	 * Gets array of breakpoints from database
-	 * @param {number} codeId 
+	 * @param {number} codeId
 	 */
 	getBreakpoints(codeId) {
 		var codeBound;
@@ -417,7 +417,7 @@ class DbApi {
 
 	/**
 	 * Gets array of watches from database
-	 * @param {number} codeId 
+	 * @param {number} codeId
 	 */
 	getWatches(codeId) {
 		var codeBound;
