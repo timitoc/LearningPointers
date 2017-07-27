@@ -12,6 +12,7 @@ var watchTable = function() {
     localsTable.init();
 }
 
+var backupExpr = [];
 var expresionList = [];
 
 function createHeader() {
@@ -84,7 +85,7 @@ function addJstreeData() {
                             "label": "Remove",
                             "action": function (obj) {
                                 console.log(tree);
-                                removeExpressionFromDisplayList(Global.htmlDecode($node.text));
+                                removeWithBackup($node);
                                 tree.delete_node($node);
                             }
                         }
@@ -133,8 +134,10 @@ function addJstreeData() {
                 //console.log(JSON.stringify(data.text));
                 var inst = $.jstree.reference(data.node);
                 inst.deselect_node(data.node);
-                removeExpressionFromDisplayList(Global.htmlDecode(data.old));
-                addExpressionToDiplayList(Global.htmlDecode(data.text));
+                //removeExpressionFromDisplayList(Global.htmlDecode(data.old));
+                var pos = removeWithBackup(data);
+                addWithBackup(data, pos);
+                //addExpressionToDiplayList(Global.htmlDecode(data.text));
             }
         );
 
@@ -147,6 +150,22 @@ function addJstreeData() {
             }
         );
     });
+}
+
+function removeWithBackup(data) {
+    var pos = getNodePosition(data.node);
+    if (pos >= 0)
+        backupExpr.splice(pos, 1);
+    removeExpressionFromDisplayList(Global.htmlDecode(data.old));
+    return pos;
+}
+
+function addWithBackup(data, hint) {
+    if (hint == undefined || hint < 0) 
+        backupExpr.push(data.text);
+    else
+        backupExpr.splice(hint, 0, data.text);
+    addExpressionToDiplayList(Global.htmlDecode(data.text));
 }
 
 function removeExpressionFromDisplayList(exprName) {
@@ -162,6 +181,10 @@ function addExpressionToDiplayList(exprName) {
     if (Global.status === 'debugging') {
         requestUpdateWatches();
     }
+}
+
+function getNodePosition(node) {
+    return $.inArray(node.id, jstreeElement.jstree(true).get_node('#').children);
 }
 
 function toggleView(who) {
@@ -189,7 +212,7 @@ function requestUpdateWatches() {
 }
 
 var pure = [];
-
+/*
 function updateWatchesData(jsonObject) {
         if (!isBodyVisible)
             localsTable.fetchLocalsFromGdb();
@@ -217,6 +240,37 @@ function updateWatchesData(jsonObject) {
             }
         }
         console.log(JSON.stringify(pure));
+        jstreeElement.jstree(true).settings.core.data = newData;
+        jstreeElement.jstree(true).refresh();
+        doMagic();
+}*/
+
+function updateWatchesData(jsonObject) {
+        if (!isBodyVisible)
+            localsTable.fetchLocalsFromGdb();
+        var v = backupExpr;
+        console.log("new vers " + v);
+        var newData = [];
+        for (var i = 0; i < v.length; i++) {
+            var txt = Global.htmlDecode("" + v[i]);
+            console.log("before " + JSON.stringify(v[i]));
+            if (jsonObject.hasOwnProperty(txt)) {
+                var nou = convertGDBToJSON(txt + " = " + Global.htmlDecode(jsonObject[txt]));
+                console.log("nou = " + JSON.stringify(nou));
+                //var nou = convertGDBToJSON("es = {fi = 0, se = 23}");
+                newData.push(nou);
+            }
+            else {
+                alert("what");
+                if (pure.length <= i) {
+                    var nou = convertGDBToJSON(txt + " = undefined");
+                    console.log("nou = " + JSON.stringify(nou));
+                    pure[i] = nou;
+                }
+                newData.push(pure[i]);
+            }
+        }
+        //console.log(JSON.stringify(pure));
         jstreeElement.jstree(true).settings.core.data = newData;
         jstreeElement.jstree(true).refresh();
         doMagic();
