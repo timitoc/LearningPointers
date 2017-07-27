@@ -26,7 +26,7 @@ LocalsTable.prototype.initTable = function() {
         var data = [];
 
         element = self.JUIElement.jstree({
-            plugins: ["table", "contextmenu", "types"],
+            plugins: ["table", "types"],
             core: {
                 check_callback: true,
                 data: data
@@ -41,9 +41,18 @@ LocalsTable.prototype.initTable = function() {
                 draggable: false,
                 contextmenu: true,
                 width: 300,
-                height: 550
+                height: 350
             },
         });
+
+        // self.JUIElement.bind(
+        //     "update_cell.jstree-table", function(evt, data){
+        //         if (data.col == "value" && data.node.parent == "#") {
+        //             console.log("set " + data.node.text + " to " + data.value);
+        //             setVariable(data.node.text, data.value);
+        //         }
+        //     }
+        // );
     });
 }
 

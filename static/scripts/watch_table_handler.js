@@ -1,10 +1,10 @@
 var body;
 var localsTable;
 var isBodyVisible = 1;
+var jstreeElement = {};
 var watchTable = function() {
     var parent = $('.watch_table_class');
     var header = createHeader();
-    var jstreeElement;
     body = createBody();
     header.appendTo(parent);
     body.appendTo(parent);
@@ -47,7 +47,7 @@ function createBody() {
     return body;
 }
 
-function addJstreeData(element) {
+function addJstreeData() {
 
     $(document).ready(function(){
         // tree data
@@ -64,11 +64,11 @@ function addJstreeData(element) {
         //     alert(JSON.stringify(data.node));
         //     //element.jstree("rename", data.node)
         // });
-        element = $('.jstree_class').jstree({
+        element = jstreeElement.jstree({
             plugins: ["table", "contextmenu", "types"],
             contextmenu: {
                 "items": function($node) {
-                    var tree = $('.jstree_class').jstree(true);
+                    var tree = jstreeElement.jstree(true);
                     return {
                         "Rename": {
                             "separator_before": false,
@@ -83,10 +83,9 @@ function addJstreeData(element) {
                             "separator_after": false,
                             "label": "Remove",
                             "action": function (obj) {
-                                console.log($('.jstree_class').jstree);
-                                if ($node.text === "")
-                                    return;
-                                $('.jstree_class').delete_node($node);
+                                console.log(tree);
+                                removeExpressionFromDisplayList(Global.htmlDecode($node.text));
+                                tree.delete_node($node);
                             }
                         }
                     };
@@ -117,8 +116,8 @@ function addJstreeData(element) {
         });
         $('.jstree_class').bind(
             "select_node.jstree", function(evt, data){
-                var newText = "Some new text";
-                //alert(JSON.stringify(data.node));
+                if (data.event.type == "contextmenu")
+                    return;
                 var inst = $.jstree.reference(data.node);
                 inst.edit(data.node);
                 //$('.jstree_class').jstree(true).edit(data.node);
