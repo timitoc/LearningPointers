@@ -66,6 +66,32 @@ function addJstreeData(element) {
         // });
         element = $('.jstree_class').jstree({
             plugins: ["table", "contextmenu", "types"],
+            contextmenu: {
+                "items": function($node) {
+                    var tree = $('.jstree_class').jstree(true);
+                    return {
+                        "Rename": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Rename",
+                            "action": function (obj) {
+                                tree.edit($node);
+                            }
+                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Remove",
+                            "action": function (obj) {
+                                console.log($node.text);
+                                if ($node.text === "")
+                                    return;
+                                $('.jstree_class').delete_node($node);
+                            }
+                        }
+                    };
+                }
+            },
             core: {
                 check_callback: true,
                 data: data
@@ -74,7 +100,7 @@ function addJstreeData(element) {
             table: {
                 columns: [
                     {width: 200, header: "Expression"},
-                    {width: 100, value: "value", header: "Value"}
+                    {columnClass: 'watch_me_resize', value: "value", header: "Value"}
                 ],
                 resizable: true,
                 draggable: false,

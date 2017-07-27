@@ -15,6 +15,14 @@
 	display: none !important;
 }
 
+.watches_body {
+	width: 500px;
+}
+
+.watch_me_resize {
+	min-width: 150px;
+}
+
 .n_elem {
 	color: grey;
 	font-size: smaller;
@@ -23,7 +31,7 @@
 .memory_table_class {
 	user-select: none;
 	display: block;
-	width: 300px;
+	width: 500px;
 	height: 210px;      
     overflow-y: auto;  
     /* overflow-x: hidden; */

@@ -35,13 +35,13 @@ LocalsTable.prototype.initTable = function() {
             table: {
                 columns: [
                     {width: 200, header: "Expression"},
-                    {width: 100, value: "value", header: "Value"}
+                    {columnClass: 'watch_me_resize', value: "value", header: "Value"}
                 ],
                 resizable: true,
                 draggable: false,
                 contextmenu: true,
                 width: 300,
-                height: 350
+                height: 550
             },
         });
     });
