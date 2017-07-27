@@ -30,84 +30,29 @@
 				<h1>Module name</h1>
 			</div>
 			<hr>
-			<div class="card-block">
-				Dictum, erat sed blandit venenatis, arcu
-				dolor molestie dolor, vitae congue orci risus a nulla.
-				Pellentesque sit amet arcu. In mattis laoreet enim.
-				Pellentesque id augue et arcu blandit tincidunt. Pellentesque
-				elit ante, rhoncus quis, dapibus sit amet, tincidunt eu, nibh.
-				In imperdiet. Nunc lectus neque, commodo eget, porttitor quis,
-				fringilla quis, purus.
-
-				Duis sagittis dignissim eros. In sit amet lectus. Fusce lacinia mauris vitae
-				nisl interdum condimentum. Etiam in magna ac nibh ultrices vehicula. Maecenas
-				commodo facilisis lectus. Praesent sed mi. Phasellus ipsum. Donec quis tellus
-				id lectus faucibus molestie. Praesent vel ligula. Nam venenatis neque quis
-				mauris. Proin felis. Cum sociis natoque penatibus et magnis dis parturient
-				montes, nascetur ridiculus mus. Aliquam quam. Nam felis velit, semper nec,
-				aliquam nec, iaculis vel, mi. Nullam et augue vitae nunc tristique vehicula.
-				Suspendisse eget elit. Duis adipiscing dui non quam.
-
-				Duis posuere tortor sit amet est iaculis egestas. Ut at magna. Etiam dui nisi,
-				blandit quis, fermentum vitae, auctor vel, sem. Cras et leo. Vestibulum ante
-				ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin
-				luctus, odio eu porttitor adipiscing, ante elit tristique tortor, sit amet
-				malesuada tortor nisi sit amet neque. Praesent rhoncus eros non velit.
-				Pellentesque mattis. Sed sit amet ante. Mauris ac nibh eget risus volutpat
-				tempor. Praesent volutpat sollicitudin dui. Sed in tellus id urna viverra
-				commodo. Vestibulum enim felis, interdum non, sollicitudin in, posuere a, sem.
-				Cras nibh.
-
-				Sed facilisis ultrices dolor. Vestibulum pretium mauris sed turpis. Phasellus a
-				pede id odio interdum elementum. Nam urna felis, sodales ut, luctus vel,
-				condimentum vitae, est. Vestibulum ut augue. Nunc laoreet sapien quis neque
-				semper dictum. Phasellus rhoncus est id turpis. Vestibulum in elit at odio
-				pellentesque volutpat. Nam nec tortor. Suspendisse porttitor consequat nulla.
-				Morbi suscipit tincidunt nisi. Sed laoreet, mauris et tincidunt facilisis, est
-				nisi pellentesque.
-
-				<p>
-					Dictum, erat sed blandit venenatis, arcu
-					dolor molestie dolor, vitae congue orci risus a nulla.
-					Pellentesque sit amet arcu. In mattis laoreet enim.
-					Pellentesque id augue et arcu blandit tincidunt. Pellentesque
-					elit ante, rhoncus quis, dapibus sit amet, tincidunt eu, nibh.
-					In imperdiet. Nunc lectus neque, commodo eget, porttitor quis,
-					fringilla quis, purus.
-				</p>
-
-				Duis sagittis dignissim eros. In sit amet lectus. Fusce lacinia mauris vitae
-				nisl interdum condimentum. Etiam in magna ac nibh ultrices vehicula. Maecenas
-				commodo facilisis lectus. Praesent sed mi. Phasellus ipsum. Donec quis tellus
-				id lectus faucibus molestie. Praesent vel ligula. Nam venenatis neque quis
-				mauris. Proin felis. Cum sociis natoque penatibus et magnis dis parturient
-				montes, nascetur ridiculus mus. Aliquam quam. Nam felis velit, semper nec,
-				aliquam nec, iaculis vel, mi. Nullam et augue vitae nunc tristique vehicula.
-				Suspendisse eget elit. Duis adipiscing dui non quam.
-
-				Duis posuere tortor sit amet est iaculis egestas. Ut at magna. Etiam dui nisi,
-				blandit quis, fermentum vitae, auctor vel, sem. Cras et leo. Vestibulum ante
-				ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin
-				luctus, odio eu porttitor adipiscing, ante elit tristique tortor, sit amet
-				malesuada tortor nisi sit amet neque. Praesent rhoncus eros non velit.
-				Pellentesque mattis. Sed sit amet ante. Mauris ac nibh eget risus volutpat
-				tempor. Praesent volutpat sollicitudin dui. Sed in tellus id urna viverra
-				commodo. Vestibulum enim felis, interdum non, sollicitudin in, posuere a, sem.
-				Cras nibh.
-
-				Sed facilisis ultrices dolor. Vestibulum pretium mauris sed turpis. Phasellus a
-				pede id odio interdum elementum. Nam urna felis, sodales ut, luctus vel,
-				condimentum vitae, est. Vestibulum ut augue. Nunc laoreet sapien quis neque
-				semper dictum. Phasellus rhoncus est id turpis. Vestibulum in elit at odio
-				pellentesque volutpat. Nam nec tortor. Suspendisse porttitor consequat nulla.
-				Morbi suscipit tincidunt nisi. Sed laoreet, mauris et tincidunt facilisis, est
-				nisi pellentesque.
-			</div>
+			<div class="card-block" id="html"><%= module.text_md %></div>
 			<hr>
 			<div class="card-block">
 				<a href="#" class="btn btn-primary">Take the test</a>
-				<a href="#" class="btn btn-success">Edit this module</a>
+				<% if(isAuthor) { %>
+					<a href="/course/<%=course.url%>/modules/<%=module_index%>/edit"
+						class="btn btn-success">Edit this module</a>
+				<% } %>
 			</div>
 		</div>
-</body>
+	</div>
+	<script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
+
+	<script>
+		var converter = new showdown.Converter();
+		var md = document.getElementById("html").innerHTML;
+		console.log(md);
+		function render(pgf) {
+			return converter.makeHtml(pgf);
+		}
+		document.getElementById("html").innerHTML = render(md);
+
+	</script>
+
+	</body>
 </html>

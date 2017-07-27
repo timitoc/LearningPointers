@@ -46,6 +46,8 @@
 				<a class="nav-link" href="/contribute">Contribute</a>
 			</li>
 		</ul>
+		<a class="navbar-brand" href="/profile">
+		</a>
 		<form class="form-inline my-2 my-lg-0">
 			<input class="form-control mr-sm-2" type="text" placeholder="Search courses">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -94,9 +96,25 @@
 				<li class="list-group-item">Cras justo odio</li>
 				<li class="list-group-item">Dapibus ac facilisis in</li>
 				<li class="list-group-item">Morbi leo risus</li>
-				<li class="list-group-item">Porta ac consectetur ac</li>
-				<li class="list-group-item">Vestibulum at eros</li>
 			</ul>
+			<br>
+			<div class="card">
+				<div class="card-block">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="card-block">
+								<img width="120" src="/avatars/<%=user.avatar%>" alt="" class="rounded card-img-top">
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="card-block">
+								<h5><%=user.name%></h5>
+								<b>Beginner</b>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

@@ -3,6 +3,8 @@ const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
 const mime = require('mime');
+const download = require('download-file')
+const randomstring = require('randomstring');
 
 let connection = require('./DatabaseApi/src/db_connection.js')(false);
 connection.connect();
@@ -14,7 +16,7 @@ module.exports = (app) => {
 
 	// Use csurf with cookieparser
 	app.use(cookieParser());
-	app.use(csrf({ cookie: true }));
+	let _csrf = csrf({ cookie: true });
 
 	app.use(flash());
 
@@ -23,17 +25,14 @@ module.exports = (app) => {
 	};
 
 	app.get('/', (req, res) => {
-		if(req.session.user) {
-			res.render("dashboard", {
-				user: req.session.user,
-				avatar: req.session.avatar
-			});
-		}
+		console.log(req.session.user);
+		if(req.session.user)
+			res.render("dashboard", { user: req.session.user });
 		else {
 			dbApi.getCourses(
 			'',
-			3,
-			0).then(courses => {
+			0,
+			3).then(courses => {
 				console.log(courses);
 				res.render("home", {
 					courses
@@ -48,7 +47,7 @@ module.exports = (app) => {
 		res.redirect("/code/#/saved/"+req.params.id); // redirect to front-end route
 	});
 
-	app.get('/login', (req, res) => {
+	app.get('/login', _csrf, (req, res) => {
 		if(req.session.login_attempts > 3) {
 			res.render("login", {
 				csrfToken: req.csrfToken()
@@ -61,7 +60,7 @@ module.exports = (app) => {
 		}
 	});
 
-	app.post('/login', (req, res) => {
+	app.post('/login',_csrf, (req, res) => {
 		if(!req.body.email) {
 			req.flash('error', 'Email is required!');
 			return res.redirect('/login');
@@ -78,11 +77,14 @@ module.exports = (app) => {
 		).then(result => {
 			req.session.user = {
 				email : req.body.email,
-				id : result.id
+				id : result.id,
+				avatar: result.avatar,
+				name: result.name
 			};
 
 			dbApi.getAvatarByEmail(req.body.email).then(data => {
 				req.session.avatar = data.avatar;
+				console.log(data.avatar);
 				req.flash('success', 'Successfully logged in!');
 				// Clean all login attempts
 				req.session.login_attempts = undefined;
@@ -102,7 +104,7 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/signup', (req, res) => {
+	app.get('/signup', _csrf, (req, res) => {
 		res.render("signup",{
 			csrfToken: req.csrfToken()
 		});
@@ -119,7 +121,7 @@ module.exports = (app) => {
 	//	'image/x-tiff'
 	//];
 
-	app.post('/signup', (req, res) => {
+	app.post('/signup', _csrf,(req, res) => {
 
 		if(!req.body.email) {
 			req.flash('error', 'Email is required!');
@@ -141,20 +143,33 @@ module.exports = (app) => {
 			return res.redirect('/signup');
 		}
 
-		dbApi.signupUser(
-			req.body.email,
-			req.body.password,
-			req.body.name,
-			'default.svg', //default avatar
-			'' // default bio
-		).then(result => {
-			req.flash('success', 'Account successfully created!');
-			req.flash('email', req.body.email);
-			return res.redirect('/login');
-		}).catch((err) => {
-			req.flash('error', 'Email address already taken!');
-			res.redirect('/signup');
+		// Get avatar from adorable avatars
+
+		let filename = randomstring.generate(10) + '.png';
+
+		download('https://api.adorable.io/avatars/150/'+filename, {
+			directory: './static/avatars',
+			filename
+		}, (err) => {
+			if(err) throw err;
+
+			dbApi.signupUser(
+				req.body.email,
+				req.body.password,
+				req.body.name,
+				filename,
+				'' // default bio
+			).then(result => {
+				req.flash('success', 'Account successfully created!');
+				req.flash('email', req.body.email);
+				return res.redirect('/login');
+			}).catch((err) => {
+				req.flash('error', 'Email address already taken!');
+				res.redirect('/signup');
+			});
+
 		});
+
 	});
 
 	app.get('/logout', (req, res) => {
@@ -167,13 +182,13 @@ module.exports = (app) => {
 		res.render("profile");
 	});
 
-	app.get('/contribute', checkAuth, (req, res) => {
+	app.get('/contribute', checkAuth, _csrf, (req, res) => {
 		res.render("contribute", {
 			csrfToken: req.csrfToken()
 		});
 	});
 
-	app.post('/course/add', checkAuth, (req, res) => {
+	app.post('/course/add', checkAuth, _csrf, (req, res) => {
 		dbApi.addCourse(req.session.user.id, {
 			name: req.body.course_name,
 			description: req.body.course_description,
@@ -202,7 +217,7 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/course/:name/add', checkAuth, (req, res) => {
+	app.get('/course/:name/add', _csrf, checkAuth, (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) { return res.send("Not found");}
 			let course = data[0];
@@ -215,10 +230,10 @@ module.exports = (app) => {
 		});
 	});
 
-	app.post('/course/:name/add', checkAuth, (req, res) => {
+	app.post('/course/:name/add', _csrf, checkAuth, (req, res) => {
 		let markdownContent = req.body.markdown;
 		dbApi.getCourseByUrl(req.params.name).then(data => {
-			if(!data.length) return res.send("Not send");
+			if(!data || !data.length) return res.send("Not found");
 			dbApi.addModule(data[0].id, {text_md: markdownContent, title: req.body.title}).then(data => {
 				req.flash('success', 'Module added');
 				res.redirect('/course/'+req.params.name);
@@ -231,7 +246,82 @@ module.exports = (app) => {
 		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
 	});
 
+	app.get('/course/:name/modules/:index/editor.wasm', checkAuth, (req, res) => {
+		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
+	});
+
 	app.get('/course/:name/modules/:index', checkAuth, (req, res) => {
-		res.render("module/view");
+
+			dbApi.getCourseByUrl(req.params.name).then(data => {
+				if(!data || !data.length) return res.send("Not found");
+				dbApi.getCourseAuthors(data[0].id).then(data2 => {
+					if(!req.session.user) isAuthor = false;
+					else isAuthor = hasUser(req.session.user.email, data2);
+
+					dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
+						if(!data1 || !data1.length) return res.send("Not found");
+						console.log(data1);
+							res.render("module/view", {
+							course: data[0],
+							module: data1[0],
+							module_index: req.params.index,
+							isAuthor
+						});
+					});
+				});
+			});
+	});
+
+	app.get('/course/:name/modules/:index/edit', _csrf, checkAuth, (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) return res.send("Not found");
+			dbApi.getCourseAuthors(data[0].id).then(data2 => {
+
+				if(!req.session.user) isAuthor = false;
+				else isAuthor = hasUser(req.session.user.email, data2);
+
+				if(!isAuthor) return res.send("No privileges");
+
+				dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
+					if(!data1 || !data1.length) return res.send("Not found");
+					res.render("module/edit", {
+						course: data[0],
+						module: data1[0],
+						module_index: req.params.index,
+						isAuthor,
+						csrfToken: req.csrfToken()
+					});
+				});
+			});
+		});
+	});
+
+	app.post('/course/:name/modules/:index/edit', _csrf, checkAuth, (req, res) => {
+		//TODO: complete
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) return res.send("Not found");
+			dbApi.getCourseAuthors(data[0].id).then(data2 => {
+
+				if(!req.session.user) isAuthor = false;
+				else isAuthor = hasUser(req.session.user.email, data2);
+
+				if(!isAuthor) return res.send("No privileges");
+
+				dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
+					if(!data1 || !data1.length) return res.send("Not found");
+					res.render("module/edit", {
+						course: data[0],
+						module: data1[0],
+						module_index: req.params.index,
+						isAuthor,
+						csrfToken: req.csrfToken()
+					});
+				});
+			});
+		});
+	});
+
+	app.post('/course/:name/modules/:index/comment/add', checkAuth, (req, res) => {
+
 	});
 };
