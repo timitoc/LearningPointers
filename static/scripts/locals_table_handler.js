@@ -66,7 +66,7 @@ LocalsTable.prototype.toggleView = function() {
 
 LocalsTable.prototype.fetchLocalsFromGdb = function() {
     if (Global.status == "debugging")
-        socket.emit('locals', expresionList);
+        socket.emit('locals');
 }
 
 /// populates table with data received from gdb
