@@ -261,7 +261,7 @@ class DbApi {
 				[courseId, 1, (n-1)],
 				(err, results, fields) => {
 					if (err) reject(err);
-					resolve(results);
+					resolve(results[0]);
 				}
 			);
 		});
