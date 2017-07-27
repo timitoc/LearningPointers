@@ -38,8 +38,11 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
+					//console.log("AT INPUT " + JSON.stringify(data));
 					gdb.add_breakpoints([{line:3, temporary:false, condition: "true"}]).then((data) => {
+						//console.log("AT BR " + JSON.stringify(data));
 						gdb.run().then(data => {
+							//console.log("AT RUN" + JSON.stringify(data));
 							resolve(data);
 						});
 
