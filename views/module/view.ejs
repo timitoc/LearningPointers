@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title><%= module.title %></title>
 		<link rel="stylesheet" href="/style_sheets/dashboard.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
@@ -27,11 +27,9 @@
 	<div class="container">
 		<div class="card" style="width: 100%">
 			<div class="card-block">
-				<h1>Module name</h1>
+				<h1><%= module.title %></h1>
 			</div>
-			<hr>
 			<div class="card-block" id="html"><%= module.text_md %></div>
-			<hr>
 			<div class="card-block">
 				<a href="#" class="btn btn-primary">Take the test</a>
 				<% if(isAuthor) { %>

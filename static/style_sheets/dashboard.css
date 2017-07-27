@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-	background: #07594e !important;
+	/*background: rgba(6, 106, 103, 0.76) !important;*/
 }
 
 #success {
@@ -38,9 +38,6 @@ body {
 	margin-top:20px !important;
 }
 
-h3 {
-	color: white !important;
-}
 
 .btn-green {
 	background-color: seagreen !important;

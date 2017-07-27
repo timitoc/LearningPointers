@@ -259,11 +259,10 @@ module.exports = (app) => {
 					else isAuthor = hasUser(req.session.user.email, data2);
 
 					dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
-						if(!data1 || !data1.length) return res.send("Not found");
-						console.log(data1);
-							res.render("module/view", {
+						if(!data1) return res.send("Not found");
+						res.render("module/view", {
 							course: data[0],
-							module: data1[0],
+							module: data1,
 							module_index: req.params.index,
 							isAuthor
 						});
@@ -283,10 +282,10 @@ module.exports = (app) => {
 				if(!isAuthor) return res.send("No privileges");
 
 				dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
-					if(!data1 || !data1.length) return res.send("Not found");
+					if(!data1) return res.send("Not found");
 					res.render("module/edit", {
 						course: data[0],
-						module: data1[0],
+						module: data1,
 						module_index: req.params.index,
 						isAuthor,
 						csrfToken: req.csrfToken()
@@ -296,32 +295,29 @@ module.exports = (app) => {
 		});
 	});
 
-	app.post('/course/:name/modules/:index/edit', _csrf, checkAuth, (req, res) => {
-		//TODO: complete
+
+	app.post('/course/:name/modules/:index/edit', checkAuth, (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) return res.send("Not found");
+
 			dbApi.getCourseAuthors(data[0].id).then(data2 => {
 
+				let isAuthor = true;
 				if(!req.session.user) isAuthor = false;
 				else isAuthor = hasUser(req.session.user.email, data2);
 
 				if(!isAuthor) return res.send("No privileges");
 
 				dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
-					if(!data1 || !data1.length) return res.send("Not found");
-					res.render("module/edit", {
-						course: data[0],
-						module: data1[0],
-						module_index: req.params.index,
-						isAuthor,
-						csrfToken: req.csrfToken()
+					if(!data1) return res.send("Not found");
+
+					dbApi.editModule(data1.id, req.body.markdown).then(ok => {
+						req.flash('success', 'Module modified');
+						res.redirect('/course/'+req.params.name+'/modules/'+req.params.index);
 					});
+
 				});
 			});
 		});
-	});
-
-	app.post('/course/:name/modules/:index/comment/add', checkAuth, (req, res) => {
-
 	});
 };

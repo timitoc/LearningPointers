@@ -14,7 +14,7 @@
 </head>
 
 <body>
-	<form action="/course/<%=course.url%>/add" method="post">
+	<form action="/course/<%=course.url%>/modules/<%=module_index%>/edit" method="post">
 		<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -31,7 +31,7 @@
 				<div class="form-inline">
 					<input type="hidden" name="_csrf" value="<%=csrfToken%>">
 					<input type="hidden" id="markdown" name="markdown">
-					<button type="submit" class="btn btn-primary my-2 my-sm-0" type="submit">Add module</button>
+					<button type="submit" class="btn btn-primary my-2 my-sm-0" type="submit">Edit module</button>
 				</div>
 			</div>
 
@@ -48,6 +48,7 @@
 		<script src="/scripts/js.cookie.js" type="text/javascript" charset="utf-8"></script>
 
 		<script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
+		<input type="hidden" value="<%=module.text_md%>" id="input">
 
 		<script>
 			var webAsmSupport = true;
@@ -83,7 +84,6 @@ function renderMarkdown() {
 
 	if(initialized){
 		if(old != editor.getValue()) {
-
 			var rendered = editor.getValue()
 				.split('\n\n')
 				.map(function(pgf) {
@@ -104,22 +104,21 @@ function renderMarkdown() {
 			document.getElementById("markdown").value = editor.getValue();
 
 			old = editor.getValue();
-			Cookies.set('md', editor.getValue());
 		}
 	}
 }
 
-setInterval(renderMarkdown, 100);
+		setInterval(renderMarkdown, 100);
 		</script>
 
 		<script type='text/javascript'>
 			var Module = {
 				onRuntimeInitialized: function() {
 					initialized = true;
-					if(Cookies.get('md')) {
-						editor.setValue(Cookies.get('md'), 1);
-					}
 				}
+			}
+			window.onload = function() {
+				editor.setValue(`<%=module.text_md%>`, 1);
 			}
 		</script>
 		<script async type="text/javascript" src="/webasm/editor.js"></script>
