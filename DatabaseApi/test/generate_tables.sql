@@ -28,7 +28,7 @@ CREATE TABLE `courses` (
 	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	`description` TEXT(8000) NOT NULL,
 	`difficulty` varchar(20) NOT NULL,
-	`url` varchar(50) NOT NULL,
+	`url` varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
@@ -83,6 +83,12 @@ CREATE TABLE `watches` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `md_images` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`uri` varchar(30) NOT NULL DEFAULT 'default.svg',
+	PRIMARY KEY (`id`)
+);
+
 ALTER TABLE `modules` ADD CONSTRAINT `modules_fk0` FOREIGN KEY (`parent_course_id`) REFERENCES `courses`(`id`);
 
 ALTER TABLE `favorites` ADD CONSTRAINT `favorites_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
@@ -133,3 +139,7 @@ UNLOCK TABLES;
 
 INSERT INTO user_courses (user_id, course_id) VALUES (1, 1);
 INSERT INTO user_courses (user_id, course_id) VALUES (1, 2);
+
+INSERT INTO ratings (user_id, module_id, rating) VALUES (2, 1, 4);
+INSERT INTO ratings (user_id, module_id, rating) VALUES (3, 1, 1);
+

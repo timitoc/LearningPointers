@@ -32,7 +32,7 @@ CREATE TABLE `courses` (
 	`avg_rating` FLOAT NOT NULL DEFAULT '0',
 	`description` TEXT(8000) NOT NULL,
 	`difficulty` varchar(20) NOT NULL,
-	`url` varchar(50) NOT NULL,
+	`url` varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
@@ -84,6 +84,12 @@ CREATE TABLE `watches` (
 	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
 	`parent_id` INT(8) NOT NULL,
 	`expr` varchar(100) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `md_images` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`uri` varchar(30) NOT NULL DEFAULT 'default.svg',
 	PRIMARY KEY (`id`)
 );
 

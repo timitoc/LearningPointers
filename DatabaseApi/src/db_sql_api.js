@@ -263,6 +263,7 @@ class DbApi {
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);
+					this.propagateModuleRating(moduleId);
 				}
 			);
 		});
@@ -285,6 +286,126 @@ class DbApi {
 						resolve(results[0].rating);
 					else
 						resolve(-1);
+				}
+			);
+		});
+	}
+
+	propagateModuleRating(moduleId) {
+		this.connection.query(
+			`UPDATE modules SET avg_rating=(SELECT AVG(rating) FROM ratings WHERE module_id=?) WHERE id=?`,
+			[moduleId, moduleId],
+			(err, results, fields) => {
+				if (err) reject(err);
+				//console.log("propagate 1: ");
+				this.getModuleParent(moduleId).then(data => {
+					this.propagateCourseRating(data);
+				});
+			}
+		);
+	}
+
+	/**
+	 * Get course parent of module
+	 * @param {number} moduleId
+	 * @returns id of the course which is parent to this module 
+	 */
+	getModuleParent(moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT parent_course_id FROM modules WHERE id = ?`,
+				[moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results[0].parent_course_id);
+					//propagateCourseRating(getModuleParent(moduleId));
+				}
+			);
+		});
+	}
+
+	propagateCourseRating(courseId) {
+		this.connection.query(
+			`UPDATE courses SET avg_rating=(SELECT AVG(avg_rating) FROM modules WHERE parent_course_id=?) WHERE id=?`,
+			[courseId, courseId],
+			(err, results, fields) => {
+				if (err) reject(err);
+				//console.log("propagate 2: ");
+			}
+		);
+	}
+
+	/**
+	 * Adds comment by user(userId) to module(moduleId)
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 * @param {string} comment 
+	 */
+	addCommentToModule(userId, moduleId, comment) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO comments (user_id, module_id, comment_text) VALUES (?, ?, ?)`,
+				[userId, moduleId, comment],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Retrieves all comments for module(moduleID)
+	 * @param {number} moduleId 
+	 * @returns {object[]} - array of comments
+	 */
+	getCommentsFromModule(moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM comments WHERE module_id=?`,
+				[moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Marks in database that user(userId) finished module(moduleId)
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 */
+	saveUserFinishedModule(userId, moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO finished (user_id, module_id) VALUES (?, ?)`,
+				[userId, moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Returns true / false wether the user finished the module
+	 * @param {number} userId 
+	 * @param {number} moduleId 
+	 */
+	hasUserFinishedModule(userId, moduleId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM finished WHERE user_id=? AND module_id=?`,
+				[userId, moduleId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					if (results.length > 0)
+						resolve(true);
+					else
+						resolve(false);
 				}
 			);
 		});

@@ -100,8 +100,30 @@ describe('Database api', () => {
 			});
 		});
 
+		it ('User finish course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.saveUserFinishedModule(1, 1).then(data => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(data);
+				// insert result checked in get query.
+			});
+		});
 
+		it ('retrieve user finished course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.hasUserFinishedModule(1, 1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data).to.equal(true);
+			});
+		});
+	});
 
+	describe('Testing rating and comments', () => {
 		it ('Rating a Module', function() {
 			return new Promise((resolve, reject) => {
 				dbApi.rateModule(1, 1, 5).then((data) => {
@@ -124,6 +146,27 @@ describe('Database api', () => {
 			});
 		}); 
 
+		it ('Adding a comment', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addCommentToModule(1, 1, "Imi place frontend-ul").then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				// insert result checked in get query.
+			});
+		});
+
+		it ('Retrieving comments', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getCommentsFromModule(1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data[0].comment_text).to.equal('Imi place frontend-ul');
+			});
+		});
 	});
 
 	describe('Testing code_sharing queries', () => {
