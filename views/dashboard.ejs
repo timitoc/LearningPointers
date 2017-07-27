@@ -37,12 +37,6 @@
 				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="/profile">My profile</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/courses/find">Find courses</a>
-			</li>
-			<li class="nav-item">
 				<a class="nav-link" href="/contribute">Contribute</a>
 			</li>
 		</ul>
@@ -55,10 +49,10 @@
 	</div>
 
 </nav>
+<br>
 <div class="container" id="course-container">
 	<div class="row">
 		<div class="col-lg-8">
-			<br>
 			<h3>Courses you have subscribed to:</h3>
 			<div class="card" style="width: 20rem;">
 				<div class="card-block">
@@ -90,29 +84,17 @@
 			</div>
 		</div>
 		<div class="col-lg-4">
-			<br>
-			<h3>Bookmarks</h3>
-			<ul class="list-group">
-				<li class="list-group-item">Cras justo odio</li>
-				<li class="list-group-item">Dapibus ac facilisis in</li>
-				<li class="list-group-item">Morbi leo risus</li>
-			</ul>
-			<br>
-			<div class="card">
+			<h3>Profile:</h3>
+			<div class="card card w-75">
 				<div class="card-block">
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="card-block">
-								<img width="120" src="/avatars/<%=user.avatar%>" alt="" class="rounded card-img-top">
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="card-block">
-								<h5><%=user.name%></h5>
-								<b>Beginner</b>
-							</div>
-						</div>
-					</div>
+					<img width="180" src="/avatars/<%=user.avatar%>" alt="" class="rounded card-img-top">
+				</div>
+				<div class="card-block">
+					<h6><%=user.name%></h6>
+					<b>Beginner</b>
+				</div>
+				<div class="card-block">
+					<a href="/profile" class="btn btn-primary">Settings</a>
 				</div>
 			</div>
 		</div>
