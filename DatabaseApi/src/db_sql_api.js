@@ -218,6 +218,24 @@ class DbApi {
 	}
 
 	/**
+	 * Edits the content of a course
+	 * @param {number} courseId 
+	 * @param {string} textMd - new md text
+	 */
+	editModule(courseId, textMd) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`UPDATE modules SET text_md = ? WHERE id = ?`,
+				[textMd, courseId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
 	 * Get's all modules of the course with courseId
 	 * OBS: doesn't retrieve the content of the module as well, just
 	 * id, title, avg_rating
@@ -243,7 +261,7 @@ class DbApi {
 				[courseId, 1, (n-1)],
 				(err, results, fields) => {
 					if (err) reject(err);
-					resolve(results);
+					resolve(results[0]);
 				}
 			);
 		});
