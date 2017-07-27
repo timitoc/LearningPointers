@@ -83,7 +83,7 @@ function addJstreeData(element) {
                             "separator_after": false,
                             "label": "Remove",
                             "action": function (obj) {
-                                console.log($node.text);
+                                console.log($('.jstree_class').jstree);
                                 if ($node.text === "")
                                     return;
                                 $('.jstree_class').delete_node($node);
