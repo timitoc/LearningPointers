@@ -311,15 +311,26 @@ class GDB{
 	/**
 	 * Starts the program
 	 */
-	run(){
+	run(watches){
 		return new Promise((resolve, reject) => {
 			this.clear();
 			this.send_command('run < input.txt > output.txt').then(output => {
 				if(this.breakpoints.length != 0){
-					resolve({
-						line: this.get_line(output),
-						output: output
-					});
+					if(watches){
+						this.print_expressions(watches).then(data=>{
+							resolve({
+								watches: data,
+								line: this.get_line(output),
+								output: output
+							});
+						});
+					} 
+					else {
+						resolve({
+							line: this.get_line(output),
+							output: output
+						});
+					}
 				} else {
 					resolve({
 						output: output

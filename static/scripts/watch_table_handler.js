@@ -279,5 +279,5 @@ function updateWatchesData(jsonObject) {
 /// Spent like 3 hours to understand the jstree-table source code to come up with this. fufufu
 function doMagic() {
     //jstreeElement.jstree(true).trigger('ready.jstree');
-    //$('.jstree_class').trigger("resize_column.jstree-table");
+    $('.jstree_class').trigger("resize_column.jstree-table");
 }
