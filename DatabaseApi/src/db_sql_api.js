@@ -103,7 +103,7 @@ class DbApi {
 	getMyCourses(userID, offset, count) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				`SELECT user_id, course_id, courses.name as course_name, avg_rating
+				`SELECT user_id, course_id, courses.name as course_name, avg_rating, courses.url as url 
 				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id
 				WHERE users.id=?
 				ORDER BY avg_rating DESC LIMIT ? OFFSET ?;`,
@@ -117,15 +117,33 @@ class DbApi {
 	}
 
 	/**
-	 * Add user as author of course
-	 * @param {number} userID // id of the author
-	 * @param {number} courseID // id of the course
+	 * Subscribes user to course
+	 * @param {number} userId 
+	 * @param {number} courseId 
 	 */
-	bindAuthorToCourse(userID, courseID) {
+	subscribeToCourse(userId, courseId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO user_courses VALUES(?, ?)`,
+				[userId, courseId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Add user as author of course
+	 * @param {number} userId // id of the author
+	 * @param {number} courseId // id of the course
+	 */
+	bindAuthorToCourse(userId, courseId) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				`INSERT INTO authors VALUES(?, ?)`,
-				[userID, courseID],
+				[userId, courseId],
 				(err, results, fields) => {
 					if (err) reject(err);
 					resolve(results);

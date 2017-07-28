@@ -66,6 +66,18 @@ describe('Database api', () => {
 			});
 		});
 
+		it('Subscribe to course', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.subscribeToCourse(2, 3).then(dbApi.getMyCourses(2, 0, 1).then(data => {
+					resolve(data);
+				}));
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data[0].url).to.equal("proba");
+			});
+		})
+
+
 		it ('Add new module', function() {
 			return new Promise((resolve, reject) => {
 				dbApi.addModule(3, {title: 'smen', text_md: '##f_smen'}).then(data => {
