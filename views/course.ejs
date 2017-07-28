@@ -11,6 +11,8 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
 
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 	</head>
 	<body>
 		<% if(messages.success) { %>
@@ -39,7 +41,11 @@
 			<div class="course-header">
 				<div class="course-title"><%=course.name%></div>
 				<div class="course-description"><%=course.description%></div>
-				<div class="course-rating" rating="4/5"></div>
+				<div class="course-description1">
+					<div id="course_div">
+						<div id="rating"></div>
+					</div>
+				</div>
 			</div>
 			<!-- <div class="course-progress"> <span class="progressbar"style="width:100%"></span> </div> -->
 			<div class="container">
@@ -67,6 +73,15 @@
 			</div>
 		</div>
 		<br>
-		<script src="/scripts/course.js"></script>
+		<script>
+		$(function () {
+			$("#rating").rateYo({
+				rating: parseFloat('<%=course.avg_rating%>'),
+				readOnly: true
+			});
+			console.log('<%=course.avg_rating%>');
+		});
+
+		</script>
 	</body>
 </html>

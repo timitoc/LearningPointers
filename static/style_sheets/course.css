@@ -1,3 +1,10 @@
+#course_div {
+	font-size: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	transform: translateY(-3px);
+}
+
 .course {
 	padding: 0;
 	margin: 0;
@@ -20,10 +27,21 @@
 	padding: 30px;
 	padding-top: 0px;
 }
+.course-description1 {
+	font-size: 20px;
+	padding: 30px;
+	padding-top: 0px;
+	vertical-align: middle
+}
+
 
 .course-description:before {
 	content: 'Description: ';
 }
+.course-description1:before {
+	content: 'Rating: ';
+}
+
 
 .course-back {
 	padding: 20px;

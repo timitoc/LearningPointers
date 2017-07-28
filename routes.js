@@ -273,7 +273,11 @@ module.exports = (app) => {
 		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
 	});
 
+	app.get('/course/:name/modules/:index/editor.wasm', checkAuth, (req, res) => {
+		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
+	});
 	app.get('/course/:name/modules/:index', checkAuth, (req, res) => {
+
 
 			dbApi.getCourseByUrl(req.params.name).then(data => {
 				if(!data || !data.length) return res.send("Not found");
@@ -302,6 +306,14 @@ module.exports = (app) => {
 		dbApi.addCommentToModule(req.session.user.id, req.params.module, req.body.comment).then(data => {
 			res.json(true);
 		}).catch(err => {
+			res.json(false);
+		});
+	});
+
+	app.post('/rating/:module/add', checkAuth, (req, res) => {
+		dbApi.rateModule(req.session.user.id, req.params.module, req.body.rating).then(data => {
+			res.json(true);
+		}).catch(err=>{
 			res.json(false);
 		});
 	});
