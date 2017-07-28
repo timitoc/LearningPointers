@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS learning_pointers;
-CREATE DATABASE learning_pointers;
+CREATE DATABASE learning_pointers CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE learning_pointers;
 
 CREATE TABLE `users` (

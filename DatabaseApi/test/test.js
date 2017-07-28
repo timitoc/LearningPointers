@@ -80,7 +80,7 @@ describe('Database api', () => {
 
 		it ('Add new module', function() {
 			return new Promise((resolve, reject) => {
-				dbApi.addModule(3, {title: 'smen', text_md: '##f_smen'}).then(data => {
+				dbApi.addModule(3, {title: 'smen', text_md: '##f_smenărie'}).then(data => {
 					resolve(data);
 				});
 			}).then(data => {
