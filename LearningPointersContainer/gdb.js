@@ -48,11 +48,12 @@ class GDB{
 			if(!/^\s+$/.test(data.toString())){
 				this.buffer_stdout += data.toString();
 			}
+			//console.log("Now buffer " + this.buffer_stdout + " and " + this.buffer_stdout.endsWith('(gdb) '));
 			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
 				console.log("first: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
-			else if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){ /// just why?
+			else if (this.buffer_stdout.endsWith('(gdb) ')){ //&& !this.buffer_stdout.startsWith('(gdb)')){ /// just why?
 				console.log("second: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
