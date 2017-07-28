@@ -1,7 +1,6 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	background: #07594e !important;
 	box-sizing: border-box;
 }
 
@@ -13,11 +12,9 @@ header {
 }
 
 header h1{
-	color: white;
 	font-size: 70px !important;
 }
 header h3{
-	color: white;
 	font-size: 30px !important;
 }
 
@@ -56,7 +53,6 @@ header h3{
     padding-left: 15px;
     padding-right: 15px;
     text-decoration: none;
-    color: #FFFFFF;
     transition: all 0.3s ease 0s;
     cursor: pointer;
 }
@@ -100,7 +96,6 @@ header h3{
     padding-left: 15px;
     padding-right: 15px;
     text-decoration: none;
-    color: #FFFFFF;
     transition: all 0.3s ease 0s;
     cursor: pointer;
 }
@@ -133,7 +128,6 @@ header h3{
     padding-left: 15px;
     padding-right: 15px;
     text-decoration: none;
-    color: #FFFFFF;
     transition: all 0.3s ease 0s;
     cursor: pointer;
 }
@@ -185,6 +179,7 @@ header h3{
 
 #type1, #type2{
     display: inline;
+	color: black;
 }
 
 .btn-green {
@@ -202,7 +197,6 @@ header h3{
 
 h3 {
 	padding: 10px;
-	color: #FFFFFF !important;
 }
 
 #navbar li {
@@ -229,15 +223,13 @@ h3 {
 }
 #navbar a {
 	border-radius: 0px !important;
-	color: white !important;
 	text-decoration: none;
-  display: inline-block;
-  border-bottom: 0px solid transparent;
-  transition: 0.5s ease;
-  height: 50px;
+	display: inline-block;
+	border-bottom: 0px solid transparent;
+	transition: 0.5s ease;
+	height: 50px;
 	padding:10px;
 	margin: 10px;
 }
 #navbar a:hover {
-	border-bottom: 3px solid #FFFFFF;
 }

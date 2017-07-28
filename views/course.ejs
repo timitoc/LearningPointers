@@ -5,7 +5,6 @@
 		<title>Contribute</title>
 		<link rel="stylesheet" href="/style_sheets/dashboard.css">
 		<link rel="stylesheet" href="/style_sheets/course.css">
-		<link rel="stylesheet" href="/style_sheets/lesson.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -17,81 +16,48 @@
 		<% if(messages.success) { %>
 			<div id="success">
 				<b>Success:</b> <%= messages.success %>
-		</div>
-	<% } %>
-	<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<a class="navbar-brand" href="/">LearningPointers</a>
+			</div>
+		<% } %>
+		<nav class="navbar navbar-toggleable-md navbar-light">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="/">LearningPointers</a>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item ">
-					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	<br>
-	<!--
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-4">
-				<div class="card">
-					<div class="card-block">
-						<div class="card-title"><h1><%=course.name %></h1></div>
-						<div class="card-block">
-							<h4>Description</h4>
-							<p><%= course.description %></p>
-						</div>
-						<div class="card-block">
-							<a href="/course/<%=course.url%>/add" class="btn btn-primary">Add module</a>
-						</div>
-					</div>
-				</div>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0" action="/course/search" method="get">
+					<input class="form-control mr-sm-2" type="text" placeholder="Search courses" name="query">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
 			</div>
-			<div class="col-lg-8">
-				<div class
-				</div>
-			</div>
-		</div>
-		-->
+		</nav>
+		<br>
 		<div class="course">
 			<div class="course-header">
 				<div class="course-title"><%=course.name%></div>
 				<div class="course-description"><%=course.description%></div>
 				<div class="course-rating" rating="4/5"></div>
-				<!--
-				<div class="course-language">
-					Language:
-					<img class="language-icon" src="/img/usa.svg"/>
-				</div>
-				-->
 			</div>
-			<!--
-			<div class="course-progress">
-				<span class="progressbar"style="width:100%"></span>
-			</div>
-			-->
+			<!-- <div class="course-progress"> <span class="progressbar"style="width:100%"></span> </div> -->
 			<div class="container">
 				<div class="course-lessons">
 					<ul>
 						<% modules.forEach(function(module, index) { %>
-						<li class="course-lesson completed">
-							<div class="lesson">
-								<div class="lesson-title">
+						<li class="card" style="width: 30rem;">
+							<div class="card-block">
+								<h4 class="card-title">
 									<a href="/course/<%=course.url%>/modules/<%=index + 1%>"><%=module.title%></a>
-								</div>
-								<!--<div class="lesson-description">
-									Basics about memory and variables
-								</div>-->
+								</h4>
+								<p class="card-text"><small>Not completed</small></p>
 							</div>
 						</li>
 						<% }); %>
 					</ul>
 					<% if(isAuthor) { %>
-						<a class="btn btn-primary" href="/course/<%=course.url%>/add">Add module</a>
+						<a class="btn btn-primary" href="/course/<%=course.url%>/modules/add">Add module</a>
 					<% } %>
 				</div>
 				<div class="course-creator">
@@ -100,6 +66,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="container">
+			<h4 align="left">Add a comment</h4>
+			<form>
+				<div class="form-group">
+					<textarea class="form-control" placeholder="Comment"></textarea>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary btn-block">Send</button>
+				</div>
+			</form>
+		</div>
+		<br>
 		<script src="/scripts/course.js"></script>
 	</body>
 </html>
