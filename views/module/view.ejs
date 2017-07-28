@@ -39,6 +39,32 @@
 			</div>
 		</div>
 	</div>
+	<br>
+	<div class="container">
+		<h4 align="left">Comments:</h4>
+		<% if(!comments.length) { %>
+			<h6>No comments</h6>
+		<% } else { %>
+			<ul class="list-group">
+			<% comments.forEach(function(comment) { %>
+				<li class="list-group-item"><%= comment.comment_text %></li>
+			<% }) %>
+			</ul>
+		<% } %>
+	</div>
+	<br>
+	<div class="container">
+		<h4 align="left">Add a comment</h4>
+		<form>
+			<div class="form-group">
+				<textarea class="form-control" placeholder="Comment" id="comment"></textarea>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-block" id="send">Send</button>
+			</div>
+		</form>
+	</div>
+
 	<script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
 
 	<script>
@@ -50,6 +76,11 @@
 		}
 		document.getElementById("html").innerHTML = render(md);
 
+		$("#send").click(function() {
+			$.post('/comments/<%=module.id%>/add', {comment: $("#comment").val()}, function(data) {
+				console.log(data);
+			});
+		});
 	</script>
 
 	</body>

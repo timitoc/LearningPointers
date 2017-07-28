@@ -283,15 +283,27 @@ module.exports = (app) => {
 
 					dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
 						if(!data1) return res.send("Not found");
-						res.render("module/view", {
-							course: data[0],
-							module: data1,
-							module_index: req.params.index,
-							isAuthor
+
+						dbApi.getCommentsFromModule(data1.id).then(comments => {
+							res.render("module/view", {
+								course: data[0],
+								module: data1,
+								module_index: req.params.index,
+								isAuthor,
+								comments
+							});
 						});
 					});
 				});
 			});
+	});
+
+	app.post('/comments/:module/add', checkAuth, (req, res) => {
+		dbApi.addCommentToModule(req.session.user.id, req.params.module, req.body.comment).then(data => {
+			res.json(true);
+		}).catch(err => {
+			res.json(false);
+		});
 	});
 
 	app.get('/course/:name/modules/:index/edit', _csrf, checkAuth, (req, res) => {
