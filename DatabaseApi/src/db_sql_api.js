@@ -59,7 +59,7 @@ class DbApi {
 					if(err) reject(err);
 					resolve(results);
 				});
-			});
+		});
 	}
 
 	getAvatarById(id) {
@@ -114,6 +114,27 @@ class DbApi {
 				}
 			);
 		});
+	}
+	/**
+	 * Get all user courses
+	 * @param userId The id of the user
+	 */
+
+	getAllMyCourses(userId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT user_id, course_id, courses.name as course_name, avg_rating
+				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id
+				WHERE users.id=?
+				ORDER BY avg_rating DESC;`,
+				[userId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+
 	}
 
 	/**
@@ -208,6 +229,7 @@ class DbApi {
 	 */
 	getCourseByUrl(url) {
 		return new Promise((resolve, reject) => {
+	//Just for development
 			this.connection.query('SELECT * FROM courses WHERE url = ?', [url], (err, results, fields) => {
 				if(err) reject(err);
 				resolve(results);
@@ -237,7 +259,7 @@ class DbApi {
 
 	/**
 	 * Edits the content of a course
-	 * @param {number} courseId 
+	 * @param {number} courseId
 	 * @param {string} textMd - new md text
 	 */
 	editModule(courseId, textMd) {
@@ -279,7 +301,7 @@ class DbApi {
 				[courseId, 1, (n-1)],
 				(err, results, fields) => {
 					if (err) reject(err);
-					resolve(results[0]);
+					resolve(results ? results[0] : undefined);
 				}
 			);
 		});
@@ -344,7 +366,7 @@ class DbApi {
 	/**
 	 * Get course parent of module
 	 * @param {number} moduleId
-	 * @returns id of the course which is parent to this module 
+	 * @returns id of the course which is parent to this module
 	 */
 	getModuleParent(moduleId) {
 		return new Promise((resolve, reject) => {
@@ -373,9 +395,9 @@ class DbApi {
 
 	/**
 	 * Adds comment by user(userId) to module(moduleId)
-	 * @param {number} userId 
-	 * @param {number} moduleId 
-	 * @param {string} comment 
+	 * @param {number} userId
+	 * @param {number} moduleId
+	 * @param {string} comment
 	 */
 	addCommentToModule(userId, moduleId, comment) {
 		return new Promise((resolve, reject) => {
@@ -392,7 +414,7 @@ class DbApi {
 
 	/**
 	 * Retrieves all comments for module(moduleID)
-	 * @param {number} moduleId 
+	 * @param {number} moduleId
 	 * @returns {object[]} - array of comments
 	 */
 	getCommentsFromModule(moduleId) {
@@ -410,8 +432,8 @@ class DbApi {
 
 	/**
 	 * Marks in database that user(userId) finished module(moduleId)
-	 * @param {number} userId 
-	 * @param {number} moduleId 
+	 * @param {number} userId
+	 * @param {number} moduleId
 	 */
 	saveUserFinishedModule(userId, moduleId) {
 		return new Promise((resolve, reject) => {
@@ -428,8 +450,8 @@ class DbApi {
 
 	/**
 	 * Returns true / false wether the user finished the module
-	 * @param {number} userId 
-	 * @param {number} moduleId 
+	 * @param {number} userId
+	 * @param {number} moduleId
 	 */
 	hasUserFinishedModule(userId, moduleId) {
 		return new Promise((resolve, reject) => {

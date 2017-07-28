@@ -13,8 +13,6 @@ const DbApi = require('./DatabaseApi/src/db_sql_api.js');
 let dbApi = new DbApi(connection);
 
 module.exports = (app) => {
-
-	// Use csurf with cookieparser
 	app.use(cookieParser());
 	let _csrf = csrf({ cookie: true });
 
@@ -25,15 +23,16 @@ module.exports = (app) => {
 	};
 
 	app.get('/', (req, res) => {
-		console.log(req.session.user);
-		if(req.session.user)
-			res.render("dashboard", { user: req.session.user });
-		else {
-			dbApi.getCourses(
-			'',
-			0,
-			3).then(courses => {
-				console.log(courses);
+		if(req.session.user) {
+			dbApi.getAllMyCourses(req.session.user.id).then(data => {
+				res.render("dashboard", {
+					user: req.session.user,
+					subscribed_courses: data
+				});
+			});
+		} else {
+			dbApi.getCourses( '', 0, 3)
+			.then(courses => {
 				res.render("home", {
 					courses
 				});
@@ -84,7 +83,6 @@ module.exports = (app) => {
 
 			dbApi.getAvatarByEmail(req.body.email).then(data => {
 				req.session.avatar = data.avatar;
-				console.log(data.avatar);
 				req.flash('success', 'Successfully logged in!');
 				// Clean all login attempts
 				req.session.login_attempts = undefined;
@@ -203,6 +201,22 @@ module.exports = (app) => {
 		return data.filter(item => item.email == user).length;
 	};
 
+	app.get('/course/search', (req, res) => {
+		//res.json(req.query);
+		dbApi.getCourses(
+			req.query.query ? req.query.query : "", // This should be the regex
+			0, //offset
+			10 //count
+		).then(data => {
+			console.log(data);
+			res.render("course/search", {
+				courses: data,
+				user: req.session.user,
+				query: req.query.query
+			});
+		});
+	});
+
 	app.get('/course/:name', (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) { return res.send("Not found");}
@@ -217,7 +231,16 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/course/:name/add', _csrf, checkAuth, (req, res) => {
+	app.get('/course/:name/subscribe', checkAuth, (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) { return res.send("Not found");}
+			let course = data[0];
+
+			res.redirect('/course/'+req.params.name);
+		});
+	});
+
+	app.get('/course/:name/modules/add', _csrf, checkAuth, (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) { return res.send("Not found");}
 			let course = data[0];
@@ -226,11 +249,11 @@ module.exports = (app) => {
 				else isAuthor = hasUser(req.session.user.email, data);
 
 				res.render("module/add", {course, isAuthor, csrfToken: req.csrfToken()});
-			});
-		});
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
 	});
 
-	app.post('/course/:name/add', _csrf, checkAuth, (req, res) => {
+	app.post('/course/:name/modules/add', _csrf, checkAuth, (req, res) => {
 		let markdownContent = req.body.markdown;
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) return res.send("Not found");
@@ -246,7 +269,7 @@ module.exports = (app) => {
 		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
 	});
 
-	app.get('/course/:name/modules/:index/editor.wasm', checkAuth, (req, res) => {
+	app.get('/course/:name/modules/editor.wasm', checkAuth, (req, res) => {
 		res.sendFile(path.join(__dirname, "static", "webasm", "editor.wasm"));
 	});
 
@@ -260,15 +283,27 @@ module.exports = (app) => {
 
 					dbApi.getNthModuleFromCourse(data[0].id, parseInt(req.params.index)).then(data1=>{
 						if(!data1) return res.send("Not found");
-						res.render("module/view", {
-							course: data[0],
-							module: data1,
-							module_index: req.params.index,
-							isAuthor
+
+						dbApi.getCommentsFromModule(data1.id).then(comments => {
+							res.render("module/view", {
+								course: data[0],
+								module: data1,
+								module_index: req.params.index,
+								isAuthor,
+								comments
+							});
 						});
 					});
 				});
 			});
+	});
+
+	app.post('/comments/:module/add', checkAuth, (req, res) => {
+		dbApi.addCommentToModule(req.session.user.id, req.params.module, req.body.comment).then(data => {
+			res.json(true);
+		}).catch(err => {
+			res.json(false);
+		});
 	});
 
 	app.get('/course/:name/modules/:index/edit', _csrf, checkAuth, (req, res) => {
@@ -320,4 +355,5 @@ module.exports = (app) => {
 			});
 		});
 	});
+
 };
