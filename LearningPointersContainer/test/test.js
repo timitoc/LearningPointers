@@ -26,7 +26,7 @@ describe('GDB interface', () => {
 			return new Promise((resolve, reject) => {
 
 				writeCppFile(` int main() {
-				int k;
+				int k = 5;
 				for(int i = 0; i < 10; i++) {
 					int j = i * i;
 					k = j;
@@ -38,8 +38,11 @@ describe('GDB interface', () => {
 				let gdb = new GDB('./test_exec');
 
 				gdb.write_input('').then(data => {
+					//console.log("AT INPUT " + JSON.stringify(data));
 					gdb.add_breakpoints([{line:3, temporary:false, condition: "true"}]).then((data) => {
-						gdb.run().then(data => {
+						//console.log("AT BR " + JSON.stringify(data));
+						gdb.run(["k"]).then(data => {
+							//console.log("AT RUN" + JSON.stringify(data));
 							resolve(data);
 						});
 
@@ -47,6 +50,7 @@ describe('GDB interface', () => {
 				});
 			}).then(data => {
 				chai.expect(data.line).to.equal(3);
+				chai.expect(data.watches["k"]).to.equal('5');
 			});
 		});
 
@@ -78,6 +82,43 @@ describe('GDB interface', () => {
 			});
 		});
 	});
+
+	describe ('Set Variable', () => {
+		it('Check set variabile return', function() {
+			return new Promise((resolve, reject) => {
+
+				writeCppFile(` int main() {
+				int k;
+				for(int i = 0; i < 10; i++) {
+					int j = i * i;
+					k = j;
+				}
+				return 0;}`);
+
+				compileCppFile();
+
+				let gdb = new GDB('./test_exec');
+
+				gdb.write_input('').then(data => {
+					//console.log("AT INPUT " + JSON.stringify(data));
+					gdb.add_breakpoints([{line:3, temporary:false, condition: "true"}]).then((data) => {
+						//console.log("AT BR " + JSON.stringify(data));
+						gdb.run().then(data => {
+							//console.log("AT RUN" + JSON.stringify(data));
+							gdb.set_var("k", "5").then(data => {
+								resolve(data);
+							});
+						});
+
+					});
+				});
+			}).then(data => {
+				//console.log(data);
+				chai.expect(data.stdout).to.equal('(gdb) ');
+			});
+		});
+	});
+
 	describe('Locals', () => {
 		it('Verify local variable value', () => {
 			return new Promise((resolve, reject) => {

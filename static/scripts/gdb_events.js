@@ -97,6 +97,7 @@ socket.on("print_expressions", function(data){
 
 socket.on("set_var", function(data){
 	console.log("set var event " + JSON.stringify(data));
+	requestUpdateWatches();
 });
 
 socket.on("edit_breakpoint", function(data){
@@ -123,6 +124,7 @@ socket.on('run', function(data){
 	console.log("RUN " + JSON.stringify(data));
 	if(data.line)
 		moveHighlight(data.line-1);
+	recievedData(data.watches);
 	if (Global.status == "debugging") {
 		$("#step_debugger").prop('disabled', false);
 		$("#next_debugger").prop('disabled', false);

@@ -4,6 +4,7 @@ const util = require('util');
 const Promise = require('bluebird');
 const fs = require('fs');
 const Subject = require('rxjs/Subject').Subject;
+const huh = require('rxjs/add/operator/first');
 const EventEmitter = require('events');
 const chokidar = require('chokidar');
 
@@ -41,16 +42,19 @@ class GDB{
 		this.process.stdout.on('data', (data) => {
 
 			data = data.toString();
-
+			console.log("on " + data);
 			this.stdout.emit('data', data);
 
 			if(!/^\s+$/.test(data.toString())){
 				this.buffer_stdout += data.toString();
 			}
+			//console.log("Now buffer " + this.buffer_stdout + " and " + this.buffer_stdout.endsWith('(gdb) '));
 			if(/^\(gdb\)\ \$\d+\ =\ .*/.test(this.buffer_stdout)){
+				console.log("first: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
-			else if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.startsWith('(gdb)')){
+			else if (this.buffer_stdout.endsWith('(gdb) ')){ //&& !this.buffer_stdout.startsWith('(gdb)')){ /// just why?
+				console.log("second: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
 		});
@@ -97,13 +101,22 @@ class GDB{
 	 */
 	send_command(cmd){
 		this.clear();
+		var self = this;
 		return new Promise((resolve, reject) => {
 			this.process.stdin.write(util.format('%s\n', cmd));
-			this.done$.subscribe(value => {
-				resolve({
-					stdout: this.buffer_stdout,
-					stderr: this.buffer_stderr
-				});
+			this.done$.first().subscribe(value => {
+				var nsout = self.buffer_stdout;
+				var nserr = self.buffer_stderr;
+				if (!nsout && !nserr) {
+					/// WHAT THE ACTUAL HECK
+				} 
+				else {
+					self.clear();
+					resolve({
+						stdout: nsout,
+						stderr: nserr
+					});
+				}
 			});
 		});
 	}
@@ -168,7 +181,11 @@ class GDB{
 			temporary,
 			condition
 		});
-		return this.send_command(command);
+		return new Promise((resolve, reject) => {
+			this.send_command(command).then(data => {
+				resolve(data);
+			});
+		});
 	}
 
 	/**
@@ -294,15 +311,26 @@ class GDB{
 	/**
 	 * Starts the program
 	 */
-	run(){
+	run(watches){
 		return new Promise((resolve, reject) => {
 			this.clear();
 			this.send_command('run < input.txt > output.txt').then(output => {
 				if(this.breakpoints.length != 0){
-					resolve({
-						line: this.get_line(output),
-						output: output
-					});
+					if(watches){
+						this.print_expressions(watches).then(data=>{
+							resolve({
+								watches: data,
+								line: this.get_line(output),
+								output: output
+							});
+						});
+					} 
+					else {
+						resolve({
+							line: this.get_line(output),
+							output: output
+						});
+					}
 				} else {
 					resolve({
 						output: output
@@ -385,7 +413,11 @@ class GDB{
 	 */
 
 	set_var(expression, value){
-		return this.send_command(util.format('set var %s=%s', expression, value));
+		return new Promise((resolve, reject) => {
+			this.send_command(util.format('set var %s=%s', expression, value)).then(data => {
+				resolve(data);
+			});
+		});
 	}
 
 	is_int(str){
@@ -409,6 +441,7 @@ class GDB{
 				}
 			}
 		}
+		//console.log("GOT LINE " + result + " FROM " + JSON.stringify(output) + " END");
 		return parseInt(result);
 	}
 

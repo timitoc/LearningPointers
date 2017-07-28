@@ -123,7 +123,7 @@ io.on('connection', (socket)=>{
 			procs[socket.id].add_breakpoints(data.br).then(result => {
 				console.log("br " + JSON.stringify(result));
 				socket.emit('add_breakpoints', result);
-				procs[socket.id].run().then(result => {
+				procs[socket.id].run(data.we).then(result => {
 					socket.emit('run', result);
 					socket.emit('debug', 'Started debugger');
 					socket.emit('debug', result);
