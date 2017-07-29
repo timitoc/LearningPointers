@@ -42,6 +42,7 @@
 					<input type="text" required name="title" placeholder="Module title" class="form-control"/>
 				</div>
 			</div>
+			<br>
 		</div>
 		<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
@@ -67,8 +68,8 @@ catch(e) {
 var editor = ace.edit("editor");
 editor.getSession().setMode("ace/mode/markdown");
 editor.setAutoScrollEditorIntoView(true);
-editor.setOption("maxLines", 30);
-editor.setOption("minLines", 30);
+editor.setOption("maxLines", 25);
+editor.setOption("minLines", 25);
 editor.getSession().setUseWrapMode(true);
 
 editor.setOptions({
