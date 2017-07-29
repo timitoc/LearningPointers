@@ -93,6 +93,21 @@ CREATE TABLE `md_images` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `exercises` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`course_parent` INT(8) NOT NULL,
+	`question` varchar(200) NOT NULL,
+	`correct_answer` INT(8),
+	PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `answers` (
+	`id` INT(8) NOT NULL AUTO_INCREMENT UNIQUE,
+	`exercise_parent` INT(8) NOT NULL,
+	`answer_text` varchar(100) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
 ALTER TABLE `modules` ADD CONSTRAINT `modules_fk0` FOREIGN KEY (`parent_course_id`) REFERENCES `courses`(`id`);
 
 ALTER TABLE `favorites` ADD CONSTRAINT `favorites_fk0` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`);
@@ -122,6 +137,12 @@ ALTER TABLE `authors` ADD CONSTRAINT `authors_fk1` FOREIGN KEY (`course_id`) REF
 ALTER TABLE `breakpoints` ADD CONSTRAINT `breakpoints_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
 
 ALTER TABLE `watches` ADD CONSTRAINT `watches_fk0` FOREIGN KEY (`parent_id`) REFERENCES `code_sharing`(`id`);
+
+ALTER TABLE `exercises` ADD CONSTRAINT `exercises_fk0` FOREIGN KEY (`course_parent`) REFERENCES `courses`(`id`);
+
+ALTER TABLE `exercises` ADD CONSTRAINT `exercises_fk1` FOREIGN KEY (`correct_answer`) REFERENCES `answers`(`id`);
+
+ALTER TABLE `answers` ADD CONSTRAINT `answers_fk0` FOREIGN KEY (`exercise_parent`) REFERENCES `exercises`(`id`);
 
 
 ALTER TABLE `ratings` ADD PRIMARY KEY (`user_id`, `module_id`); 

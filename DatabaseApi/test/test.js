@@ -181,6 +181,84 @@ describe('Database api', () => {
 		});
 	});
 
+	describe('Testing evaluation', () => {
+		var qId, aId;
+		it ('Adding a question', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addQuestionToCourse(1, "Cate mere are Ana ?").then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				qId = data;
+				chai.expect(data).to.equal(1);
+			});
+		});
+
+		it ('Adding an answer', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addAnswerToQuestion(qId, "patru").then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				aId = data;
+				chai.expect(data).to.equal(1);
+			});
+		});
+
+		it ('Adding another answer', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.addAnswerToQuestion(qId, "șase cai").then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				chai.expect(data).to.equal(2);
+			});
+		});
+
+		it ('Setting the correct answer', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.setCorrectAnswer(qId, aId).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				// insert result checked in get query.
+			});
+		});
+
+		it ('Checks retrieving question answers', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getQuestionAnswers(qId).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data[1].answer_text).to.equal("șase cai");
+			});
+		});
+
+		it('Checks entire test', function() {
+			return new Promise((resolve, reject) => {
+				/// First add another question and an answer to it
+				dbApi.addQuestionToCourse(1, "Cate pere are ana?").then(data => {
+					let iq = data;
+					dbApi.addAnswerToQuestion(data, "Important e ca are").then(data => {
+						dbApi.setCorrectAnswer(iq, data).then(data => {
+							dbApi.getEntireTest(1).then((data) => {
+								resolve(data);
+							});
+						});
+					});
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data[0].question).to.equal("Cate mere are Ana ?");
+				chai.expect(data[1].answers[0].answerText).to.equal("Important e ca are");
+			});
+		});
+		
+	});
+
 	describe('Testing code_sharing queries', () => {
 		it ('Add new codeBound', function() {
 			return new Promise((resolve, reject) => {

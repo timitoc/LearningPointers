@@ -469,6 +469,121 @@ class DbApi {
 		});
 	}
 
+	/**
+	 * Adds a question to course (courseId)
+	 * @param {number} courseId 
+	 * @param {string} questionText 
+	 * @returns {number} - The id of the question inserted
+	 */
+	addQuestionToCourse(courseId, questionText) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO exercises (course_parent, question) VALUES (?, ?)`,
+				[courseId, questionText],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results.insertId);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Adds an answer to question (questionId)
+	 * @param {number} questionId 
+	 * @param {string} answerText 
+	 * @returns {number} - the id of the inserted answer
+	 */
+	addAnswerToQuestion(questionId, answerText) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`INSERT INTO answers (exercise_parent, answer_text) VALUES (?, ?)`,
+				[questionId, answerText],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results.insertId);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Sets which is the correct answer for question (questionId)
+	 * @param {number} questionId 
+	 * @param {number} answerId 
+	 */
+	setCorrectAnswer(questionId, answerId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`UPDATE exercises SET correct_answer=? WHERE id=?`,
+				[answerId, questionId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * Retrives all answers from a question
+	 * @param {number} questionId
+	 */
+	getQuestionAnswers(questionId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT * FROM answers WHERE exercise_parent=?`,
+				[questionId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					resolve(results);
+				}
+			);
+		});
+	}
+
+	/**
+	 * @typedef {Object} Exercise
+	 * @property {number} id The id of the exercise / question
+	 * @property {string} question The question of the exercise
+	 * @property {Object[]} answers The possible answers of the question
+	 */
+
+	/**
+	 * Retrieves all question(without correct column) + their answers 
+	 * @param {number} courseId 
+	 * @returns {Exercise[]} all the exercises for that course
+	 */
+	getEntireTest(courseId) {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`SELECT id, question FROM exercises WHERE course_parent=?`,
+				[courseId],
+				(err, results, fields) => {
+					if (err) reject(err);
+					let exes = results;
+					this.connection.query(
+						`SELECT exercises.id as exercise_id, answers.id as answer_id, answer_text FROM exercises JOIN answers on exercises.id = exercise_parent AND exercises.course_parent=? 
+						ORDER BY exercise_id ASC`,
+						[courseId],
+						(err, results, fields) => {
+							var i = 0;
+							exes[0].answers = [];
+							for (var j = 0; j < results.length; j++) {
+								while (results[j].exercise_id != (i+1) && i < exes.length) {
+									i++;
+									exes[i].answers = [];
+								}
+								if (i >= exes.length) break;
+								exes[i].answers.push({id: results[j].answer_id, answerText: results[j].answer_text});
+							}
+							resolve(exes);
+						}
+					);
+				}
+			);
+		});
+	}
 
 	/**
 	 * @typedef {Object} CodeBound
