@@ -53,7 +53,7 @@ class GDB{
 				console.log("first: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
-			else if (this.buffer_stdout.endsWith('(gdb) ')){ //&& !this.buffer_stdout.startsWith('(gdb)')){ /// just why?
+			else if (this.buffer_stdout.endsWith('(gdb) ') && !this.buffer_stdout.endsWith('done.\n(gdb) ')){ /// just why?
 				console.log("second: " + this.buffer_stdout);
 				this.done$.next(this.buffer_stdout);
 			}
