@@ -235,8 +235,9 @@ module.exports = (app) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) { return res.send("Not found");}
 			let course = data[0];
-
-			res.redirect('/course/'+req.params.name);
+			dbApi.subscribeToCourse(req.session.user.id, course.id).then(data => {
+				res.redirect('/course/'+req.params.name);
+			});
 		});
 	});
 
