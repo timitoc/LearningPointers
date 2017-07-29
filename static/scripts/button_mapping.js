@@ -120,11 +120,11 @@ function moveHighlight(row) {
     if (crtLineMarker != null) {
         editor.getSession().removeMarker(crtLineMarker);
     }
-    crtLineMarker = editor.getSession().addMarker(new Range(row, 0, row, 1), "myMarker", "fullLine");
+    crtLineMarker = editor.getSession().addMarker(new Range(row, 0, row, 1), "myMarker", "fullLine", true);
 }
 
 function highLine(row) {
-    marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine");
+    marker = editor.getSession().addMarker(new Range(row, 0, row, 1),"myMarker","fullLine", true);
 }
 
 $("#beautify_code").click(function() {
