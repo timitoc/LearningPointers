@@ -595,6 +595,7 @@ class DbApi {
 	/**
 	 * Save codeBound to database for codesharing
 	 * @param {CodeBound} codeBound
+	 * @returns {number} - The id of the inserted codeBound
 	 */
 	saveCodeForSharing(codeBound) {
 		return new Promise((resolve, reject) => {
@@ -605,7 +606,7 @@ class DbApi {
 					if (err) reject(err);
 					this.addBreakpointsToCode(results.insertId, codeBound.breakpoints).then(
 						this.addWatchesToCode(results.insertId, codeBound.watches).then(data => {
-							resolve(data);
+							resolve(results.insertId);
 						})
 					);
 				}
@@ -624,18 +625,22 @@ class DbApi {
 	addBreakpointsToCode(codeId, breakpoints) {
 		return new Promise((resolve, reject) => {
 			var values = [];
-			for (var i = 0; i < breakpoints.length; i++) {
-				var value = [codeId, breakpoints[i].line, breakpoints[i].temporary, breakpoints[i].condition];
-				values.push(value);
-			}
-			this.connection.query(
-				"INSERT INTO breakpoints (parent_id, line, temporary, `condition`) VALUES ?",
-				[values],
-				(err, results, fields) => {
-					if (err) reject(err);
-					resolve(results);
+			if (!breakpoints.length)
+				resolve();
+			else {
+				for (var i = 0; i < breakpoints.length; i++) {
+					var value = [codeId, breakpoints[i].line, breakpoints[i].temporary, breakpoints[i].condition];
+					values.push(value);
 				}
-			);
+				this.connection.query(
+					"INSERT INTO breakpoints (parent_id, line, temporary, `condition`) VALUES ?",
+					[values],
+					(err, results, fields) => {
+						if (err) reject(err);
+						resolve(results);
+					}
+				);
+			}
 		});
 	}
 
@@ -648,18 +653,22 @@ class DbApi {
 	addWatchesToCode(codeId, watches) {
 		return new Promise((resolve, reject) => {
 			var values = [];
-			for (var i = 0; i < watches.length; i++) {
-				var value = [codeId, watches[i].expr];
-				values.push(value);
-			}
-			this.connection.query(
-				"INSERT INTO watches (parent_id, `expr`) VALUES ?",
-				[values],
-				(err, results, fields) => {
-					if (err) reject(err);
-					resolve(results);
+			if (!watches.length)
+				resolve();
+			else {
+				for (var i = 0; i < watches.length; i++) {
+					var value = [codeId, watches[i].expr];
+					values.push(value);
 				}
-			);
+				this.connection.query(
+					"INSERT INTO watches (parent_id, `expr`) VALUES ?",
+					[values],
+					(err, results, fields) => {
+						if (err) reject(err);
+						resolve(results);
+					}
+				);
+			}
 		});
 	}
 
@@ -670,22 +679,30 @@ class DbApi {
 	 */
 	getCodeBound(codeId) {
 		var codeBound = {};
+		console.log("Want tot take code " + codeId);
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				"SELECT * FROM code_sharing WHERE id=?",
 				[codeId],
 				(err, results, fields) => {
 					if (err) reject(err);
-					results = results[0];
-					codeBound.id = results.id;
-					codeBound.code = results.code;
-					this.getBreakpoints(codeBound.id).then(data => {
-						codeBound.breakpoints = data;
-						this.getWatches(codeBound.id).then(data => {
-							codeBound.watches = data;
-							resolve(codeBound);
+					console.log("here " + JSON.stringify(results));
+					if (!results || !results.length || results.length < 1)
+						resolve();
+					else {
+						results = results[0];
+						codeBound.id = results.id;
+						codeBound.code = results.code;
+						this.getBreakpoints(codeBound.id).then(data => {
+							console.log("then here " + JSON.stringify(data));
+							codeBound.breakpoints = data;
+							this.getWatches(codeBound.id).then(data => {
+								console.log("and then here " + JSON.stringify(data));
+								codeBound.watches = data;
+								resolve(codeBound);
+							});
 						});
-					});
+					}
 				}
 			);
 		});

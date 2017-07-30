@@ -46,6 +46,13 @@ module.exports = (app) => {
 		res.redirect("/code/#/saved/"+req.params.id); // redirect to front-end route
 	});
 
+	app.get('/nicecode', (req, res) => {
+		res.render("editor", {id: -1});
+	});
+	app.get('/nicecode/:id', (req, res) => {
+		res.render("editor", {id: req.params.id});
+	});
+
 	app.get('/login', _csrf, (req, res) => {
 		if(req.session.login_attempts > 3) {
 			res.render("login", {

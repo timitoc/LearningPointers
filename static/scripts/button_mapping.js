@@ -85,8 +85,10 @@ $("#stop_button").click(function(){
 });
 
 $("#save_code").click(function() {
-    var cod = editor.getValue();
-    socket.emit('save_code', cod);
+	var cod = editor.getValue();
+	var breakpoints = normalizeBreakpointMap();
+	var watches = normalizeBackupWatches();
+    socket.emit('save_code', {code: cod, breakpoints: breakpoints, watches: watches});
 });
 
 function stepDebugger() {
