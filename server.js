@@ -16,8 +16,12 @@ const session = require('express-session');
 
 require('./sequelize');
 
-const DatabaseApi = require('./db_api');
-const DbApi = new DatabaseApi();
+// const DatabaseApi = require('./db_api');
+// const DbApi = new DatabaseApi();
+let connection = require('./DatabaseApi/src/db_connection.js')(false);
+connection.connect();
+const DbApi = require('./DatabaseApi/src/db_sql_api.js');
+let dbApi = new DbApi(connection);
 
 let app = express();
 let http_server = http.Server(app);
@@ -219,7 +223,7 @@ io.on('connection', (socket) => {
 
 			socket.on('save_code', (data) => {
 				console.log("saving " + JSON.stringify(data));
-				DbApi.add_code(data).then((id) => {
+				dbApi.saveCodeForSharing(data).then((id) => {
 					socket.emit('code_saved', {id: id});
 				});
 			});
@@ -227,15 +231,17 @@ io.on('connection', (socket) => {
 			socket.on('get_code', data => {
 				console.log(data);
 				let code;
-				DbApi.get_code(data.id).then(db_data => {
-					if(db_data) {
-						code = db_data.code;
+				dbApi.getCodeBound(data.id).then(dbData => {
+					console.log("pai " + JSON.stringify(dbData));
+					if(dbData) {
+						code = dbData.code;
 						if(code){
-							socket.emit('editor_source', code);
+							console.log("A trimis");
+							socket.emit('editor_source', dbData);
 						}
-						else socket.emit('editor_source', 'There is no source code saved with this id');
+						else socket.emit('editor_source', {code: 'There is no source code saved with this id'});
 					}
-					else socket.emit('editor_source', 'There is no source code saved with this id');
+					else socket.emit('editor_source', {code: 'There is no source code saved with this id'});
 				});
 			});
 

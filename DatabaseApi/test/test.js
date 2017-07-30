@@ -183,6 +183,17 @@ describe('Database api', () => {
 
 	describe('Testing evaluation', () => {
 		var qId, aId;
+		it('Checks entire test when empty', function() {
+			return new Promise((resolve, reject) => {
+				dbApi.getEntireTest(1).then((data) => {
+					resolve(data);
+				});
+			}).then(data => {
+				//console.log(JSON.stringify(data));
+				chai.expect(data).to.be.empty;
+			});
+		});
+
 		it ('Adding a question', function() {
 			return new Promise((resolve, reject) => {
 				dbApi.addQuestionToCourse(1, "Cate mere are Ana ?").then((data) => {

@@ -168,6 +168,14 @@ function addWithBackup(data, hint) {
     addExpressionToDiplayList(Global.htmlDecode(data.text));
 }
 
+function normalizeBackupWatches() {
+    var normie = [];
+    for (var i = 0; i < backupExpr.length; i++) {
+        normie.push({expr: backupExpr[i]});
+    }
+    return normie;
+}
+
 function removeExpressionFromDisplayList(exprName) {
     console.log("removing " + exprName);
     var index = expresionList.indexOf(exprName);

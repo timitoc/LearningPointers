@@ -3,11 +3,31 @@ var Global  = {
     breakpointsArray: [],
     breakpointsMap: {},
     status: 'off',
+    codeBoundId: -1,
     htmlDecode: function(input)
     {
         var doc = new DOMParser().parseFromString(input, "text/html");
         return doc.documentElement.textContent;
+    },
+    setCodeBound: function(newId) {
+        this.codeBoundId = newId;
+        getEditorInstanceFromServer();
+    } 
+}
+
+function getEditorInstanceFromServer() {
+    if (Global.codeBoundId == -1) {
+        editor.setValue(Cookies.get('code'), 1);
     }
+    else {
+        console.log('**********');
+        socket.emit('get_code', {id: Global.codeBoundId});
+        waitingDialog.show('Getting saved code...');
+    }
+}
+
+function populateEditorInstance(data) {
+    editor.setValue(data.code, 1);
 }
 
 var simpleVar = new MemoryVarHandler("Simple");

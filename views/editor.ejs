@@ -231,6 +231,7 @@
 				$("#enable_vim").bootstrapToggle("off");
 				toggle_vim();
 				$('.selectpicker').selectpicker({width: '80px'});
+				Global.setCodeBound(JSON.parse('<%- id%>'));
 			});
 		</script>
 
