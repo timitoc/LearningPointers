@@ -354,18 +354,18 @@ module.exports = (app) => {
 								dbApi.addAnswerToQuestion(id, answer.answer_text)
 									.then(answerId => {
 										answer_id[answer.answer_text] = answerId;
-										cb();
+										cb(null, true);
 									});
 							},(err, result) => {
 								Async.everySeries(item.answers, (answer, cb) => {
 									if(answer.correct) {
 										dbApi.setCorrectAnswer(id, answer_id[answer.text]).
 											then(() => {
-												cb();
+												cb(null, true);
 											});
-									} else cb();
+									} else cb(null, true);
 								}, (err) => {
-									callback();
+									callback(null, true);
 								});
 							});
 						});
