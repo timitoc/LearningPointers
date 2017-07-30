@@ -1,6 +1,6 @@
-var gotFromServer = JSON.parse('<%=test%>');
+var gotFromServer = JSON.parse($("#data").html());
+console.log(JSON.stringify(gotFromServer));
 
-console.log(gotFromServer)
 jQuery.expr[':'].regex = function(elem, index, match) {
     var matchParams = match[3].split(','),
         validLabels = /^(data|css):/,
@@ -21,9 +21,9 @@ function createQuestionHtml(question, index) {
 	if(index > questionCount) questionCount = index;
 	return [
 		"<div class='question'>",
-			"<h3><b> " + question.text + "</b></h3>",
+			"<h3><b> " + question.question + "</b></h3>",
 			"<div class='variants' id='variants-"+index+"'>",
-				question.variants.map(function(item) {
+				question.answers.map(function(item) {
 					return [
 						"<div class='variant'>",
 						"<button class='btn btn-danger btn-sm' id='remove-",
@@ -35,7 +35,7 @@ function createQuestionHtml(question, index) {
 						item.value,
 						"'>",
 						"<span>",
-						item.text,
+						item.answer_text,
 						"</span>",
 						"</div>"].join("");
 				}).join(""),
@@ -70,6 +70,7 @@ function createVariant(name, value, count) {
 function addVariant(id, name, value) {
 	$("#"+id).append(createVariant(name, value));
 	var json = JSON.parse(renderToJson());
+	console.log(JSON.stringify(json));
 	$(".questions").html("");
 	createQuestions(json);
 	$(".add-variant").click(function() {
@@ -128,8 +129,8 @@ $(function() {
 		$("#modal-question").modal('hide');
 		var question = $("#modal-question-value").val();
 		createQuestion({
-			text: question,
-			variants: []
+			question: question,
+			answers: []
 		}, ++questionCount);
 		$(".add-variant").click(function() {
 			showModal($($(this).parent(".question")[0]).children('.variants')[0]);
@@ -137,29 +138,9 @@ $(function() {
 	});
 });
 
-createQuestions([
-	{
-		text: '123',
-		variants: [
-			{value: 'a', text: 'Varianta A'},
-			{value: 'b', text: 'Varianta B'}
-		]
-	},
-	{
-		text: '124',
-		variants: [
-			{value: 'a', text: 'Varianta A'},
-			{value: 'b', text: 'Varianta B'}
-		]
-	},
-	{
-		text: '125',
-		variants: [
-			{value: 'a', text: 'Varianta A'},
-			{value: 'b', text: 'Varianta B'}
-		]
-	}
-]);
+
+
+createQuestions(gotFromServer);
 
 function renderToJson() {
 	var texts = []
@@ -168,19 +149,19 @@ function renderToJson() {
 	});
 	var obj = texts.reduce(function(result,text) {
 		result.push({
-			text: text,
-			variants: []
+			question: text,
+			answers: []
 		});
 		return result;
 	},[]);
 
 	$(".question").children(".variants").each(function(index, value) {
-		console.log(index);
 		$(value).each(function(index0, val) {
 			$(val).children(".variant").each(function(index1, variant) {
-				obj[index].variants.push({
-					text : $($(variant).children()[2]).text(),
-					value : $($(variant).children()[1]).val()
+				obj[index].answers.push({
+					answer_text : $($(variant).children()[2]).text(),
+					//value : $($(variant).children()[1]).val(),
+					correct : $($(variant).children()[1]).is(':checked')
 				});
 			});
 		});
@@ -188,4 +169,8 @@ function renderToJson() {
 	return JSON.stringify(obj);
 };
 
-console.log(renderToJson());
+$(function() {
+	$("#edit_button").click(function(e) {
+		$("#to_send").val(renderToJson());
+	});
+});

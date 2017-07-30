@@ -1,3 +1,5 @@
+const Async = require('async');
+const Promise = require('bluebird');
 const path = require('path');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
@@ -289,12 +291,89 @@ module.exports = (app) => {
 
 				dbApi.getEntireTest(course.id).then(test => {
 					console.log(test);
-					res.render("test/edit", {course, isAuthor, csrfToken: req.csrfToken()});
+					res.render("test/edit", {test: JSON.stringify(test), course, isAuthor, csrfToken: req.csrfToken()});
 				});
 
 			}).catch(err => console.log(err));
 		}).catch(err => console.log(err));
 
+	});
+
+	app.post('/course/:name/test/edit', _csrf, checkAuth, (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) { return res.send("Not found");}
+			let course = data[0];
+			dbApi.getCourseAuthors(data[0].id).then(data1 => {
+				if(!req.session.user) isAuthor = false;
+				else isAuthor = hasUser(req.session.user.email, data1);
+				if(!isAuthor) return res.send("No privileges");
+
+				//return res.json(req.body);
+
+				console.log(req.body.test);
+				let data = JSON.parse(req.body.test);
+
+				let answer_id = {};
+
+				/*Promise.each(data.map(item => {
+					return new Promise((resolve, reject) => {
+						dbApi.addQuestionToCourse(course.id, item.question)
+							.then(id => {
+								Promise.all(item.answers.map(answer => {
+									return new Promise((resolve, reject) => {
+										dbApi.addAnswerToQuestion(question.id,answers.answer_text).then(id => {
+											answer_id[answers.answer_text] = id;
+											resolve();
+										});
+									});
+								})) .then(() => {
+									Promise.all(item.answers.map(answer => {
+										return new Promise((resolve, reject) => {
+											if(answer.correct) {
+												dbApi.setCorrectAnswer(question.id, answer_id[answer_text]).then(() => {
+													resolve(true);
+												});
+											} else {
+												resolve(true);
+											}
+										});
+									})).then(() => {
+										resolve(true);
+									});
+								});
+							});
+					});
+				})).then(() => {
+					res.send("kk");
+				});*/
+
+				Async.everySeries(data, (item, callback) => {
+					dbApi.addQuestionToCourse(course.id, item.question)
+						.then(id => {
+							Async.everySeries(item.answers, (answer, cb) => {
+								dbApi.addAnswerToQuestion(id, answer.answer_text)
+									.then(answerId => {
+										answer_id[answer.answer_text] = answerId;
+										cb();
+									});
+							},(err, result) => {
+								Async.everySeries(item.answers, (answer, cb) => {
+									if(answer.correct) {
+										dbApi.setCorrectAnswer(id, answer_id[answer.text]).
+											then(() => {
+												cb();
+											});
+									} else cb();
+								}, (err) => {
+									callback();
+								});
+							});
+						});
+				}, (err) => {
+					res.send(true);
+				});
+			});
+		});
 	});
 
 	// Workaround

@@ -12,9 +12,20 @@
 	<body>
 		<div class="container">
 			<h1><%=course.name%> - <small>test</small></h1>
-			<%=test%>
+			<div style="display:none" id="data"><%=test%></div>
 			<h2>Questions</h2>
-			<button id="add-question" class="btn btn-success btn-block">Add question</button>
+			<div class="row">
+				<div class="col-lg-10">
+					<button id="add-question" class="btn btn-success btn-block">Add question</button>
+				</div>
+				<div class="col-lg-2">
+					<form action="/course/<%=course.url%>/test/edit" method="post">
+						<input type="hidden" name="_csrf" value="<%=csrfToken%>">
+						<input type="hidden" name="test" id="to_send"/>
+						<button class="btn btn-primary" id="edit_button">Edit</button>
+					</form>
+				</div>
+			</div>
 			<hr>
 			<div class="questions">
 

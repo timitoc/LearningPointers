@@ -501,7 +501,7 @@ class DbApi {
 				[questionId, answerText],
 				(err, results, fields) => {
 					if (err) reject(err);
-					resolve(results.insertId);
+					resolve(results ? results.insertId : undefined);
 				}
 			);
 		});
