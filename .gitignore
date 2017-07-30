@@ -5,3 +5,4 @@ programs/
 .env
 *.swp
 static/avatars/*
+npm-debug.log
