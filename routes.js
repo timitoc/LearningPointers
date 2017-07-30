@@ -295,7 +295,7 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/course/:name/test', _csrf, /*checkAuth,*/ (req, res) => {
+	app.get('/course/:name/test', _csrf, checkAuth, (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) return res.send("Not found");
 			let course = data[0];
@@ -309,7 +309,7 @@ module.exports = (app) => {
 		});
 	});
 
-	app.post('/course/:name/test', _csrf,/* checkAuth,*/ (req, res) => {
+	app.post('/course/:name/test', _csrf, checkAuth, (req, res) => {
 		dbApi.getCourseByUrl(req.params.name).then(data => {
 			if(!data || !data.length) return res.send("Not found");
 			let course = data[0];
@@ -425,30 +425,33 @@ module.exports = (app) => {
 					res.send("kk");
 				});*/
 
-				Async.everySeries(data, (item, callback) => {
-					dbApi.addQuestionToCourse(course.id, item.question)
-						.then(id => {
-							Async.everySeries(item.answers, (answer, cb) => {
-								dbApi.addAnswerToQuestion(id, answer.answer_text)
-									.then(answerId => {
-										answer_id[answer.answer_text] = answerId;
-										cb(null, true);
-									});
-							},(err, result) => {
+				dbApi.removeCourseQuestions(course.id).then(() => {
+					Async.everySeries(data, (item, callback) => {
+						dbApi.addQuestionToCourse(course.id, item.question)
+							.then(id => {
 								Async.everySeries(item.answers, (answer, cb) => {
-									if(answer.correct) {
-										dbApi.setCorrectAnswer(id, answer_id[answer.answer_text]).
-											then(() => {
-												cb(null, true);
-											});
-									} else cb(null, true);
-								}, (err) => {
-									callback(null, true);
+									dbApi.addAnswerToQuestion(id, answer.answer_text)
+										.then(answerId => {
+											answer_id[answer.answer_text] = answerId;
+											cb(null, true);
+										});
+								},(err, result) => {
+									Async.everySeries(item.answers, (answer, cb) => {
+										if(answer.correct) {
+											dbApi.setCorrectAnswer(id, answer_id[answer.answer_text]).
+												then(() => {
+													cb(null, true);
+												});
+										} else cb(null, true);
+									}, (err) => {
+										callback(null, true);
+									});
 								});
 							});
-						});
-				}, (err) => {
-					res.send(true);
+					}, (err) => {
+						req.flash('success', "Test added");
+						return res.redirect('/course/'+req.params.name);
+					});
 				});
 			});
 		});

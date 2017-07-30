@@ -488,6 +488,29 @@ class DbApi {
 		});
 	}
 
+	removeCourseQuestions(courseId) {
+		return new Promise((resolve, reject) => {
+			// I know it's bad
+			this.connection.query(
+				'SET FOREIGN_KEY_CHECKS=0;',
+				[],
+				() => {
+					this.connection.query(
+						`DELETE FROM exercises WHERE course_parent = ?`,
+						[courseId],
+						(err, results, fields) => {
+							if(err) reject(err);
+							this.connection.query(
+								'SET FOREIGN_KEY_CHECKS=1;',
+								[],
+								() => {
+									resolve();
+								});
+						});
+				});
+		});
+	}
+
 	/**
 	 * Adds an answer to question (questionId)
 	 * @param {number} questionId

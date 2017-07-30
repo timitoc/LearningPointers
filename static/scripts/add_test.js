@@ -24,6 +24,7 @@ function createQuestionHtml(question, index) {
 			"<h3><b> " + question.question + "</b></h3>",
 			"<div class='variants' id='variants-"+index+"'>",
 				question.answers.map(function(item) {
+					console.log(item);
 					return [
 						"<div class='variant'>",
 						"<button class='btn btn-danger btn-sm' id='remove-",
@@ -35,7 +36,7 @@ function createQuestionHtml(question, index) {
 						item.value,
 						"'>",
 						"<span>",
-						item.answer_text,
+						item.answerText ? item.answerText : item.answer_text,
 						"</span>",
 						"</div>"].join("");
 				}).join(""),
