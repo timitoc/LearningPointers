@@ -21,13 +21,31 @@ function getEditorInstanceFromServer() {
     }
     else {
         console.log('**********');
-        socket.emit('get_code', {id: Global.codeBoundId});
         waitingDialog.show('Getting saved code...');
+        setTimeout(function(){ 
+            socket.emit('get_code', {id: Global.codeBoundId});
+        }, 3000);
     }
 }
 
 function populateEditorInstance(data) {
+    console.log(JSON.stringify(data));
     editor.setValue(data.code, 1);
+    for (var i = 0; i < data.breakpoints.length; i++) {
+        var line = data.breakpoints[i].line;
+        toggleBreakpoint(line-1);
+        Global.breakpointsMap[line] = new BreakpointData(line, data.breakpoints[i].temporary, 
+            data.breakpoints[i].condition);
+    }
+    var newData = [];
+    for (var i = 0; i < data.watches.length; i++) {
+        var wtext = data.watches[i].expr;
+        addWithBackup({text: wtext});
+        newData.push({text: wtext});
+    }
+    jstreeElement.jstree(true).settings.core.data = newData;
+    jstreeElement.jstree(true).refresh();
+    doMagic();
 }
 
 var simpleVar = new MemoryVarHandler("Simple");
