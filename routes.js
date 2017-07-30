@@ -359,7 +359,7 @@ module.exports = (app) => {
 							},(err, result) => {
 								Async.everySeries(item.answers, (answer, cb) => {
 									if(answer.correct) {
-										dbApi.setCorrectAnswer(id, answer_id[answer.text]).
+										dbApi.setCorrectAnswer(id, answer_id[answer.answer_text]).
 											then(() => {
 												cb(null, true);
 											});
