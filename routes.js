@@ -43,7 +43,9 @@ module.exports = (app) => {
 	app.get('/code',(req,res) => { res.render("editor"); });
 
 	app.get('/code/:id', (req, res)=>{
-		res.redirect("/code/#/saved/"+req.params.id); // redirect to front-end route
+		res.render("editor", {
+			id: req.params.id
+		});
 	});
 
 	app.get('/login', _csrf, (req, res) => {
@@ -263,6 +265,29 @@ module.exports = (app) => {
 				res.redirect('/course/'+req.params.name);
 			});
 		});
+	});
+
+	app.get('/course/:name/test', _csrf, checkAuth, (req, res) => {
+
+	});
+
+	app.get('/course/:name/test/edit', _csrf, checkAuth, (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) { return res.send("Not found");}
+			let course = data[0];
+			dbApi.getCourseAuthors(data[0].id).then(data => {
+				if(!req.session.user) isAuthor = false;
+				else isAuthor = hasUser(req.session.user.email, data);
+				if(!isAuthor) return res.send("No privileges");
+
+				dbApi.getEntireTest(course.id).then(test => {
+					console.log(test);
+					res.render("test/edit", {course, isAuthor, csrfToken: req.csrfToken()});
+				});
+
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
+
 	});
 
 	// Workaround

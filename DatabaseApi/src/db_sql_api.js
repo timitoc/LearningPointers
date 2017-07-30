@@ -103,7 +103,7 @@ class DbApi {
 	getMyCourses(userID, offset, count) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				`SELECT user_id, course_id, courses.name as course_name, avg_rating, courses.url as url 
+				`SELECT user_id, course_id, courses.name as course_name, avg_rating, courses.url as url
 				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id
 				WHERE users.id=?
 				ORDER BY avg_rating DESC LIMIT ? OFFSET ?;`,
@@ -139,8 +139,8 @@ class DbApi {
 
 	/**
 	 * Subscribes user to course
-	 * @param {number} userId 
-	 * @param {number} courseId 
+	 * @param {number} userId
+	 * @param {number} courseId
 	 */
 	subscribeToCourse(userId, courseId) {
 		return new Promise((resolve, reject) => {
@@ -471,8 +471,8 @@ class DbApi {
 
 	/**
 	 * Adds a question to course (courseId)
-	 * @param {number} courseId 
-	 * @param {string} questionText 
+	 * @param {number} courseId
+	 * @param {string} questionText
 	 * @returns {number} - The id of the question inserted
 	 */
 	addQuestionToCourse(courseId, questionText) {
@@ -490,8 +490,8 @@ class DbApi {
 
 	/**
 	 * Adds an answer to question (questionId)
-	 * @param {number} questionId 
-	 * @param {string} answerText 
+	 * @param {number} questionId
+	 * @param {string} answerText
 	 * @returns {number} - the id of the inserted answer
 	 */
 	addAnswerToQuestion(questionId, answerText) {
@@ -509,8 +509,8 @@ class DbApi {
 
 	/**
 	 * Sets which is the correct answer for question (questionId)
-	 * @param {number} questionId 
-	 * @param {number} answerId 
+	 * @param {number} questionId
+	 * @param {number} answerId
 	 */
 	setCorrectAnswer(questionId, answerId) {
 		return new Promise((resolve, reject) => {
@@ -550,8 +550,8 @@ class DbApi {
 	 */
 
 	/**
-	 * Retrieves all question(without correct column) + their answers 
-	 * @param {number} courseId 
+	 * Retrieves all question(without correct column) + their answers
+	 * @param {number} courseId
 	 * @returns {Exercise[]} all the exercises for that course
 	 */
 	getEntireTest(courseId) {
@@ -563,7 +563,7 @@ class DbApi {
 					if (err) reject(err);
 					let exes = results;
 					this.connection.query(
-						`SELECT exercises.id as exercise_id, answers.id as answer_id, answer_text FROM exercises JOIN answers on exercises.id = exercise_parent AND exercises.course_parent=? 
+						`SELECT exercises.id as exercise_id, answers.id as answer_id, answer_text FROM exercises JOIN answers on exercises.id = exercise_parent AND exercises.course_parent=?
 						ORDER BY exercise_id ASC`,
 						[courseId],
 						(err, results, fields) => {
