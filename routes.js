@@ -27,6 +27,7 @@ module.exports = (app) => {
 	app.get('/', (req, res) => {
 		if(req.session.user) {
 			dbApi.getAllMyCourses(req.session.user.id).then(data => {
+				console.log(data);
 				res.render("dashboard", {
 					user: req.session.user,
 					subscribed_courses: data
@@ -187,8 +188,26 @@ module.exports = (app) => {
 	});
 
 
-	app.get('/profile', checkAuth, (req, res) => {
-		res.render("profile");
+	app.get('/profile', checkAuth, _csrf, (req, res) => {
+		res.render("profile", {
+			user: req.session.user,
+			csrfToken: req.csrfToken()
+		});
+	});
+
+	app.post('/profile', checkAuth, _csrf, (req, res) => {
+		if(!req.body.current_password) {
+			req.flash('error', 'Password required!');
+			return res.redirect('/profile');
+		}
+		dbApi.loginUser(req.user.email, req.body.current_password)
+			.then(data => {
+				res.redirect('/');
+			})
+			.catch(err => {
+				req.flash('error', 'Incorrect password!');
+				return res.redirect('/profile');
+			});
 	});
 
 	app.get('/contribute', checkAuth, _csrf, (req, res) => {
