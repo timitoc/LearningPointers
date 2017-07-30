@@ -41,7 +41,6 @@
 			</div>
 			<div class="card-block" id="html"><%= module.text_md %></div>
 			<div class="card-block">
-				<a href="#" class="btn btn-primary">Take the test</a>
 				<% if(isAuthor) { %>
 					<a href="/course/<%=course.url%>/modules/<%=module_index%>/edit"
 						class="btn btn-success">Edit this module</a>
@@ -63,7 +62,7 @@
 		<% } else { %>
 			<ul class="list-group">
 			<% comments.forEach(function(comment) { %>
-				<li class="list-group-item"><%= comment.comment_text %></li>
+				<li class="list-group-item"><%- comment.comment_text %></li>
 			<% }) %>
 			</ul>
 		<% } %>
@@ -82,6 +81,7 @@
 	</div>
 
 	<script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.1/dist/showdown.min.js"></script>
+	<div id="aux"></div>
 
 	<script>
 		var converter = new showdown.Converter();
@@ -93,8 +93,13 @@
 		document.getElementById("html").innerHTML = render(md);
 
 		$("#send").click(function() {
-			$.post('/comments/<%=module.id%>/add', {comment: $("#comment").val()}, function(data) {
-				console.log(data);
+			$("#aux").text($("#comment").val());
+			var comm=$("#aux").html()
+			$.post('/comments/<%=module.id%>/add',
+					{
+						comment: '<img style="padding: 3px; border-radius: 50%;" src="/avatars/<%=user.avatar%>" height="50" width="50">&nbsp;<%=user.name%>:&nbsp;'+comm
+			}, function(data) {
+				history.go(0);
 			});
 		});
 

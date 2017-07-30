@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		<style>.variant{padding:10px;}</style>
+<style>
+.correct { color: #2ECC40 ;}
+.incorrect {color: #FF4136 ;}
+</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1><%=course.name%> - <small>test</small></h1>
+			<div style="display:none" id="data"><%=test%></div>
+			<div style="display:none" id="results"><%=results%></div>
+			<div style="display:none" id="passed"><%=passed%></div>
+			<h2>Questions</h2>
+			<hr>
+			<div class="questions"> </div>
+
+			<a href="/course/<%=course.url%>/test" class="btn btn-success">Take the test again</a>
+			<a href="/course/<%=course.url%>" class="btn btn-primary">Go to course</a>
+		</div>
+		<script src="/scripts/results_test.js"></script>
+	</body>
+</html>

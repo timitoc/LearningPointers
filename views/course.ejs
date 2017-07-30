@@ -57,7 +57,6 @@
 								<h4 class="card-title">
 									<a href="/course/<%=course.url%>/modules/<%=index + 1%>"><%=module.title%></a>
 								</h4>
-								<p class="card-text"><small>Not completed</small></p>
 							</div>
 						</li>
 						<% }); %>
@@ -66,10 +65,11 @@
 						<a class="btn btn-primary" href="/course/<%=course.url%>/modules/add">Add module</a>
 						<a class="btn btn-primary" href="/course/<%=course.url%>/test/edit">Modify test</a>
 					<% } %>
+					<a class="btn btn-primary" href="/course/<%=course.url%>/test">Take the test</a>
 				</div>
 				<div class="course-creator">
 					<div>Author:</div>
-					<h2>Here will be the autors</h2>
+					<h2>user</h2>
 				</div>
 			</div>
 		</div>

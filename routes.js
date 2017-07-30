@@ -295,8 +295,67 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/course/:name/test', _csrf, checkAuth, (req, res) => {
+	app.get('/course/:name/test', _csrf, /*checkAuth,*/ (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) return res.send("Not found");
+			let course = data[0];
+			dbApi.getEntireTest(course.id).then(test => {
+				res.render("test/view", {
+					test: JSON.stringify(test),
+					csrfToken: req.csrfToken(),
+					course
+				});
+			});
+		});
+	});
 
+	app.post('/course/:name/test', _csrf,/* checkAuth,*/ (req, res) => {
+		dbApi.getCourseByUrl(req.params.name).then(data => {
+			if(!data || !data.length) return res.send("Not found");
+			let course = data[0];
+			let result_test = JSON.parse(req.body.test);
+			console.log(JSON.stringify(result_test));
+
+			let good = {};
+
+			//dbApi.getEntireTest(course.id).then(test => {
+				Async.everySeries(result_test, (question, cb) => {
+					dbApi.getCorrectAnswer(question.id).then(results => {
+						let correct = results[0].correct_answer;
+						var correct_answers = question.answers.filter((answer) => {
+							console.log(answer);
+							return answer.id == correct.toString() && answer.correct == true;
+						});
+						console.log(correct_answers);
+						if(correct_answers.length == 0){
+							good[question.id] = false;
+							cb(null, false);
+						} else {
+							good[question.id] = true;
+							cb(null, true);
+						}
+					});
+				},(err, results) => {
+					let good_keys = Object.keys(good);
+					let passed = true;
+					good_keys.forEach(key => {
+						if(!good[key])
+							passed = false;
+					});
+					dbApi.getEntireTest(course.id).then(test => {
+						res.render("test/results", {
+							test: JSON.stringify(test),
+							csrfToken: req.csrfToken(),
+							course,
+							results: JSON.stringify(good),
+							passed: JSON.stringify(passed)
+						});
+					});
+				});
+			//}).catch(err=> {
+			//throw err;
+			//});
+		});
 	});
 
 	app.get('/course/:name/test/edit', _csrf, checkAuth, (req, res) => {
@@ -425,7 +484,8 @@ module.exports = (app) => {
 								module: data1,
 								module_index: req.params.index,
 								isAuthor,
-								comments
+								comments,
+								user: req.session.user
 							});
 						});
 					});

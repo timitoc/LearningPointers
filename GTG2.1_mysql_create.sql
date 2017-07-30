@@ -145,4 +145,4 @@ ALTER TABLE `exercises` ADD CONSTRAINT `exercises_fk1` FOREIGN KEY (`correct_ans
 ALTER TABLE `answers` ADD CONSTRAINT `answers_fk0` FOREIGN KEY (`exercise_parent`) REFERENCES `exercises`(`id`);
 
 
-ALTER TABLE `ratings` ADD PRIMARY KEY (`user_id`, `module_id`); 
+ALTER TABLE `ratings` ADD PRIMARY KEY (`user_id`, `module_id`);
