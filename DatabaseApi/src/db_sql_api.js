@@ -562,6 +562,10 @@ class DbApi {
 				(err, results, fields) => {
 					if (err) reject(err);
 					let exes = results;
+					if (!exes || !exes.length || exes.length < 1) {
+						resolve([]);
+						return;
+					}
 					this.connection.query(
 						`SELECT exercises.id as exercise_id, answers.id as answer_id, answer_text FROM exercises JOIN answers on exercises.id = exercise_parent AND exercises.course_parent=? 
 						ORDER BY exercise_id ASC`,
