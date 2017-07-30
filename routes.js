@@ -42,18 +42,18 @@ module.exports = (app) => {
 		}
 	});
 
-	app.get('/code',(req,res) => { res.render("editor"); });
+	/*app.get('/code',(req,res) => { res.render("editor"); });
 
 	app.get('/code/:id', (req, res)=>{
 		res.render("editor", {
 			id: req.params.id
 		});
-	});
+	});*/
 
-	app.get('/nicecode', (req, res) => {
+	app.get('/code', (req, res) => {
 		res.render("editor", {id: -1});
 	});
-	app.get('/nicecode/:id', (req, res) => {
+	app.get('/code/:id', (req, res) => {
 		res.render("editor", {id: req.params.id});
 	});
 
