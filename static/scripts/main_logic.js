@@ -31,6 +31,7 @@ function getEditorInstanceFromServer() {
 function populateEditorInstance(data) {
     console.log(JSON.stringify(data));
     editor.setValue(data.code, 1);
+    if (data.breakpoints)
     for (var i = 0; i < data.breakpoints.length; i++) {
         var line = data.breakpoints[i].line;
         toggleBreakpoint(line-1);
@@ -38,6 +39,7 @@ function populateEditorInstance(data) {
             data.breakpoints[i].condition);
     }
     var newData = [];
+    if (data.watches)
     for (var i = 0; i < data.watches.length; i++) {
         var wtext = data.watches[i].expr;
         addWithBackup({text: wtext});

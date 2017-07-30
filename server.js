@@ -239,9 +239,9 @@ io.on('connection', (socket) => {
 							console.log("A trimis");
 							socket.emit('editor_source', dbData);
 						}
-						else socket.emit('editor_source', {code: 'There is no source code saved with this id'});
+						else socket.emit('editor_source', {code: '//There is no source code saved with this id'});
 					}
-					else socket.emit('editor_source', {code: 'There is no source code saved with this id'});
+					else socket.emit('editor_source', {code: '//There is no source code saved with this id'});
 				});
 			});
 
