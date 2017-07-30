@@ -574,7 +574,7 @@ class DbApi {
 							var i = 0;
 							exes[0].answers = [];
 							for (var j = 0; j < results.length; j++) {
-								while (results[j].exercise_id != (i+1) && i < exes.length) {
+								while (results[j].exercise_id != exes[i].id && i < exes.length) {
 									i++;
 									exes[i].answers = [];
 								}
