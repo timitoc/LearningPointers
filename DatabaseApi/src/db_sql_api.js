@@ -123,7 +123,7 @@ class DbApi {
 	getAllMyCourses(userId) {
 		return new Promise((resolve, reject) => {
 			this.connection.query(
-				`SELECT user_id, course_id, courses.name as course_name, avg_rating
+				`SELECT user_id, course_id, courses.url as course_url, courses.name as course_name, avg_rating
 				FROM users JOIN user_courses ON users.id = user_id JOIN courses ON course_id=courses.id
 				WHERE users.id=?
 				ORDER BY avg_rating DESC;`,

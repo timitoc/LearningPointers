@@ -3,6 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
+	<style>
+	#success {
+		text-align: center;
+		color: white;
+		background: #2ECC40;
+		padding: 10px;
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	#errors {
+		text-align: center;
+		color: white;
+		background: #FF4136;
+		padding: 10px;
+		font-family: 'Open Sans', sans-serif;
+	}
+	</style>
+
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -43,12 +62,41 @@
 </nav>
 
 	<div class="container">
+		<form action="/profile" method="post">
+		<input type="hidden" name="_csrf" value="<%=csrfToken%>">
 		<div class="card">
 			<div class="card-block">
-				<h3 class="card-title">Name</h3>
+				<p class="card-text row">
+					<div class="col-lg-3">
+						<h4>Name:</h4>
+					</div>
+					<div class="col-lg-5">
+						<input type="text" name="name" value="<%=user.name%>" class="form-control"/>
+					</div>
+				</p>
 			</div>
 		</div>
-	</div>
+		<br>
+		<div class="card">
+			<div class="card-block">
+				<p class="card-text row">
+					<div class="col-lg-3">
+						<h4>Password:</h4>
+					</div>
+					<div class="col-lg-5">
+						<input type="password" name="current_password" placeholder="Old password (required)"
+						class="form-control" required/>
+					</div>
+					<br>
+					<div class="col-lg-5">
+						<input type="password" name="password_new" placeholder="New password" class="form-control"/>
+					</div>
+				</p>
+			</div>
+		</div>
+		<br>
+		<button class="btn btn-primary" type="submit">Save settings</button>
+		</form>
 	</div>
 </body>
 </html>
