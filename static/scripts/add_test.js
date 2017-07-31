@@ -36,7 +36,7 @@ function createQuestionHtml(question, index) {
 						item.value,
 						"'>",
 						"<span>",
-						item.answerText ? item.answerText : item.answer_text,
+						item.answerText,
 						"</span>",
 						"</div>"].join("");
 				}).join(""),
@@ -160,7 +160,7 @@ function renderToJson() {
 		$(value).each(function(index0, val) {
 			$(val).children(".variant").each(function(index1, variant) {
 				obj[index].answers.push({
-					answer_text : $($(variant).children()[2]).text(),
+					answerText : $($(variant).children()[2]).text(),
 					//value : $($(variant).children()[1]).val(),
 					correct : $($(variant).children()[1]).is(':checked')
 				});

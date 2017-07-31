@@ -430,15 +430,15 @@ module.exports = (app) => {
 						dbApi.addQuestionToCourse(course.id, item.question)
 							.then(id => {
 								Async.everySeries(item.answers, (answer, cb) => {
-									dbApi.addAnswerToQuestion(id, answer.answer_text)
+									dbApi.addAnswerToQuestion(id, answer.answerText)
 										.then(answerId => {
-											answer_id[answer.answer_text] = answerId;
+											answer_id[answer.answerText] = answerId;
 											cb(null, true);
 										});
 								},(err, result) => {
 									Async.everySeries(item.answers, (answer, cb) => {
 										if(answer.correct) {
-											dbApi.setCorrectAnswer(id, answer_id[answer.answer_text]).
+											dbApi.setCorrectAnswer(id, answer_id[answer.answerText]).
 												then(() => {
 													cb(null, true);
 												});
