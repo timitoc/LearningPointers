@@ -6,6 +6,12 @@ Facilities:
   - Online C++ editing and debugging  [![vimsupported](https://img.shields.io/badge/vim-supported-green.svg)]()
   - Magic
 
+
+## Preview
+
+![Screenshot 2](https://github.com/timitoc/LearningPointers/blob/master/Screenshots/ss1.png)
+![Screenshot 2](https://github.com/timitoc/LearningPointers/blob/master/Screenshots/ss2.png)
+
 # Installation
 
 LearningPointers requires [Node.js](https://nodejs.org/)  and [Docker](https://docker.com) on a GNU/Linux system to run. Not tested yet on other systems.
