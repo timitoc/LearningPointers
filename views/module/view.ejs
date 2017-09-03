@@ -86,11 +86,13 @@
 	<script>
 		var converter = new showdown.Converter();
 		var md = document.getElementById("html").innerHTML;
+		md = unescapeSpecials(md);
 		console.log(md);
 		function render(pgf) {
 			return converter.makeHtml(pgf);
 		}
-		document.getElementById("html").innerHTML = render(md);
+		md = render(md);
+		document.getElementById("html").innerHTML = md;
 
 		$("#send").click(function() {
 			$("#aux").text($("#comment").val());
@@ -115,6 +117,15 @@
 				}
 			});
 		});
+
+		function unescapeSpecials(encodedStr){
+			var parser = new DOMParser;
+			var dom = parser.parseFromString(
+				'<!doctype html><body>' + encodedStr,
+				'text/html');
+			var decodedString = dom.body.textContent;
+			return decodedString;
+		}
 	</script>
 
 	</body>
