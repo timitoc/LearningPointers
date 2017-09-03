@@ -255,7 +255,7 @@ module.exports = (app) => {
 				dbApi.getModulesFromCourse(course.id).then(modules => {
 					if(!req.session.user) isAuthor = false;
 					else isAuthor = hasUser(req.session.user.email, data);
-					res.render("course", {course, modules, isAuthor});
+					res.render("course", {course, modules, isAuthor, authorName: data[0].name});
 				});
 			});
 		});
